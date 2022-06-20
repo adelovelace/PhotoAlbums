@@ -1,3 +1,8 @@
+package gallery;
+
+import gallery.Album;
+import user.Person;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,7 +15,7 @@ public class Photo {
     private Album albumRelated;
 
 
-    public Photo(String descriptionPhoto,  String placePhoto, Date datePhoto,ArrayList<Person> personsOnAlbum,  Album albumRelated){
+    public Photo(String descriptionPhoto, String placePhoto, Date datePhoto, ArrayList<Person> personsOnAlbum, Album albumRelated){
         this.descriptionPhoto =descriptionPhoto;
         this.placePhoto= placePhoto;
         this.datePhoto=datePhoto;

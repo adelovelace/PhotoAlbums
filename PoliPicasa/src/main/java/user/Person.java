@@ -1,3 +1,5 @@
+package user;
+
 public class Person {
 
     private String personName;

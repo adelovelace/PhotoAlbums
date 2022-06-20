@@ -1,3 +1,5 @@
+package gallery;
+
 import java.util.List;
 
 public class Album <T> {
