@@ -1,50 +1,21 @@
 package util;
 
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-
-public class CircularDoublyLinkedList<E> implements List<E> {
+public class LinkedList<E> implements List<E> {
 
     private static class Node<E> {
 
         private Object data;
         private Node<E> next;
-        private Node<E> prev;
 
-        public Node(Object data, Node<E> next, Node<E> prev){
+        public Node(Object data, Node<E> next){
             this.data = data;
             this.next = next;
-            this.prev = prev;
-
         }
-    }
-
-    private Object data;
-    CircularDoublyLinkedList nextCircularDoublyLinkedList;
-
-    public CircularDoublyLinkedList(Object data, CircularDoublyLinkedList nextCircularDoublyLinkedList) {
-        this.data = data;
-        this.nextCircularDoublyLinkedList = nextCircularDoublyLinkedList;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
-    public CircularDoublyLinkedList getNextNode() {
-        return nextCircularDoublyLinkedList;
-    }
-
-    public void setNextNode(CircularDoublyLinkedList nextCircularDoublyLinkedList) {
-        this.nextCircularDoublyLinkedList = nextCircularDoublyLinkedList;
     }
 
     @Override
