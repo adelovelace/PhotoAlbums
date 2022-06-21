@@ -43,6 +43,18 @@ public class Album <T> {
         return true;
     }
 
+    public boolean addPhotos(ArrayList<Photo> newPhoto){
+
+        if(newPhoto == null){
+            System.out.println("Problem adding new Photo(s)");
+            return false;
+        }
+
+        
+
+        return true;
+    }
+
     public String getAlbumName() {
         return albumName;
     }
