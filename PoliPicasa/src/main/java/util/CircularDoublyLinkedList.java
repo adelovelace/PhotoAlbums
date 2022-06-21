@@ -24,11 +24,13 @@ public class CircularDoublyLinkedList<E> implements List<E> {
     }
 
     private Object data;
-    CircularDoublyLinkedList nextCircularDoublyLinkedList;
+    private Node <E> next;
+    private Node <E> prev;
 
-    public CircularDoublyLinkedList(Object data, CircularDoublyLinkedList nextCircularDoublyLinkedList) {
+    public CircularDoublyLinkedList(Object data, Node<E> next, Node<E> prev) {
         this.data = data;
-        this.nextCircularDoublyLinkedList = nextCircularDoublyLinkedList;
+        this.next = next;
+        this.prev = prev;
     }
 
     public Object getData() {
@@ -39,12 +41,20 @@ public class CircularDoublyLinkedList<E> implements List<E> {
         this.data = data;
     }
 
-    public CircularDoublyLinkedList getNextNode() {
-        return nextCircularDoublyLinkedList;
+    public Node<E> getNext() {
+        return next;
     }
 
-    public void setNextNode(CircularDoublyLinkedList nextCircularDoublyLinkedList) {
-        this.nextCircularDoublyLinkedList = nextCircularDoublyLinkedList;
+    public void setNext(Node<E> next) {
+        this.next = next;
+    }
+
+    public Node<E> getPrev() {
+        return prev;
+    }
+
+    public void setPrev(Node<E> prev) {
+        this.prev = prev;
     }
 
     @Override
