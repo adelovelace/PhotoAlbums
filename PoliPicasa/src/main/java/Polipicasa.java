@@ -10,11 +10,7 @@
 
 public class Polipicasa {
 
-
     public static void main(String[] args) {
-
     }
-
-
 
 }
