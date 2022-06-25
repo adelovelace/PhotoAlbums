@@ -1,13 +1,7 @@
 package util;
 
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
-
 public class CircularDoublyLinkedList<E> implements List<E> {
+
 
     private static class Node<E> {
 
@@ -23,28 +17,29 @@ public class CircularDoublyLinkedList<E> implements List<E> {
         }
     }
 
-    private Object data;
-    CircularDoublyLinkedList nextCircularDoublyLinkedList;
-
-    public CircularDoublyLinkedList(Object data, CircularDoublyLinkedList nextCircularDoublyLinkedList) {
-        this.data = data;
-        this.nextCircularDoublyLinkedList = nextCircularDoublyLinkedList;
+    @Override
+    public boolean addFirst(E e) {
+        return false;
     }
 
-    public Object getData() {
-        return data;
+    @Override
+    public boolean addLast(E e) {
+        return false;
     }
 
-    public void setData(Object data) {
-        this.data = data;
+    @Override
+    public E getFirst() {
+        return null;
     }
 
-    public CircularDoublyLinkedList getNextNode() {
-        return nextCircularDoublyLinkedList;
+    @Override
+    public E getLast() {
+        return null;
     }
 
-    public void setNextNode(CircularDoublyLinkedList nextCircularDoublyLinkedList) {
-        this.nextCircularDoublyLinkedList = nextCircularDoublyLinkedList;
+    @Override
+    public int indexOf(E e) {
+        return 0;
     }
 
     @Override
@@ -53,68 +48,28 @@ public class CircularDoublyLinkedList<E> implements List<E> {
     }
 
     @Override
+    public boolean removeLast() {
+        return false;
+    }
+
+    @Override
+    public boolean removeFirst() {
+        return false;
+    }
+
+    @Override
+    public boolean insert(int index, E e) {
+        return false;
+    }
+
+    @Override
+    public boolean set(int index, E e) {
+        return false;
+    }
+
+    @Override
     public boolean isEmpty() {
         return false;
-    }
-
-    @Override
-    public boolean contains(Object o) {
-        return false;
-    }
-
-    @Override
-    public Iterator<E> iterator() {
-        return null;
-    }
-
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
-
-    @Override
-    public <T> T[] toArray(T[] a) {
-        return null;
-    }
-
-    @Override
-    public boolean add(E e) {
-        return false;
-    }
-
-    @Override
-    public boolean remove(Object o) {
-        return false;
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends E> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(int index, Collection<? extends E> c) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public void clear() {
-
     }
 
     @Override
@@ -123,42 +78,13 @@ public class CircularDoublyLinkedList<E> implements List<E> {
     }
 
     @Override
-    public E set(int index, E element) {
-        return null;
+    public boolean contains(E e) {
+        return false;
     }
 
     @Override
-    public void add(int index, E element) {
-
+    public boolean remove(int index) {
+        return false;
     }
 
-    @Override
-    public E remove(int index) {
-        return null;
-    }
-
-    @Override
-    public int indexOf(Object o) {
-        return 0;
-    }
-
-    @Override
-    public int lastIndexOf(Object o) {
-        return 0;
-    }
-
-    @Override
-    public ListIterator<E> listIterator() {
-        return null;
-    }
-
-    @Override
-    public ListIterator<E> listIterator(int index) {
-        return null;
-    }
-
-    @Override
-    public List<E> subList(int fromIndex, int toIndex) {
-        return null;
-    }
 }
