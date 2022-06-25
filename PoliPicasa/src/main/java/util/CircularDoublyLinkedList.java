@@ -1,21 +1,21 @@
 package util;
 
 
-import java.util.Collection;
-import java.util.Iterator;
+
 import java.util.List;
-import java.util.ListIterator;
+
 
 
 public class CircularDoublyLinkedList<E> implements List<E> {
 
+
     private static class Node<E> {
 
-        private Object data;
+        private E data;
         private Node<E> next;
         private Node<E> prev;
 
-        public Node(Object data, Node<E> next, Node<E> prev){
+        public Node(E data, Node<E> next, Node<E> prev){
             this.data = data;
             this.next = next;
             this.prev = prev;
@@ -23,152 +23,94 @@ public class CircularDoublyLinkedList<E> implements List<E> {
         }
     }
 
-    private Object data;
-    private Node <E> next;
-    private Node <E> prev;
 
-    public CircularDoublyLinkedList(Object data, Node<E> next, Node<E> prev) {
-        this.data = data;
-        this.next = next;
-        this.prev = prev;
+    private Node <E> head;
+;
+    private int listSize;
+
+    public CircularDoublyLinkedList( Node<E> head) {
+        this.head = head;
     }
 
-    public Object getData() {
-        return data;
+
+    // Intenta insertar el elemento al inicio y retorna verdadero si lo logró hacer, falso sino
+    public boolean addFirst(E e){
+        return false;
     }
 
-    public void setData(Object data) {
-        this.data = data;
+    // Intenta insertar el elemento al final y retorna verdadero si lo logró hacer, falso sino
+    public boolean addLast(E e){
+        return false;
     }
 
-    public Node<E> getNext() {
-        return next;
+    // Retorna el primer elemento. Lanza una excepción si la lista está vacía.
+    public E getFirst(){
+        return  null;
     }
 
-    public void setNext(Node<E> next) {
-        this.next = next;
+    // Retorna el último elemento. Lanza una excepción si la lista está vacía.
+    public E getLast(){
+        return null;
     }
 
-    public Node<E> getPrev() {
-        return prev;
-    }
-
-    public void setPrev(Node<E> prev) {
-        this.prev = prev;
-    }
-
-    @Override
-    public int size() {
+    // Retorna la posición de E si se encuentra en la Lista. Retorna -1 si no lo encuentra.
+    public int indexOf(Object e){
         return 0;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
-
-    @Override
-    public boolean contains(Object o) {
-        return false;
-    }
-
-    @Override
-    public Iterator<E> iterator() {
-        return null;
-    }
-
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
-
-    @Override
-    public <T> T[] toArray(T[] a) {
-        return null;
-    }
-
-    @Override
-    public boolean add(E e) {
-        return false;
-    }
-
-    @Override
-    public boolean remove(Object o) {
-        return false;
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends E> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(int index, Collection<? extends E> c) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public E get(int index) {
-        return null;
-    }
-
-    @Override
-    public E set(int index, E element) {
-        return null;
-    }
-
-    @Override
-    public void add(int index, E element) {
-
-    }
-
-    @Override
-    public E remove(int index) {
-        return null;
-    }
-
-    @Override
-    public int indexOf(Object o) {
+    // Retorna la cantidad de elementos en la lista.
+    public int size(){
         return 0;
     }
 
-    @Override
-    public int lastIndexOf(Object o) {
-        return 0;
+
+    // Remueve el último elemento de la lista y retorna verdadero. Retorna falso si la lista estaba vacía antes de la remoción.
+    public boolean removeLast(){
+        return false;
     }
 
-    @Override
-    public ListIterator<E> listIterator() {
+    // Remueve el primer elemento de la lista y retorna verdadero. Retorna falso si la lista estaba vacía antes de la remoción.
+    public boolean removeFirst(){
+        return false;
+    }
+
+    // Inserta el elemento en la posición indicada por el índice y retorna verdadero si lo logra realizar.
+    //  Retorna falso si el elemento es null
+    //  Lanza una excepción si el indice es invalido (fuera del rango)
+    public boolean insert(int index, E e){
+        return false;
+    }
+
+    // Modifica el elemento en la posición indicada por el índice y retorna verdadero si lo logra realizar.
+    //  Retorna falso si el elemento es null
+    //  Lanza una excepción si el indice es invalido (fuera del rango)
+    public E set(int index, E e){
         return null;
     }
 
-    @Override
-    public ListIterator<E> listIterator(int index) {
+    // Retorna verdero si la lista está vacía y falso si contiene nodos.
+    public boolean isEmpty(){
+        return false;
+    }
+
+    // Recorre la lista para retornar el elemento en el índice indicado.
+    //  Lanza una excepción si el indice es invalido (fuera del rango)
+    public E get(int index){
         return null;
     }
 
-    @Override
-    public List<E> subList(int fromIndex, int toIndex) {
-        return null;
+    // Retorna verdadero si el elemento se encuentra en la Lista y falso sino.
+    //  También retorna falso si el elemento es null.
+    public boolean contains(Object e){
+        return false;
     }
+
+    // Remueve el elemento en la posición indicada por el índice y retorna verdadero si lo logra realizar.
+    //  Retorna falso si el elemento es null
+    //  Lanza una excepción si el indice es invalido (fuera del rango)
+    public boolean remove(int index){
+        return false;
+    }
+
+
 }
