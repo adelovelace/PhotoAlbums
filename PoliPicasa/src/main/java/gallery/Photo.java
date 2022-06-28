@@ -1,10 +1,9 @@
 package gallery;
 
-import gallery.Album;
 import user.Person;
-
-import java.util.ArrayList;
+import util.ArrayList;
 import java.util.Date;
+
 
 public class Photo {
 
