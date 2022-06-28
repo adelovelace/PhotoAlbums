@@ -18,9 +18,9 @@ public class CircularDoublyLinkedList<E> implements List<E> {
     private Node <E> head;
     private Node <E> tail;
 
-    ;
     private int listSize = 0;
 
+    
     public CircularDoublyLinkedList() {
         this.head = null;
         this.tail = null;
