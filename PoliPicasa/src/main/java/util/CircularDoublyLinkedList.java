@@ -18,7 +18,7 @@ public class CircularDoublyLinkedList<E> implements List<E> {
     private Node <E> head;
     private Node <E> tail;
 
-;
+    ;
     private int listSize = 0;
 
     public CircularDoublyLinkedList() {
@@ -132,3 +132,4 @@ public class CircularDoublyLinkedList<E> implements List<E> {
         return false;
     }
 }
+
