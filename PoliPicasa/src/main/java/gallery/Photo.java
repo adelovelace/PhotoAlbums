@@ -21,6 +21,30 @@ public class Photo {
         this.datePhoto=datePhoto;
     }
 
+    public boolean addPerson(ArrayList<Person> helloPersons) {
+        if(helloPersons.isEmpty()){return false;}
+        for(Person people: helloPersons){
+            personsOnAlbum.addLast(people);
+        }
+        return true;
+    }
+
+    public boolean deletedPerson(ArrayList<Person> byePersons){
+        if(byePersons.isEmpty()){return false;}
+        if(personsOnAlbum.isEmpty()){
+            System.out.println("En esta foto no aparecen personas");
+        }
+        for(Person people: byePersons){
+            personsOnAlbum.remove(people);
+        }
+        return true;
+    }
+
+    public boolean modifyPerson(ArrayList<Person> selectedPerson){
+
+        return true;
+    }
+
 
     public String getDescriptionPhoto() {
         return descriptionPhoto;
