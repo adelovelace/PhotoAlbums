@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package util;
 
 public class CircularDoublyLinkedList<E> implements List<E> {
@@ -14,6 +13,7 @@ public class CircularDoublyLinkedList<E> implements List<E> {
             this.data = data;
         }
     }
+
 
     private Node <E> head;
     private Node <E> tail;
@@ -90,9 +90,8 @@ public class CircularDoublyLinkedList<E> implements List<E> {
     }
 
     @Override
-
     public boolean removeFirst() {
-        return true;
+        return false;
     }
 
     @Override
@@ -134,6 +133,4 @@ public class CircularDoublyLinkedList<E> implements List<E> {
     }
 }
 
-=======
-g
->>>>>>> 76629e4 (misc changes)
+
