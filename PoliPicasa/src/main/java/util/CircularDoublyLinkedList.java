@@ -14,7 +14,6 @@ public class CircularDoublyLinkedList<E> implements List<E> {
         }
     }
 
-
     private Node <E> head;
     private Node <E> tail;
 
@@ -90,15 +89,13 @@ public class CircularDoublyLinkedList<E> implements List<E> {
     }
 
     @Override
+
     public boolean removeFirst() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean insert(int index, E e) {
-
-
-
         return false;
     }
 
@@ -131,5 +128,5 @@ public class CircularDoublyLinkedList<E> implements List<E> {
     public boolean remove(int index) {
         return false;
     }
-}
 
+}
