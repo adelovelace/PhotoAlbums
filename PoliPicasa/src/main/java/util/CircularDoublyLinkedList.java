@@ -5,21 +5,56 @@ public class CircularDoublyLinkedList<E> implements List<E> {
 
     private static class Node<E> {
 
-        private Object data;
+        private E data;
         private Node<E> next;
         private Node<E> prev;
 
-        public Node(Object data, Node<E> next, Node<E> prev){
+        public Node(E data){
             this.data = data;
-            this.next = next;
-            this.prev = prev;
-
         }
+    }
+
+    private Node <E> head;
+    private Node <E> tail;
+
+    ;
+    private int listSize = 0;
+
+    public CircularDoublyLinkedList() {
+        this.head = null;
+        this.tail = null;
     }
 
     @Override
     public boolean addFirst(E e) {
-        return false;
+
+        Node <E> newNode = new Node<E>(e);
+
+        if(e == null){
+            return false;
+        }
+
+        if(this.listSize == 0){
+            this.head = newNode;
+            this.head.prev = this.head;
+            this.head.next = this.head;
+            listSize ++;
+            return true;
+        }
+
+        if(this.head == null){
+            this.head = newNode;
+            this.head.prev = this.head;
+            this.head.next = this.head;
+            listSize ++;
+            return true;
+        }
+
+        newNode.prev = this.head;
+        this.head.next = newNode;
+        listSize++;
+
+        return true;
     }
 
     @Override
@@ -44,7 +79,8 @@ public class CircularDoublyLinkedList<E> implements List<E> {
 
     @Override
     public int size() {
-        return 0;
+
+        return listSize;
     }
 
     @Override
@@ -53,8 +89,9 @@ public class CircularDoublyLinkedList<E> implements List<E> {
     }
 
     @Override
+
     public boolean removeFirst() {
-        return false;
+        return true;
     }
 
     @Override
@@ -69,6 +106,11 @@ public class CircularDoublyLinkedList<E> implements List<E> {
 
     @Override
     public boolean isEmpty() {
+
+        if(this.head == null){
+            return true;
+        }
+
         return false;
     }
 
