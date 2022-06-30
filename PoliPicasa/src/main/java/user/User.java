@@ -50,6 +50,6 @@ public class User {
 
     public boolean comparePassword(String password){
         String codPassword = convertToSHA256(password);
-        return this.password == codPassword;
+        return this.password.equals(codPassword);
     }
 }
