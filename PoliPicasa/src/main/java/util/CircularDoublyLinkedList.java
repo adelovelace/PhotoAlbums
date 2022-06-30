@@ -90,8 +90,10 @@ public class CircularDoublyLinkedList<E> implements List<E> {
     }
 
     @Override
+
     public boolean removeFirst() {
         return false;
+
     }
 
     @Override
