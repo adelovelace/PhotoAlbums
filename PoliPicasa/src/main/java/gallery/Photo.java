@@ -22,9 +22,9 @@ public class Photo {
 
     public boolean addPerson(ArrayList<Person> helloPersons) {
         if(helloPersons.isEmpty()){return false;}
-        for(Person people: helloPersons){
-            personsOnAlbum.addLast(people);
-        }
+//        for(Person people: helloPersons){
+//            personsOnAlbum.addLast(people);
+//        }
         return true;
     }
 
@@ -33,9 +33,9 @@ public class Photo {
         if(personsOnAlbum.isEmpty()){
             System.out.println("En esta foto no aparecen personas");
         }
-        for(Person people: byePersons){
-            personsOnAlbum.remove(people);
-        }
+//        for(Person people: byePersons){
+//            personsOnAlbum.remove(people);
+//        }
         return true;
     }
 

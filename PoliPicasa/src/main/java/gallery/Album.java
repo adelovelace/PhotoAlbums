@@ -35,9 +35,9 @@ public class Album <T> {
             System.out.println("Place:" + photo.getPlacePhoto());
             System.out.println("Date:" + photo.getDatePhoto());
 
-            for (Person person: photo.getPersonsOnAlbum()) {
-                System.out.println("Name of the Person:" + person.getPersonName());
-            }
+//            for (Person person: photo.getPersonsOnAlbum()) {
+//                System.out.println("Name of the Person:" + person.getPersonName());
+//            }
         }
 
         return true;
