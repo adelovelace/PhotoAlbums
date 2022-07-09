@@ -2,10 +2,11 @@ package gallery;
 
 import user.Person;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Album <T> {
+public class Album <T> implements Serializable {
 
 
 

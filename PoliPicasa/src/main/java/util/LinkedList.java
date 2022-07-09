@@ -1,6 +1,9 @@
 package util;
 
-public class LinkedList<E> implements List<E> {
+import java.io.Serializable;
+import java.util.Iterator;
+
+public class LinkedList<E> implements List<E>, Iterable<E>, Serializable {
 
     private Node<E> first;
     private Node<E> last;
@@ -12,7 +15,24 @@ public class LinkedList<E> implements List<E> {
         size = 0;
     }
 
-    private class Node<E>
+    public Iterator<E> iterator() {
+        Iterator<E> it = new Iterator<E>() {
+            private Node<E> p = first;
+            @Override
+            public boolean hasNext() {
+                return p!=null;
+            }
+
+            @Override
+            public E next() {
+                E tmp = p.data;
+                p = p.next;
+                return tmp;
+            }
+        };
+        return it;
+    }
+    private class Node<E> implements Serializable
     {
         private E data;
         private Node<E> next;
@@ -231,6 +251,8 @@ public class LinkedList<E> implements List<E> {
         }
         return false;
     }
+
+
 
     @Override
     public boolean remove(int index) {

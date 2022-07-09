@@ -2,10 +2,12 @@ package gallery;
 
 import user.Person;
 import util.ArrayList;
+
+import java.io.Serializable;
 import java.util.Date;
 
 
-public class Photo {
+public class Photo implements Serializable {
 
     private String descriptionPhoto;
     private String placePhoto;

@@ -10,6 +10,10 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import user.User;
+import validator.ValidatorData;
+
+
 
 
 
@@ -31,6 +35,7 @@ public class Polipicasa extends Application {
 
 
     public static void main(String[] args) {
+        ValidatorData.createUserFile();
         launch();
     }
 }
