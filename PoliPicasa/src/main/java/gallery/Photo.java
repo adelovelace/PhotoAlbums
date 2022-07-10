@@ -14,19 +14,25 @@ public class Photo implements Serializable {
     private Date datePhoto;
     private ArrayList<Person> personsOnAlbum;
     private Album albumRelated;
+    private String route;
 
 
-    public Photo(String descriptionPhoto, String placePhoto, Date datePhoto, ArrayList<Person> personsOnAlbum, Album albumRelated){
+    public Photo(String descriptionPhoto, String placePhoto, Date datePhoto, ArrayList<Person> personsOnAlbum, Album albumRelated, String route){
         this.descriptionPhoto =descriptionPhoto;
         this.placePhoto= placePhoto;
         this.datePhoto=datePhoto;
+        this.personsOnAlbum=personsOnAlbum;
+        this.albumRelated=albumRelated;
+        this.route=route;
     }
+
+
 
     public boolean addPerson(ArrayList<Person> helloPersons) {
         if(helloPersons.isEmpty()){return false;}
-//        for(Person people: helloPersons){
-//            personsOnAlbum.addLast(people);
-//        }
+        for(Person people: helloPersons){
+            personsOnAlbum.addLast(people);
+        }
         return true;
     }
 
@@ -35,16 +41,26 @@ public class Photo implements Serializable {
         if(personsOnAlbum.isEmpty()){
             System.out.println("En esta foto no aparecen personas");
         }
-//        for(Person people: byePersons){
-//            personsOnAlbum.remove(people);
-//        }
+        for(Person people: byePersons){
+            int indexPeople = personsOnAlbum.indexOf(people);
+            personsOnAlbum.remove(indexPeople);
+        }
         return true;
     }
 
-    public boolean modifyPerson(ArrayList<Person> selectedPerson){
-
+    public boolean modifyPerson(Person PersonSelected, String Nombre){
+        if(personsOnAlbum.isEmpty()){
+            System.out.println("En esta foto no aparecen personas");
+        }
+        for(Person people: personsOnAlbum){
+            if(PersonSelected.equals(people)){
+                people.setPersonName(Nombre);
+            }
+        }
         return true;
     }
+
+
 
 
     public String getDescriptionPhoto() {
@@ -85,5 +101,14 @@ public class Photo implements Serializable {
 
     public void setAlbumRelated(Album albumRelated) {
         this.albumRelated = albumRelated;
+    }
+
+    @Override
+    public String toString() {
+        return "Descripcion de la imagen=" + descriptionPhoto +
+                "\nLugar de la imagen=" + placePhoto +
+                "\nfecha de la foto=" + datePhoto +
+                "\npersonas en el album=" + personsOnAlbum +
+                "\nalbumRelated=" + albumRelated;
     }
 }
