@@ -6,26 +6,33 @@
  * Peñafiel Labanda, Alex
  *
  */
+import GUI.MainPage;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import user.User;
-import validator.ValidatorData;
 
-
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 
 public class Polipicasa extends Application {
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        File fileLogo = new File("src/Assets/polito_logo.png");
+
         primaryStage.setTitle("Polipicasa");
-        VBox vbox = new VBox();
-        Scene scene = new Scene(vbox);
+        MainPage mp = new MainPage();
+        Scene scene = new Scene(mp.getRoot());
+
+        try{
+        primaryStage.getIcons().add(new Image(new FileInputStream(fileLogo.getAbsolutePath())));}
+        catch (FileNotFoundException ex){
+            ex.printStackTrace();
+        }
 
         primaryStage.setScene(scene);
         primaryStage.setFullScreen(true);
@@ -35,7 +42,6 @@ public class Polipicasa extends Application {
 
 
     public static void main(String[] args) {
-        ValidatorData.createUserFile();
         launch();
     }
 }
