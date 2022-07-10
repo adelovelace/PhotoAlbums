@@ -29,7 +29,7 @@ public class Polipicasa extends Application {
         Scene scene = new Scene(mp.getRoot());
 
         try{
-        primaryStage.getIcons().add(new Image(new FileInputStream(fileLogo.getAbsolutePath())));}
+            primaryStage.getIcons().add(new Image(new FileInputStream(fileLogo.getAbsolutePath())));}
         catch (FileNotFoundException ex){
             ex.printStackTrace();
         }
@@ -45,3 +45,4 @@ public class Polipicasa extends Application {
         launch();
     }
 }
+
