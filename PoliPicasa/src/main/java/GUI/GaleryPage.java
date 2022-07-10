@@ -129,7 +129,7 @@ public class GaleryPage {
 
         menu.getChildren().addAll(albums);
         albums.getChildren().add(albumLabel);
-        
+
 
 
 
