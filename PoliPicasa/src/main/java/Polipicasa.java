@@ -7,6 +7,8 @@
  *
  */
 import GUI.MainPage;
+import GUI.GaleryPage;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -25,8 +27,11 @@ public class Polipicasa extends Application {
         File fileLogo = new File("src/Assets/polito_logo.png");
 
         primaryStage.setTitle("Polipicasa");
-        MainPage mp = new MainPage();
+        //MainPage mp = new MainPage();
+        GaleryPage mp = new GaleryPage();
         Scene scene = new Scene(mp.getRoot());
+        scene.getStylesheets().add("https://fonts.googleapis.com/css2?family=Hurricane");
+        scene.getStylesheets().add("https://fonts.googleapis.com/css2?family=Galdeano");
 
         try{
             primaryStage.getIcons().add(new Image(new FileInputStream(fileLogo.getAbsolutePath())));}
