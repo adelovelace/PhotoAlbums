@@ -68,6 +68,21 @@ public class Album <T> implements Serializable {
         return true;
     }
 
+    public boolean addPhoto(Photo photo){
+
+        if(photo == null){
+            System.out.println("Problem adding new Photo, it is Empty!");
+            return false;
+        }
+
+        if (this.photosOnAlbum.addLast(photo)) {
+            System.out.println("Adding Photo successfully!");
+        }else{
+            System.out.println("Adding Photo NO successfully!");
+        }
+
+        return true;
+    }
 
     public boolean deletePhoto(CircularDoublyLinkedList<Photo> photosOnAlbum, Photo selectedPhoto){
 
@@ -158,5 +173,9 @@ public class Album <T> implements Serializable {
 
     public void setAlbumDescription(String albumDescription) {
         this.albumDescription = albumDescription;
+    }
+
+    public CircularDoublyLinkedList<Photo> getPhotosOnAlbum() {
+        return photosOnAlbum;
     }
 }
