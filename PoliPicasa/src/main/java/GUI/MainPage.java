@@ -56,9 +56,9 @@ public class MainPage {
             root.setBackground(new javafx.scene.layout.Background(new javafx.scene.layout.BackgroundImage(background, javafx.scene.layout.BackgroundRepeat.NO_REPEAT, javafx.scene.layout.BackgroundRepeat.NO_REPEAT, javafx.scene.layout.BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
 
             HBox head = createHeader();
-            VBox menu = createMenu();
+            createMenu();
             root.setTop(head);
-            root.setCenter(menu);
+
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -88,7 +88,7 @@ public class MainPage {
         return header;
     }
 
-    private VBox createMenu() {
+    private void createMenu() {
         String styleButton = "-fx-text-fill: #006F84;" +
                 "-fx-text-alignment: center;" +
                 "-fx-border-radius: 10px;" +
@@ -114,7 +114,7 @@ public class MainPage {
             accountSignIn();
         });
         menu.getChildren().addAll(loginButton, signinButton);
-        return menu;
+        root.setCenter(menu);
     }
 
     private void sessionLogin() {
@@ -124,6 +124,7 @@ public class MainPage {
         login.setAlignment(Pos.CENTER);
         HBox usernameBox = new HBox();
         HBox passwordBox = new HBox();
+        HBox buttonBox = new HBox();
         usernameBox.setPadding(basicInsets);
         passwordBox.setPadding(basicInsets);
         usernameBox.setSpacing(10);
@@ -142,7 +143,16 @@ public class MainPage {
         PasswordField password = new PasswordField();
         password.setStyle(labelSquare);
         Button loginButton = new Button("Login");
+        Button backButton = new Button("Back");
+        buttonBox.setPadding(basicInsets);
+        buttonBox.setSpacing(10);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.getChildren().addAll(loginButton, backButton);
+        backButton.setStyle(buttonStyle);
         loginButton.setStyle(buttonStyle);
+        backButton.setOnAction(e -> {
+            createMenu();
+        });
         loginButton.setOnAction(e -> {
             if (username.getText() != null && password.getText() != null) {
                 Session s = ValidatorData.createSession(username.getText(), password.getText());
@@ -162,7 +172,7 @@ public class MainPage {
         });
         usernameBox.getChildren().addAll(usernameLabel, username);
         passwordBox.getChildren().addAll(passwordLabel, password);
-        login.getChildren().addAll(loginLabel, usernameBox, passwordBox, error, loginButton);
+        login.getChildren().addAll(loginLabel, usernameBox, passwordBox, error, buttonBox);
         root.setCenter(login);
 
     }
@@ -211,11 +221,22 @@ public class MainPage {
                 }
             }
         });
+        HBox buttonBox = new HBox();
         Label error = new Label();
         password.setStyle(labelSquare);
         email.setStyle(labelSquare);
         Button signinButton = new Button("Sign In");
         signinButton.setDisable(true);
+        Button backButton = new Button("Back");
+        buttonBox.setPadding(basicInsets);
+        buttonBox.setSpacing(10);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.getChildren().addAll(signinButton, backButton);
+        backButton.setStyle(buttonStyle);
+        backButton.setOnAction(e -> {
+            createMenu();
+        });
+
         confirmButton.setOnAction(e -> {
             if (code.getText() != null && codeEmail.get().equals(code.getText())) {
                 signinButton.setDisable(false);
@@ -229,7 +250,7 @@ public class MainPage {
                 User u = new User(name.getText(), email.getText(), password.getText());
                 ValidatorData.addUser(u);
 
-                root.setCenter(createMenu());
+                createMenu();
             } else {
                 error.setText("Invalid username or password");
             }
@@ -251,7 +272,7 @@ public class MainPage {
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
-        signin.getChildren().addAll(signinLabel, grid, signinButton);
+        signin.getChildren().addAll(signinLabel, grid, buttonBox);
         root.setCenter(signin);
     }
 

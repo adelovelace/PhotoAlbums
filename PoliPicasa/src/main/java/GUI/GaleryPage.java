@@ -19,6 +19,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import user.Session;
 import user.User;
+import util.CircularDoublyLinkedList;
+import validator.ValidatorData;
 
 
 import java.io.File;
@@ -146,18 +148,17 @@ public class GaleryPage {
         addAlbum.setPadding(new Insets(10, 10, 10, 10));
         addAlbum.setStyle("-fx-border-color: #006F84;" + "-fx-border-width: 2px;");
         File addAlbumImage = new File("src/Assets/add-album.png");
-        try{
+        try {
             ImageView AddAlbumImageview = new ImageView(new Image(new FileInputStream(addAlbumImage.getAbsolutePath())));
             AddAlbumImageview.setFitHeight(125);
             AddAlbumImageview.setFitWidth(125);
             Label addAlbumLabel = new Label("Add Album");
             addAlbumLabel.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
             addAlbum.getChildren().addAll(AddAlbumImageview, addAlbumLabel);
-            addAlbum.setPrefSize(200,200);
+            addAlbum.setPrefSize(200, 200);
             addAlbum.setAlignment(Pos.CENTER);
             albums.getChildren().add(addAlbum);
-        }
-        catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -165,7 +166,7 @@ public class GaleryPage {
             VBox album = new VBox();
             album.setSpacing(10);
             album.setPadding(new Insets(10));
-            album.setPrefSize(200,200);
+            album.setPrefSize(200, 200);
             album.setStyle("-fx-border-color: #006F84;" + "-fx-border-width: 2px;");
             File albumFile = new File("src/Assets/photo-album.png");
             try {
@@ -205,15 +206,109 @@ public class GaleryPage {
         lbAlbumName.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
         Label lbAlbumDescription = new Label(album.getAlbumDescription());
         lbAlbumDescription.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
-        Button ShowPhotos = new Button("Show Photos");
-        ShowPhotos.setStyle("-fx-text-fill: #FFFFFF;" +
+        Button showPhotos = new Button("Show Photos");
+        Button editAlbum = new Button("Edit Album");
+        showPhotos.setOnAction(
+                e -> {
+                    visualizePic(album);
+                }
+        );
+        HBox buttons = new HBox();
+        buttons.setSpacing(10);
+        buttons.setAlignment(Pos.CENTER);
+        buttons.getChildren().addAll(showPhotos, editAlbum);
+        editAlbum.setStyle("-fx-text-fill: #FFFFFF;" +
                 "-fx-background-color: #C24242;" +
                 "-fx-text-alignment: center;" +
                 "-fx-font-family: Galdeano;" +
-                "-fx-font-size: 35px;");
-        albumInfo.getChildren().addAll(titleAlbum, lbAlbumName, TitleAlbumDescription, lbAlbumDescription, ShowPhotos);
+                "-fx-font-size: 30px;");
+        editAlbum.setOnMouseClicked(e -> {
+            editAlbumBox(album);
+                });
+        showPhotos.setStyle("-fx-text-fill: #FFFFFF;" +
+                "-fx-background-color: #C24242;" +
+                "-fx-text-alignment: center;" +
+                "-fx-font-family: Galdeano;" +
+                "-fx-font-size: 30px;");
+        albumInfo.getChildren().addAll(titleAlbum, lbAlbumName, TitleAlbumDescription, lbAlbumDescription, buttons);
         return albumInfo;
 
+    }
+
+    public void editAlbumBox(Album<Photo> album){
+        VBox albumInfo = new VBox();
+        albumInfo.setSpacing(10);
+        albumInfo.setPadding(new Insets(10, 10, 10, 10));
+        albumInfo.setStyle("-fx-background-color: rgba(217, 217, 217, 0.5);" + "-fx-border-color: #006F84;" + "-fx-border-width: 2px;");
+        albumInfo.setPadding(new Insets(10, 10, 10, 10));
+        albumInfo.setAlignment(Pos.CENTER);
+        String albumName = album.getAlbumName();
+        Label titleAlbum = new Label("Album's Name:");
+        titleAlbum.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;" + "-fx-font-weight: bold;");
+        Label TitleAlbumDescription = new Label("Description:");
+        TitleAlbumDescription.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;" + "-fx-font-weight: bold;");
+        TextField lbAlbumNameText = new TextField(albumName);
+        lbAlbumNameText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        TextField lbAlbumDescriptionText = new TextField(album.getAlbumDescription());
+        lbAlbumDescriptionText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        Button editAlbum = new Button("Edit Album");
+        editAlbum.setStyle("-fx-text-fill: #FFFFFF;" +
+                "-fx-background-color: #C24242;" +
+                "-fx-text-alignment: center;" +
+                "-fx-font-family: Galdeano;" +
+                "-fx-font-size: 30px;");
+        editAlbum.setOnMouseClicked(e -> {
+
+            if(! lbAlbumNameText.getText().equals("") && !lbAlbumDescriptionText.getText().equals("")){
+                album.setAlbumName(lbAlbumNameText.getText());
+                album.setAlbumDescription(lbAlbumDescriptionText.getText());
+                ValidatorData.editAlbumInfoInFile(album,session.getUser(),lbAlbumNameText.getText(),lbAlbumDescriptionText.getText());
+            }
+            createAlbums();
+            root.setRight(null);
+                });
+        albumInfo.getChildren().addAll(titleAlbum, lbAlbumNameText, TitleAlbumDescription, lbAlbumDescriptionText, editAlbum);
+        root.setRight(albumInfo);
+    }
+    public void visualizePic(Album<Photo> album){
+        FlowPane pics = new FlowPane();
+        pics.setVgap(10);
+        pics.setHgap(10);
+        pics.setPadding(new Insets(10));
+        VBox addPhoto = new VBox();
+        addPhoto.setSpacing(10);
+        addPhoto.setPadding(new Insets(10, 10, 10, 10));
+        addPhoto.setStyle("-fx-border-color: #006F84;" + "-fx-border-width: 2px;");
+        File addPhotoImage = new File("src/Assets/photo.png");
+        try {
+            ImageView AddPhotoImageview = new ImageView(new Image(new FileInputStream(addPhotoImage.getAbsolutePath())));
+            AddPhotoImageview.setFitHeight(125);
+            AddPhotoImageview.setFitWidth(125);
+            Label addPhotoLabel = new Label("Add Photo");
+            addPhotoLabel.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+            addPhoto.getChildren().addAll(AddPhotoImageview, addPhotoLabel);
+            addPhoto.setPrefSize(200, 200);
+            addPhoto.setAlignment(Pos.CENTER);
+            pics.getChildren().add(addPhoto);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        CircularDoublyLinkedList<Photo> photos = album.getPhotosOnAlbum();
+        for (int i = 0; i < photos.size(); i++) {
+            Photo pic = photos.get(i);
+            File photoImage = new File(pic.getRoute());
+            try {
+                ImageView photoImageview = new ImageView(new Image(new FileInputStream(photoImage.getAbsolutePath())));
+                photoImageview.setFitHeight(150);
+                photoImageview.setFitWidth(150);
+                pics.getChildren().addAll(photoImageview);
+                pics.setPrefSize(200, 200);
+                pics.setAlignment(Pos.CENTER);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        root.setCenter(pics);
     }
 
     public HBox albumsFeatures() {

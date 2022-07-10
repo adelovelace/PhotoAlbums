@@ -60,8 +60,9 @@ public class Photo implements Serializable {
         return true;
     }
 
-
-
+    public String getRoute() {
+        return route;
+    }
 
     public String getDescriptionPhoto() {
         return descriptionPhoto;

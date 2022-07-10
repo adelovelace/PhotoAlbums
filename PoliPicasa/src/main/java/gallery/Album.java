@@ -3,13 +3,14 @@ package gallery;
 import user.Person;
 import util.ArrayList;
 import util.CircularDoublyLinkedList;
+import validator.EmailValidator;
 
 import java.io.Serializable;
 
 
 public class Album<T> implements Serializable {
 
-
+    private String ID;
     private String albumName;
     private String albumDescription;
 
@@ -19,8 +20,12 @@ public class Album<T> implements Serializable {
         this.albumName = albumName;
         this.albumDescription = albumDescription;
         this.photosOnAlbum = new CircularDoublyLinkedList<>();
+        ID = EmailValidator.generateCode();
     }
 
+    public String getID() {
+        return ID;
+    }
 
     public boolean showPhotos(CircularDoublyLinkedList photosOnAlbum) {
 

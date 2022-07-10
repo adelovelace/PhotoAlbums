@@ -47,7 +47,7 @@ public class EmailValidator {
         return false;
     }
 
-    private String generateCode(){
+    public static String generateCode(){
         String lowerletter = "abcdefghijklmnopqrstuvwxyz";
         String upperletter = lowerletter.toUpperCase();
         String number = "0123456789";

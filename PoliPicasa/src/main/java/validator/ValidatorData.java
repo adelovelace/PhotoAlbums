@@ -2,6 +2,7 @@ package validator;
 
 import gallery.Album;
 import gallery.Galery;
+import gallery.Photo;
 import user.Session;
 import user.User;
 import util.LinkedList;
@@ -206,6 +207,49 @@ private static String pathUser= "src/doc/users.dat";
             return false;
         }
         return false;
+    }
+
+    public static boolean saveAlbumInFile(Album<Photo> album, User user) {
+        try{
+            File file = new File(pathUser);
+            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            LinkedList<User> users = (LinkedList<User>) ois.readObject();
+            for(User user2: users){
+                if(user2.getEmail().equals(user.getEmail())){
+                    user2.getGalery().addAlbum(album);
+                }
+            }
+            writeUsers(users);
+        }catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error reading file");
+            return false;
+        }
+        return true;
+    }
+    public static boolean editAlbumInfoInFile(Album<Photo> album, User user, String name, String description) {
+        try{
+            File file = new File(pathUser);
+            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            LinkedList<User> users = (LinkedList<User>) ois.readObject();
+            for(User user2: users){
+                if(user2.getEmail().equals(user.getEmail())){
+                    LinkedList<Album> galery = user2.getGalery().getAlbums();
+                    for(Album album2: galery){
+                        if(album2.getID().equals(album.getID())){
+                            album2.setAlbumName(name);
+                            album2.setAlbumDescription(description);
+                        }
+                    }
+                }
+            }
+            writeUsers(users);
+        }catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error reading file");
+            return false;
+        }
+        return true;
     }
 
 

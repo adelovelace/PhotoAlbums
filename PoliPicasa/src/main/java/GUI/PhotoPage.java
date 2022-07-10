@@ -75,8 +75,6 @@ public class PhotoPage {
             topElements.getChildren().add(albumsFeatures);
 
 
-
-
             root.setCenter(albumsPane);
             root.setBottom(decoration);
             root.setTop(topElements);
