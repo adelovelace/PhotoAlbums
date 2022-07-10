@@ -94,7 +94,7 @@ public class GaleryPage {
     public VBox createMenu(){
 
         File albumImage = new File("src/Assets/photo-album.png");
-        File photoImage = new File("src/Assets/imagen.png");
+
 
         VBox menu = new VBox();
 
@@ -105,22 +105,12 @@ public class GaleryPage {
         albumIconView.setFitHeight(45);
         albumIconView.setFitWidth(45);
 
-        Image photoIcon =new Image(new FileInputStream(photoImage.getAbsolutePath()));
-        ImageView photoIconView = new ImageView(photoIcon);
-        photoIconView.setFitHeight(45);
-        photoIconView.setFitWidth(45);
-
 
         Label albumLabel = new Label("Albums");
         albumLabel.setGraphic(albumIconView);
         albumLabel.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 40px;" +"-fx-text-fill: #006F84;");
         albumLabel.setAlignment(Pos.TOP_CENTER);
 
-
-        Label photoLabel = new Label("Photos");
-        photoLabel.setGraphic(photoIconView);
-        photoLabel.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 40px;" +"-fx-text-fill: #006F84;");
-        photoLabel.setAlignment(Pos.TOP_CENTER);
 
         menu.setAlignment(Pos.CENTER);
         menu.setStyle("-fx-background-color: rgba(217, 217, 217, 0.5);" );
@@ -135,9 +125,9 @@ public class GaleryPage {
         photos.setAlignment(Pos.BASELINE_CENTER);
 
 
-        menu.getChildren().addAll(albums,photos);
+        menu.getChildren().addAll(albums);
         albums.getChildren().add(albumLabel);
-        photos.getChildren().add(photoLabel);
+
 
 
 
