@@ -1,6 +1,5 @@
-
-
 package GUI;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -11,17 +10,17 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-        import javafx.scene.layout.BorderPane;
-        import javafx.scene.layout.GridPane;
-        import javafx.scene.layout.HBox;
-        import javafx.scene.layout.VBox;
-        import javafx.stage.Modality;
-        import javafx.stage.Stage;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 
-        import java.io.File;
-        import java.io.FileInputStream;
-        import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 
 public class PhotoPage {
@@ -94,21 +93,21 @@ public class PhotoPage {
 
     public VBox createMenu(){
 
-        File albumImage = new File("src/Assets/photo-album.png");
+        File albumImage = new File("src/Assets/imagen.png");
 
 
         VBox menu = new VBox();
 
         try {
 
-            Image albumIcon =new Image(new FileInputStream(albumImage.getAbsolutePath()));
-            ImageView albumIconView = new ImageView(albumIcon);
-            albumIconView.setFitHeight(45);
-            albumIconView.setFitWidth(45);
+            Image photoIcon =new Image(new FileInputStream(albumImage.getAbsolutePath()));
+            ImageView photoIconView = new ImageView(photoIcon);
+            photoIconView.setFitHeight(45);
+            photoIconView.setFitWidth(45);
 
 
-            Label albumLabel = new Label("Albums");
-            albumLabel.setGraphic(albumIconView);
+            Label albumLabel = new Label("Photos");
+            albumLabel.setGraphic(photoIconView);
             albumLabel.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 40px;" +"-fx-text-fill: #006F84;");
             albumLabel.setAlignment(Pos.TOP_CENTER);
 
@@ -145,7 +144,7 @@ public class PhotoPage {
 
     public HBox albumsFeatures(){
 
-        File addImage = new File("src/Assets/add.png");
+        File addImage = new File("src/Assets/photo.png");
 
 
         HBox features = new HBox();
@@ -159,9 +158,9 @@ public class PhotoPage {
             addIconView.setFitWidth(30);
 
 
-            Button addAlbumBtn = new Button();
-            addAlbumBtn.setGraphic(addIconView);
-            addAlbumBtn.setAlignment(Pos.CENTER);
+            Button addPhotoBtn = new Button();
+            addPhotoBtn.setGraphic(addIconView);
+            addPhotoBtn.setAlignment(Pos.CENTER);
 
 
             ObservableList<String> items = FXCollections.observableArrayList();
