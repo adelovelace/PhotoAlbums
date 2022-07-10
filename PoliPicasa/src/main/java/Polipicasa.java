@@ -29,6 +29,7 @@ public class Polipicasa extends Application {
         MainPage mp = new MainPage();
         Scene scene = new Scene(mp.getPane());
 
+
         try{
             primaryStage.getIcons().add(new Image(new FileInputStream(fileLogo.getAbsolutePath())));}
         catch (FileNotFoundException ex){

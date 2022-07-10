@@ -70,7 +70,7 @@ public class GaleryPage {
 
             decoration.setAlignment(Pos.BOTTOM_LEFT);
             decoration.setStyle("-fx-background-color: rgba(217, 217, 217, 0.5);");
-            decoration.setMaxWidth(350);
+            decoration.setMaxWidth(250);
 
             createAlbums();
 
@@ -229,7 +229,7 @@ public class GaleryPage {
                 "-fx-font-size: 30px;");
         editAlbum.setOnMouseClicked(e -> {
             editAlbumBox(album);
-                });
+        });
         showPhotos.setStyle("-fx-text-fill: #FFFFFF;" +
                 "-fx-background-color: #C24242;" +
                 "-fx-text-alignment: center;" +
@@ -240,7 +240,7 @@ public class GaleryPage {
 
     }
 
-    public void editAlbumBox(Album<Photo> album){
+    public void editAlbumBox(Album<Photo> album) {
         VBox albumInfo = new VBox();
         albumInfo.setSpacing(10);
         albumInfo.setPadding(new Insets(10, 10, 10, 10));
@@ -264,18 +264,19 @@ public class GaleryPage {
                 "-fx-font-size: 30px;");
         editAlbum.setOnMouseClicked(e -> {
 
-            if(! lbAlbumNameText.getText().equals("") && !lbAlbumDescriptionText.getText().equals("")){
+            if (!lbAlbumNameText.getText().equals("") && !lbAlbumDescriptionText.getText().equals("")) {
                 album.setAlbumName(lbAlbumNameText.getText());
                 album.setAlbumDescription(lbAlbumDescriptionText.getText());
-                ValidatorData.editAlbumInfoInFile(album,session.getUser(),lbAlbumNameText.getText(),lbAlbumDescriptionText.getText());
+                ValidatorData.editAlbumInfoInFile(album, session.getUser(), lbAlbumNameText.getText(), lbAlbumDescriptionText.getText());
             }
             createAlbums();
             root.setRight(null);
-                });
+        });
         albumInfo.getChildren().addAll(titleAlbum, lbAlbumNameText, TitleAlbumDescription, lbAlbumDescriptionText, editAlbum);
         root.setRight(albumInfo);
     }
-    public void visualizePic(Album<Photo> album){
+
+    public void visualizePic(Album<Photo> album) {
         FlowPane pics = new FlowPane();
         pics.setVgap(10);
         pics.setHgap(10);
@@ -316,13 +317,13 @@ public class GaleryPage {
         root.setCenter(pics);
     }
 
-    public void addAlbumToGalery(){
+    public void addAlbumToGalery() {
         GridPane addAlbum = new GridPane();
         addAlbum.setVgap(10);
         addAlbum.setHgap(10);
         addAlbum.setPadding(new Insets(10));
         Label addAlbumLabel = new Label("Add Album");
-        addAlbumLabel.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 35px;" + "-fx-text-fill: #006F84;"+"-fx-font-weight: bold;");
+        addAlbumLabel.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 35px;" + "-fx-text-fill: #006F84;" + "-fx-font-weight: bold;");
         Label addAlbumName = new Label("Album's Name:");
         addAlbumName.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
         Label addAlbumDescription = new Label("Description:");
@@ -338,9 +339,9 @@ public class GaleryPage {
                 "-fx-font-family: Galdeano;" +
                 "-fx-font-size: 30px;");
         addAlbumButton.setOnMouseClicked(e -> {
-            if(! addAlbumNameText.getText().equals("") && !addAlbumDescriptionText.getText().equals("")){
+            if (!addAlbumNameText.getText().equals("") && !addAlbumDescriptionText.getText().equals("")) {
                 Album<Photo> album = new Album<>(addAlbumNameText.getText(), addAlbumDescriptionText.getText());
-                ValidatorData.saveAlbumInFile(album,session.getUser());
+                ValidatorData.saveAlbumInFile(album, session.getUser());
                 createAlbums();
                 root.setRight(null);
             }
@@ -356,82 +357,67 @@ public class GaleryPage {
 
     public HBox albumsFeatures() {
 
-        File addImage = new File("src/Assets/add.png");
-
 
         HBox features = new HBox();
 
-
-        try {
-
-            Image addIcon = new Image(new FileInputStream(addImage.getAbsolutePath()));
-            ImageView addIconView = new ImageView(addIcon);
-            addIconView.setFitHeight(30);
-            addIconView.setFitWidth(30);
+        Label searchLbl = new Label("Search:");
+        searchLbl.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
 
 
-            Button addAlbumBtn = new Button();
-            addAlbumBtn.setGraphic(addIconView);
-            addAlbumBtn.setAlignment(Pos.CENTER);
+        ObservableList<String> items = FXCollections.observableArrayList();
+        items.addAll("person", "place", "person & place");
+
+        ComboBox<String> cbxSearchOpt = new ComboBox<>(items);
 
 
-            ObservableList<String> items = FXCollections.observableArrayList();
-            items.addAll("person", "place", "person & place");
+        cbxSearchOpt.setOnAction((event -> {
 
-            ComboBox<String> cbxSearchOpt = new ComboBox<>(items);
+            Stage popupwindow = new Stage();
 
-
-            cbxSearchOpt.setOnAction((event -> {
-
-                Stage popupwindow = new Stage();
-
-                popupwindow.initModality(Modality.APPLICATION_MODAL);
+            popupwindow.initModality(Modality.APPLICATION_MODAL);
 
 
-                Object selectedItem = cbxSearchOpt.getSelectionModel().getSelectedItem();
-                popupwindow.setTitle("Search by " + selectedItem);
+            Object selectedItem = cbxSearchOpt.getSelectionModel().getSelectedItem();
+            popupwindow.setTitle("Search by " + selectedItem);
 
-                System.out.println(selectedItem);
+            System.out.println(selectedItem);
 
-                VBox layout = new VBox(10);
-                Scene scene1 = new Scene(layout, 400, 250);
+            VBox layout = new VBox(10);
+            Scene scene1 = new Scene(layout, 400, 250);
 
-                HBox option = new HBox();
+            HBox option = new HBox();
 
-                Label selectionLbl = new Label(selectedItem.toString().substring(0, 1).toUpperCase() + selectedItem.toString().substring(1));
-                TextField textField = new TextField();
-                textField.setMaxWidth(100);
+            Label selectionLbl = new Label(selectedItem.toString().substring(0, 1).toUpperCase() + selectedItem.toString().substring(1));
+            TextField textField = new TextField();
+            textField.setMaxWidth(100);
 
-                option.getChildren().addAll(selectionLbl, textField);
-                option.setSpacing(5);
-                option.setStyle("-fx-alignment: center");
+            option.getChildren().addAll(selectionLbl, textField);
+            option.setSpacing(5);
+            option.setStyle("-fx-alignment: center");
 
-                Button searchBtn = new Button("Search");
-                searchBtn.setAlignment(Pos.CENTER);
+            Button searchBtn = new Button("Search");
+            searchBtn.setAlignment(Pos.CENTER);
 
-                layout.setSpacing(5);
-                layout.setStyle("-fx-alignment: center");
+            layout.setSpacing(5);
+            layout.setStyle("-fx-alignment: center");
 
-                layout.getChildren().addAll(selectionLbl, textField, searchBtn);
+            layout.getChildren().addAll(selectionLbl, textField, searchBtn);
 
-                popupwindow.setScene(scene1);
-                popupwindow.showAndWait();
+            popupwindow.setScene(scene1);
+            popupwindow.showAndWait();
 
-            }));
+        }));
 
-            features.setSpacing(40);
-            features.setStyle("-fx-alignment: center");
+        features.setSpacing(40);
+        features.setStyle("-fx-alignment: center");
 
-            features.getChildren().addAll(addIconView, cbxSearchOpt);
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        features.getChildren().addAll(searchLbl,cbxSearchOpt);
 
 
         return features;
     }
+
+
 
 
     public BorderPane getRoot() {
