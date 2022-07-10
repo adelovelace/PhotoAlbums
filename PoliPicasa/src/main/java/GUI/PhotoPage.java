@@ -23,11 +23,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 
-public class GaleryPage {
+public class PhotoPage {
 
     private BorderPane root;
 
-    public GaleryPage() {
+    public PhotoPage() {
 
         root = new BorderPane();
         File decoImage = new File("src/Assets/playa.png");
@@ -93,40 +93,40 @@ public class GaleryPage {
 
     public VBox createMenu(){
 
-        File albumImage = new File("src/Assets/photo-album.png");
+        File albumImage = new File("src/Assets/imagen.png");
 
 
         VBox menu = new VBox();
 
         try {
 
-        Image albumIcon =new Image(new FileInputStream(albumImage.getAbsolutePath()));
-        ImageView albumIconView = new ImageView(albumIcon);
-        albumIconView.setFitHeight(45);
-        albumIconView.setFitWidth(45);
+            Image photoIcon =new Image(new FileInputStream(albumImage.getAbsolutePath()));
+            ImageView photoIconView = new ImageView(photoIcon);
+            photoIconView.setFitHeight(45);
+            photoIconView.setFitWidth(45);
 
 
-        Label albumLabel = new Label("Albums");
-        albumLabel.setGraphic(albumIconView);
-        albumLabel.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 40px;" +"-fx-text-fill: #006F84;");
-        albumLabel.setAlignment(Pos.TOP_CENTER);
+            Label albumLabel = new Label("Photos");
+            albumLabel.setGraphic(photoIconView);
+            albumLabel.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 40px;" +"-fx-text-fill: #006F84;");
+            albumLabel.setAlignment(Pos.TOP_CENTER);
 
 
-        menu.setAlignment(Pos.CENTER);
-        menu.setStyle("-fx-background-color: rgba(217, 217, 217, 0.5);" );
-        menu.setSpacing(60);
-        menu.setPrefWidth(250);
+            menu.setAlignment(Pos.CENTER);
+            menu.setStyle("-fx-background-color: rgba(217, 217, 217, 0.5);" );
+            menu.setSpacing(60);
+            menu.setPrefWidth(250);
 
 
-        HBox albums = new HBox();
-        albums.setAlignment(Pos.BASELINE_CENTER);
+            HBox albums = new HBox();
+            albums.setAlignment(Pos.BASELINE_CENTER);
 
-        HBox photos = new HBox();
-        photos.setAlignment(Pos.BASELINE_CENTER);
+            HBox photos = new HBox();
+            photos.setAlignment(Pos.BASELINE_CENTER);
 
 
-        menu.getChildren().addAll(albums);
-        albums.getChildren().add(albumLabel);
+            menu.getChildren().addAll(albums);
+            albums.getChildren().add(albumLabel);
 
 
 
@@ -144,7 +144,7 @@ public class GaleryPage {
 
     public HBox albumsFeatures(){
 
-        File addImage = new File("src/Assets/add.png");
+        File addImage = new File("src/Assets/photo.png");
 
 
         HBox features = new HBox();
@@ -158,9 +158,9 @@ public class GaleryPage {
             addIconView.setFitWidth(30);
 
 
-            Button addAlbumBtn = new Button();
-            addAlbumBtn.setGraphic(addIconView);
-            addAlbumBtn.setAlignment(Pos.CENTER);
+            Button addPhotoBtn = new Button();
+            addPhotoBtn.setGraphic(addIconView);
+            addPhotoBtn.setAlignment(Pos.CENTER);
 
 
             ObservableList<String> items = FXCollections.observableArrayList();
@@ -229,3 +229,4 @@ public class GaleryPage {
     }
 
 }
+
