@@ -106,10 +106,12 @@ public class GaleryPage {
         albumIconView.setFitWidth(45);
 
 
+
         Label albumLabel = new Label("Albums");
         albumLabel.setGraphic(albumIconView);
         albumLabel.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 40px;" +"-fx-text-fill: #006F84;");
         albumLabel.setAlignment(Pos.TOP_CENTER);
+
 
 
         menu.setAlignment(Pos.CENTER);
@@ -121,8 +123,7 @@ public class GaleryPage {
         HBox albums = new HBox();
         albums.setAlignment(Pos.BASELINE_CENTER);
 
-        HBox photos = new HBox();
-        photos.setAlignment(Pos.BASELINE_CENTER);
+
 
 
         menu.getChildren().addAll(albums);
