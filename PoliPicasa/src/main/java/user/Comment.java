@@ -1,9 +1,11 @@
 package user;
 
+import java.io.Serializable;
+
 /***
  * @author Luis ALejandro Donoso Bravo
  */
-public class Comment {
+public class Comment implements Serializable {
     private Person person;
     private String content;
 

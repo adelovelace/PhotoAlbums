@@ -29,7 +29,7 @@ private static String pathUser= "src/doc/users.dat";
         }
     }
 
-    public static void addGalery(Galery galery) {
+    /*public static void addGalery(Galery galery) {
         try {
             File file = new File(pathGallery);
             FileInputStream fis = new FileInputStream(file.getAbsolutePath());
@@ -85,7 +85,7 @@ private static String pathUser= "src/doc/users.dat";
             oos.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        }}
+        }}*/
 
     public static void createUserFile() {
         try {
@@ -183,6 +183,7 @@ private static String pathUser= "src/doc/users.dat";
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
             System.out.println("Error reading file");
             return null;
         }

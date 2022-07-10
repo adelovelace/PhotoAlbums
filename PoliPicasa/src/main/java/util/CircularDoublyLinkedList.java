@@ -1,9 +1,11 @@
 package util;
 
-public class CircularDoublyLinkedList<E> implements List<E> {
+import java.io.Serializable;
+
+public class CircularDoublyLinkedList<E> implements List<E>, Serializable {
 
 
-    private static class Node<E> {
+    private static class Node<E> implements Serializable {
 
         private E data;
         private Node<E> next;

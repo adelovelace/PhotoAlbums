@@ -3,6 +3,7 @@ package GUI;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -10,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import user.Session;
 import user.User;
 import validator.EmailValidator;
@@ -21,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MainPage {
+    private StackPane pane;
     private BorderPane root;
     Image background;
     Insets basicInsets = new Insets(10);
@@ -45,12 +48,13 @@ public class MainPage {
     public MainPage() {
 
         File fileBackground = new File("src/Assets/background.jpg");
-
+        pane = new StackPane();
 
         root = new BorderPane();
         try {
             background = new Image(new FileInputStream(fileBackground.getAbsolutePath()));
             root.setBackground(new javafx.scene.layout.Background(new javafx.scene.layout.BackgroundImage(background, javafx.scene.layout.BackgroundRepeat.NO_REPEAT, javafx.scene.layout.BackgroundRepeat.NO_REPEAT, javafx.scene.layout.BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+
             HBox head = createHeader();
             VBox menu = createMenu();
             root.setTop(head);
@@ -59,6 +63,7 @@ public class MainPage {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+        pane.getChildren().add(root);
     }
 
     public HBox createHeader() {
@@ -144,7 +149,10 @@ public class MainPage {
                 if (s != null) {
                     //sesion creada
                     login.getChildren().clear();
-                    login.getChildren().add(new Label("Session created"));
+                    GaleryPage gallery = new GaleryPage(s);
+                    root = gallery.getRoot();
+                    pane.getChildren().clear();
+                    pane.getChildren().add(root);
                 } else {
                     error.setText("Invalid username or password");
                 }
@@ -220,7 +228,8 @@ public class MainPage {
             if (name.getText() != null && email.getText() != null && password.getText() != null) {
                 User u = new User(name.getText(), email.getText(), password.getText());
                 ValidatorData.addUser(u);
-                root.setCenter(createHeader());
+
+                root.setCenter(createMenu());
             } else {
                 error.setText("Invalid username or password");
             }
@@ -248,5 +257,8 @@ public class MainPage {
 
     public BorderPane getRoot() {
         return root;
+    }
+    public Pane getPane(){
+        return pane;
     }
 }

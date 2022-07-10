@@ -7,8 +7,7 @@ import util.CircularDoublyLinkedList;
 import java.io.Serializable;
 
 
-public class Album <T> implements Serializable {
-
+public class Album<T> implements Serializable {
 
 
     private String albumName;
@@ -16,15 +15,16 @@ public class Album <T> implements Serializable {
 
     private CircularDoublyLinkedList<Photo> photosOnAlbum;
 
-    public Album(String albumName,String albumDescription){
+    public Album(String albumName, String albumDescription) {
         this.albumName = albumName;
         this.albumDescription = albumDescription;
+        this.photosOnAlbum = new CircularDoublyLinkedList<>();
     }
 
 
-    public boolean showPhotos(CircularDoublyLinkedList photosOnAlbum){
+    public boolean showPhotos(CircularDoublyLinkedList photosOnAlbum) {
 
-        if(photosOnAlbum ==null){
+        if (photosOnAlbum == null) {
             return false;
         }
 
@@ -39,7 +39,7 @@ public class Album <T> implements Serializable {
             System.out.println("Place:" + photo.getPlacePhoto());
             System.out.println("Date:" + photo.getDatePhoto());
 
-            for (Person person: photo.getPersonsOnAlbum()) {
+            for (Person person : photo.getPersonsOnAlbum()) {
                 System.out.println("Name of the Person: " + person.getPersonName());
             }
         }
@@ -47,20 +47,20 @@ public class Album <T> implements Serializable {
         return true;
     }
 
-    public boolean addPhotos(CircularDoublyLinkedList<Photo> photosOnAlbum, ArrayList <Photo> newPhotos){
+    public boolean addPhotos(CircularDoublyLinkedList<Photo> photosOnAlbum, ArrayList<Photo> newPhotos) {
 
         this.photosOnAlbum = photosOnAlbum;
 
-        if(newPhotos == null){
+        if (newPhotos == null) {
             System.out.println("Problem adding new Photo(s), it is Empty!");
             return false;
         }
 
         //by default it is inserted as the last one
-        for (Photo photo: newPhotos) {
+        for (Photo photo : newPhotos) {
             if (this.photosOnAlbum.addLast(photo)) {
                 System.out.println("Adding Photo successfully!");
-            }else{
+            } else {
                 System.out.println("Adding Photo NO successfully!");
             }
         }
@@ -68,27 +68,27 @@ public class Album <T> implements Serializable {
         return true;
     }
 
-    public boolean addPhoto(Photo photo){
+    public boolean addPhoto(Photo photo) {
 
-        if(photo == null){
+        if (photo == null) {
             System.out.println("Problem adding new Photo, it is Empty!");
             return false;
         }
 
         if (this.photosOnAlbum.addLast(photo)) {
             System.out.println("Adding Photo successfully!");
-        }else{
+        } else {
             System.out.println("Adding Photo NO successfully!");
         }
 
         return true;
     }
 
-    public boolean deletePhoto(CircularDoublyLinkedList<Photo> photosOnAlbum, Photo selectedPhoto){
+    public boolean deletePhoto(CircularDoublyLinkedList<Photo> photosOnAlbum, Photo selectedPhoto) {
 
         this.photosOnAlbum = photosOnAlbum;
 
-        if(selectedPhoto == null){
+        if (selectedPhoto == null) {
             System.out.println("Problem deleting the selected Photo!");
             return false;
         }
@@ -107,16 +107,16 @@ public class Album <T> implements Serializable {
         return true;
     }
 
-    public CircularDoublyLinkedList<Photo> searchByPlace (CircularDoublyLinkedList<Photo> photosOnAlbum, String placePhoto){
+    public CircularDoublyLinkedList<Photo> searchByPlace(CircularDoublyLinkedList<Photo> photosOnAlbum, String placePhoto) {
 
         this.photosOnAlbum = photosOnAlbum;
         CircularDoublyLinkedList<Photo> photosByPlace = null;
 
-        for(int i = 0; i < this.photosOnAlbum.size();i++){
+        for (int i = 0; i < this.photosOnAlbum.size(); i++) {
             Photo photo = this.photosOnAlbum.get(i);
             String placeOnPhoto = photo.getPlacePhoto();
 
-            if(placeOnPhoto == placePhoto){
+            if (placeOnPhoto == placePhoto) {
                 photosByPlace.addLast(photo);
             }
         }
@@ -124,32 +124,38 @@ public class Album <T> implements Serializable {
         return photosByPlace;
     }
 
-    public CircularDoublyLinkedList<Photo> searchByPersons (CircularDoublyLinkedList<Photo> photosOnAlbum, ArrayList<Person> personsOnAlbum){
+    public CircularDoublyLinkedList<Photo> searchByPersons(CircularDoublyLinkedList<Photo> photosOnAlbum, ArrayList<Person> personsOnAlbum) {
 
         this.photosOnAlbum = photosOnAlbum;
         CircularDoublyLinkedList<Photo> photosByPersons = null;
 
-        for(int i = 0; i < this.photosOnAlbum.size();i++) {
-            Photo photo = this.photosOnAlbum.get(i);
+        if (personsOnAlbum != null) {
+            for (int i = 0; i < this.photosOnAlbum.size(); i++) {
+                Photo photo = this.photosOnAlbum.get(i);
+                for (Person person : photo.getPersonsOnAlbum()) {
+                    if (personsOnAlbum.contains(person)) {
+                        photosByPersons.addLast(photo);
+                    }
+                }
 
-
+            }
         }
 
         return photosByPersons;
     }
 
-    public CircularDoublyLinkedList<Photo> searchByPlaceAndByPersons (CircularDoublyLinkedList<Photo> photosOnAlbum, String placePhoto,ArrayList<Person> personsOnAlbum){
+    public CircularDoublyLinkedList<Photo> searchByPlaceAndByPersons(CircularDoublyLinkedList<Photo> photosOnAlbum, String placePhoto, ArrayList<Person> personsOnAlbum) {
 
         this.photosOnAlbum = photosOnAlbum;
         CircularDoublyLinkedList<Photo> photosByPlaceAndByPersons = null;
 
-        for(int i = 0; i < this.photosOnAlbum.size();i++){
+        for (int i = 0; i < this.photosOnAlbum.size(); i++) {
             Photo photo = this.photosOnAlbum.get(i);
             String placeOnPhoto = photo.getPlacePhoto();
 
-            for (Person person: personsOnAlbum
+            for (Person person : personsOnAlbum
             ) {
-                if(photo.getPersonsOnAlbum().contains(person) && (placeOnPhoto == placePhoto) ){
+                if (photo.getPersonsOnAlbum().contains(person) && (placeOnPhoto == placePhoto)) {
                     photosByPlaceAndByPersons.addLast(photo);
                 }
             }

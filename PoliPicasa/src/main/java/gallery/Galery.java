@@ -10,7 +10,12 @@ import java.io.Serializable;
 
 public class Galery implements Serializable {
     private LinkedList<Album> albums;
-    private User user;
+
+
+
+    public Galery() {
+        this.albums = new LinkedList<Album>();
+    }
 
 
     public LinkedList<Album> getAlbums() {
@@ -21,13 +26,24 @@ public class Galery implements Serializable {
         this.albums = albums;
     }
 
-    public User getUser() {
-        return user;
+
+
+    public boolean addAlbum(Album<Photo> album){
+        if (album != null) {
+            this.albums.addLast(album);
+            return true;
+        }
+        return false;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public boolean addAlbumAppear(Album<Photo> album){
+        if (album != null) {
+            this.albums.addFirst(album);
+            return true;
+        }
+        return false;
     }
+
 
     public Album<Photo> findAlbumByPlace(String place) {
         Album<Photo> album = new Album<>("Album from " + place,"Album from " + place);

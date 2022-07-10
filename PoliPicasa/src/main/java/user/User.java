@@ -1,6 +1,8 @@
 package user;
 
+import gallery.Album;
 import gallery.Galery;
+import gallery.Photo;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -20,6 +22,8 @@ public class User implements Serializable {
         this.email = email;
         this.password = convertToSHA256(password);
         this.galery = new Galery();
+        Album<Photo> album= new Album<Photo>("Photos Where Appear","Pic's Album where you appear" );
+        this.galery.addAlbumAppear(album);
     }
 
 
@@ -29,6 +33,10 @@ public class User implements Serializable {
         } else {
             return false;
         }
+    }
+
+    public boolean comparePerson(Person person2) {
+        return this.getPerson().getPersonName().equals(person2.getPersonName());
     }
 
 
