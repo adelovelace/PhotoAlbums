@@ -1,6 +1,9 @@
 package gallery;
 
+import user.Person;
 import user.User;
+import util.ArrayList;
+import util.CircularDoublyLinkedList;
 import util.LinkedList;
 
 import java.io.Serializable;
@@ -24,5 +27,39 @@ public class Galery implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Album<Photo> findAlbumByPlace(String place) {
+        Album<Photo> album = new Album<>("Album from " + place,"Album from " + place);
+        for (Album<Photo> albums1 : albums) {
+            CircularDoublyLinkedList<Photo> photosOnAlbum = albums1.getPhotosOnAlbum();
+            CircularDoublyLinkedList<Photo> photoByPlace = albums1.searchByPlace(photosOnAlbum, place);
+            for (int i = 0; i < photoByPlace.size(); i++) {
+                album.addPhoto(photoByPlace.get(i));
+            }
+        }
+        return album;
+    }
+    public Album<Photo> findAlbumByPersons(ArrayList<Person> persons) {
+        Album<Photo> album = new Album<>("Album from " + persons.toString(),"Album from " + persons.toString());
+        for (Album<Photo> albums1 : albums) {
+            CircularDoublyLinkedList<Photo> photosOnAlbum = albums1.getPhotosOnAlbum();
+            CircularDoublyLinkedList<Photo> photoByPerson = albums1.searchByPersons(photosOnAlbum, persons);
+            for (int i = 0; i < photoByPerson.size(); i++) {
+                album.addPhoto(photoByPerson.get(i));
+            }
+        }
+        return album;
+    }
+    public Album<Photo> findAlbumByPlaceAndPersons(String place, ArrayList<Person> persons) {
+        Album<Photo> album = new Album<>("Album from " + place + " and " + persons.toString(),"Album from " + place + " and " + persons.toString());
+        for (Album<Photo> albums1 : albums) {
+            CircularDoublyLinkedList<Photo> photosOnAlbum = albums1.getPhotosOnAlbum();
+            CircularDoublyLinkedList<Photo> photoByPlaceAndPerson = albums1.searchByPlaceAndByPersons(photosOnAlbum, place, persons);
+            for (int i = 0; i < photoByPlaceAndPerson.size(); i++) {
+                album.addPhoto(photoByPlaceAndPerson.get(i));
+            }
+        }
+        return album;
     }
 }
