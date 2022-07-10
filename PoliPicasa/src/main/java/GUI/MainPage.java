@@ -43,7 +43,7 @@ public class MainPage {
 
     public MainPage() {
 
-        File fileBackground = new File("src/Assets/background.jpg");
+        File fileBackground = new File("Polipicasa/src/Assets/background.jpg");
 
 
         root = new BorderPane();
@@ -61,7 +61,7 @@ public class MainPage {
     }
 
     public HBox createHeader() {
-        File fileLogo = new File("src/Assets/polito_logo.png");
+        File fileLogo = new File("Polipicasa/src/Assets/polito_logo.png");
         HBox header = new HBox();
         header.setAlignment(Pos.CENTER);
         header.setPadding(new Insets(10, 10, 10, 10));

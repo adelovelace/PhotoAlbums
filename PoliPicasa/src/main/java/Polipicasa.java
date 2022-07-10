@@ -22,7 +22,7 @@ public class Polipicasa extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        File fileLogo = new File("src/Assets/polito_logo.png");
+        File fileLogo = new File("Polipicasa/src/Assets/polito_logo.png");
 
         primaryStage.setTitle("Polipicasa");
         MainPage mp = new MainPage();
