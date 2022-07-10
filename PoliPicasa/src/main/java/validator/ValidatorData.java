@@ -10,17 +10,17 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static jdk.nashorn.internal.runtime.Context.printStackTrace;
+
 
 public class ValidatorData {
-private static String pathGallery= "Polipicasa/src/doc/gallery.dat";
-private static String pathUser= "Polipicasa/src/doc/users.dat";
+private static String pathGallery= "src/doc/gallery.dat";
+private static String pathUser= "src/doc/users.dat";
 
 
     public static void createGaleryFile() {
         try {
             File file = new File(pathGallery);
-            FileOutputStream fos = new FileOutputStream(file);
+            FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(new LinkedList<Galery>());
             oos.close();
@@ -32,7 +32,7 @@ private static String pathUser= "Polipicasa/src/doc/users.dat";
     public static void addGalery(Galery galery) {
         try {
             File file = new File(pathGallery);
-            FileInputStream fis = new FileInputStream(file);
+            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
             ObjectInputStream ois = new ObjectInputStream(fis);
             LinkedList<Galery> galeries = (LinkedList<Galery>) ois.readObject();
             galeries.addLast(galery);
@@ -53,7 +53,7 @@ private static String pathUser= "Polipicasa/src/doc/users.dat";
     public static Galery findGalery(User user) {
         try {
             File file = new File(pathGallery);
-            FileInputStream fis = new FileInputStream(file);
+            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
             ObjectInputStream ois = new ObjectInputStream(fis);
             LinkedList<Galery> galleries = (LinkedList<Galery>) ois.readObject();
             for (Galery gallery : galleries) {
@@ -70,7 +70,8 @@ private static String pathUser= "Polipicasa/src/doc/users.dat";
 
     public static void deleteGalery(Galery galery) {
         try {
-            FileInputStream fis = new FileInputStream(pathGallery);
+            File file = new File(pathGallery);
+            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
             ObjectInputStream ois = new ObjectInputStream(fis);
             LinkedList<Galery> galleries = (LinkedList<Galery>) ois.readObject();
             for (Galery gallery : galleries) {
@@ -89,7 +90,7 @@ private static String pathUser= "Polipicasa/src/doc/users.dat";
     public static void createUserFile() {
         try {
             File file = new File(pathUser);
-            FileOutputStream fos = new FileOutputStream(file);
+            FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(new LinkedList<User>());
             oos.close();
@@ -99,7 +100,8 @@ private static String pathUser= "Polipicasa/src/doc/users.dat";
     }
     public static void deleteUser(User user) {
         try {
-            FileInputStream fis = new FileInputStream(pathUser);
+            File file = new File(pathUser);
+            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
             ObjectInputStream ois = new ObjectInputStream(fis);
             LinkedList<User> users = (LinkedList<User>) ois.readObject();
             for (User userl : users) {
@@ -118,7 +120,7 @@ private static String pathUser= "Polipicasa/src/doc/users.dat";
     public static void addUser(User user) {
         try {
             File file = new File(pathUser);
-            FileInputStream fis = new FileInputStream(file);
+            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
             ObjectInputStream ois = new ObjectInputStream(fis);
             LinkedList<User> users = (LinkedList<User>) ois.readObject();
             users.addLast(user);
@@ -138,7 +140,7 @@ private static String pathUser= "Polipicasa/src/doc/users.dat";
     public static void writeUsers(LinkedList<User> users) {
         try {
             File file = new File(pathUser);
-            FileOutputStream fos = new FileOutputStream(file);
+            FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(users);
             oos.close();
@@ -152,7 +154,8 @@ private static String pathUser= "Polipicasa/src/doc/users.dat";
 
     public static void saveUsers(User user) {
         try {
-            FileInputStream fis = new FileInputStream(pathUser);
+            File file = new File(pathUser);
+            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
             ObjectInputStream ois = new ObjectInputStream(fis);
             LinkedList<User> users = (LinkedList<User>) ois.readObject();
             users.addLast(user);
@@ -171,7 +174,7 @@ private static String pathUser= "Polipicasa/src/doc/users.dat";
         Session session = null;
         try {
             File file = new File(pathUser);
-            FileInputStream fis = new FileInputStream(file);
+            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
             ObjectInputStream ois = new ObjectInputStream(fis);
             LinkedList<User> users = (LinkedList<User>) ois.readObject();
             for (User user : users) {
@@ -188,7 +191,8 @@ private static String pathUser= "Polipicasa/src/doc/users.dat";
 
     public static boolean existEmail(String email) {
         try {
-            FileInputStream fis = new FileInputStream(pathUser);
+            File file = new File(pathUser);
+            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
             ObjectInputStream ois = new ObjectInputStream(fis);
             LinkedList<User> users = (LinkedList<User>) ois.readObject();
             for (User user : users) {
