@@ -12,23 +12,24 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-;
 
 
 public class Polipicasa extends Application {
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        File fileLogo = new File("src/Assets/polito_logo.png");
 
         primaryStage.setTitle("Polipicasa");
         MainPage mp = new MainPage();
         Scene scene = new Scene(mp.getRoot());
 
         try{
-        primaryStage.getIcons().add(new Image(new FileInputStream("PoliPicasa/src/Assets/polito_logo.png")));}
+        primaryStage.getIcons().add(new Image(new FileInputStream(fileLogo.getAbsolutePath())));}
         catch (FileNotFoundException ex){
             ex.printStackTrace();
         }

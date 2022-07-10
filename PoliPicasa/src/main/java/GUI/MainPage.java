@@ -1,5 +1,6 @@
 package GUI;
 
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -13,6 +14,7 @@ import user.Session;
 import validator.EmailValidator;
 import validator.ValidatorData;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.concurrent.atomic.AtomicReference;
@@ -40,9 +42,13 @@ public class MainPage {
             "-fx-font-size: 35px;";
 
     public MainPage() {
+
+        File fileBackground = new File("src/Assets/background.jpg");
+
+
         root = new BorderPane();
         try {
-            background = new Image(new FileInputStream("PoliPicasa/src/Assets/background.jpg"));
+            background = new Image(new FileInputStream(fileBackground.getAbsolutePath()));
             root.setBackground(new javafx.scene.layout.Background(new javafx.scene.layout.BackgroundImage(background, javafx.scene.layout.BackgroundRepeat.NO_REPEAT, javafx.scene.layout.BackgroundRepeat.NO_REPEAT, javafx.scene.layout.BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
             HBox head = createHeader();
             VBox menu = createMenu();
@@ -55,12 +61,13 @@ public class MainPage {
     }
 
     public HBox createHeader() {
+        File fileLogo = new File("src/Assets/polito_logo.png");
         HBox header = new HBox();
         header.setAlignment(Pos.CENTER);
         header.setPadding(new Insets(10, 10, 10, 10));
         header.setSpacing(10);
         try {
-            Image logo = new Image(new FileInputStream("PoliPicasa/src/Assets/polito_logo.png"));
+            Image logo = new Image(new FileInputStream(fileLogo.getAbsolutePath()));
             ImageView logoView = new ImageView(logo);
             logoView.setStyle("-fx-preserveRatio: true; -fx-fit-height: 100px;");
             Label title = new Label("Welcome to PoliPicasa!");
