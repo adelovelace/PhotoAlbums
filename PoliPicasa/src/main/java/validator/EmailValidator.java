@@ -7,7 +7,7 @@ import java.security.SecureRandom;
 import java.util.Properties;
 
 public class EmailValidator {
-    private String code = generateCode();
+    private String code;
 
     public EmailValidator(String receiver){
         code = generateCode();
