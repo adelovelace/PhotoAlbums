@@ -148,6 +148,11 @@ public class GaleryPage {
         addAlbum.setPadding(new Insets(10, 10, 10, 10));
         addAlbum.setStyle("-fx-border-color: #006F84;" + "-fx-border-width: 2px;");
         File addAlbumImage = new File("src/Assets/add-album.png");
+
+        addAlbum.setOnMouseClicked(event -> {
+            addAlbumToGalery();
+        });
+
         try {
             ImageView AddAlbumImageview = new ImageView(new Image(new FileInputStream(addAlbumImage.getAbsolutePath())));
             AddAlbumImageview.setFitHeight(125);
@@ -309,6 +314,44 @@ public class GaleryPage {
             }
         }
         root.setCenter(pics);
+    }
+
+    public void addAlbumToGalery(){
+        GridPane addAlbum = new GridPane();
+        addAlbum.setVgap(10);
+        addAlbum.setHgap(10);
+        addAlbum.setPadding(new Insets(10));
+        Label addAlbumLabel = new Label("Add Album");
+        addAlbumLabel.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 35px;" + "-fx-text-fill: #006F84;"+"-fx-font-weight: bold;");
+        Label addAlbumName = new Label("Album's Name:");
+        addAlbumName.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+        Label addAlbumDescription = new Label("Description:");
+        addAlbumDescription.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+        TextField addAlbumNameText = new TextField();
+        addAlbumNameText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        TextField addAlbumDescriptionText = new TextField();
+        addAlbumDescriptionText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        Button addAlbumButton = new Button("Add Album");
+        addAlbumButton.setStyle("-fx-text-fill: #FFFFFF;" +
+                "-fx-background-color: #C24242;" +
+                "-fx-text-alignment: center;" +
+                "-fx-font-family: Galdeano;" +
+                "-fx-font-size: 30px;");
+        addAlbumButton.setOnMouseClicked(e -> {
+            if(! addAlbumNameText.getText().equals("") && !addAlbumDescriptionText.getText().equals("")){
+                Album<Photo> album = new Album<>(addAlbumNameText.getText(), addAlbumDescriptionText.getText());
+                ValidatorData.saveAlbumInFile(album,session.getUser());
+                createAlbums();
+                root.setRight(null);
+            }
+        });
+        addAlbum.add(addAlbumLabel, 0, 0);
+        addAlbum.add(addAlbumName, 0, 1);
+        addAlbum.add(addAlbumNameText, 1, 1);
+        addAlbum.add(addAlbumDescription, 0, 2);
+        addAlbum.add(addAlbumDescriptionText, 1, 2);
+        addAlbum.add(addAlbumButton, 1, 3);
+        root.setRight(addAlbum);
     }
 
     public HBox albumsFeatures() {
