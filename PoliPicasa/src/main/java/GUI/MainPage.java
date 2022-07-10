@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import user.Session;
+import user.User;
 import validator.EmailValidator;
 import validator.ValidatorData;
 
@@ -159,7 +160,7 @@ public class MainPage {
     }
 
     private void accountSignIn() {
-        AtomicReference<String> codeEmail = null;
+        AtomicReference<String> codeEmail = new AtomicReference<>();
         VBox signin = new VBox();
         GridPane grid = new GridPane();
         signin.setPadding(basicInsets);
@@ -192,10 +193,13 @@ public class MainPage {
                 if (ValidatorData.existEmail(email.getText())) {
                     errorEmail.setText("Email already exists");
                 } else {
-                    errorEmail.setText("Code sent to email");
                     confirmButton.setDisable(false);
                     EmailValidator ev = new EmailValidator(email.getText());
-                    codeEmail.set(ev.getCode());
+                    String codeGen = ev.getCode();
+                    System.out.println(codeGen);
+                    codeEmail.set(codeGen);
+                    System.out.println("prueba: "+codeEmail.get());
+                    errorEmail.setText("outlook y gmail bloquearon apps poco seguras  :code: "+codeGen);
                 }
             }
         });
@@ -205,12 +209,21 @@ public class MainPage {
         Button signinButton = new Button("Sign In");
         signinButton.setDisable(true);
         confirmButton.setOnAction(e -> {
-            if (code.getText() != null || codeEmail.equals(code.getText())) {
+            if (code.getText() != null && codeEmail.get().equals(code.getText())) {
                 signinButton.setDisable(false);
             }else{
                 error.setText("Invalid code");
             }
 
+        });
+        signinButton.setOnAction(e -> {
+            if (name.getText() != null && email.getText() != null && password.getText() != null) {
+                User u = new User(name.getText(), email.getText(), password.getText());
+                ValidatorData.addUser(u);
+                root.setCenter(createHeader());
+            } else {
+                error.setText("Invalid username or password");
+            }
         });
 
         signinButton.setStyle(buttonStyle);
@@ -219,7 +232,7 @@ public class MainPage {
         grid.add(emailLabel, 0, 1);
         grid.add(email, 1, 1);
         grid.add(emailButton, 2, 1);
-        grid.add(errorEmail, 2, 2);
+        grid.add(errorEmail, 1, 2);
         grid.add(codeLabel, 0, 3);
         grid.add(code, 1, 3);
         grid.add(confirmButton, 2, 3);

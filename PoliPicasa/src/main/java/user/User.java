@@ -18,7 +18,7 @@ public class User implements Serializable {
     public User(String personName, String email, String password) {
         this.person = new Person(personName);
         this.email = email;
-        this.password = password;
+        this.password = convertToSHA256(password);
         this.galery = new Galery();
     }
 
@@ -80,6 +80,7 @@ public class User implements Serializable {
 
     public boolean comparePassword(String password){
         String codPassword = convertToSHA256(password);
+        System.out.println(codPassword);
         return this.password.equals(codPassword);
     }
 

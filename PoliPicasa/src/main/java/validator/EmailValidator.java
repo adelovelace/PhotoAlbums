@@ -11,14 +11,14 @@ public class EmailValidator {
 
     public EmailValidator(String receiver){
         code = generateCode();
-        sendMessage(receiver);
+        //sendMessage(receiver);
     }
 
     private boolean sendMessage(String receiver) {
-        String user = "polipicasa@outlook.com";
-        String password = "357ruc7ur45D3D4705";
+        String user = "polipicasa@sandbox6e02f8bd03e94e9f80af422931060331.mailgun.org\t";
+        String password = "7054f530ef645c12dc0b2b8f2234bbfe-1b8ced53-e8dc2abc";
         Properties props = System.getProperties();
-        props.put("mail.smtp.host", "smtp.office365.com");  //Google SMTP server
+        props.put("mail.smtp.host", "smtp.mailgun.org");  //Google SMTP server
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.starttls.enable", "true");
