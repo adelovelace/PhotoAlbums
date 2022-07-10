@@ -2,6 +2,7 @@ package gallery;
 
 import user.Person;
 import util.ArrayList;
+import util.LinkedList;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,19 +12,21 @@ public class Photo implements Serializable {
 
     private String descriptionPhoto;
     private String placePhoto;
-    private Date datePhoto;
+    private String datePhoto;
     private ArrayList<Person> personsOnAlbum;
     private Album albumRelated;
     private String route;
+    private String Camera = "";
+    private LinkedList<String> tag = new LinkedList<>();
 
 
-    public Photo(String descriptionPhoto, String placePhoto, Date datePhoto, ArrayList<Person> personsOnAlbum, Album albumRelated, String route){
+    public Photo(String descriptionPhoto, String placePhoto, String datePhoto, ArrayList<Person> personsOnAlbum, Album albumRelated, String route){
         this.descriptionPhoto =descriptionPhoto;
         this.placePhoto= placePhoto;
         this.datePhoto=datePhoto;
         this.personsOnAlbum=personsOnAlbum;
         this.albumRelated=albumRelated;
-        this.route=route;
+        this.setRoute(route);
     }
 
 
@@ -47,6 +50,7 @@ public class Photo implements Serializable {
         }
         return true;
     }
+
 
     public boolean modifyPerson(Person PersonSelected, String Nombre){
         if(personsOnAlbum.isEmpty()){
@@ -80,11 +84,11 @@ public class Photo implements Serializable {
         this.placePhoto = placePhoto;
     }
 
-    public Date getDatePhoto() {
+    public String getDatePhoto() {
         return datePhoto;
     }
 
-    public void setDatePhoto(Date datePhoto) {
+    public void setDatePhoto(String datePhoto) {
         this.datePhoto = datePhoto;
     }
 
@@ -111,5 +115,25 @@ public class Photo implements Serializable {
                 "\nfecha de la foto=" + datePhoto +
                 "\npersonas en el album=" + personsOnAlbum +
                 "\nalbumRelated=" + albumRelated;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
+    }
+
+    public String getCamera() {
+        return Camera;
+    }
+
+    public void setCamera(String camera) {
+        Camera = camera;
+    }
+
+    public LinkedList<String> getTag() {
+        return tag;
+    }
+
+    public void setTag(LinkedList<String> tag) {
+        this.tag = tag;
     }
 }
