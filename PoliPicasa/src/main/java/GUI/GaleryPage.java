@@ -17,9 +17,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import user.Person;
 import user.Session;
 import user.User;
+import util.ArrayList;
 import util.CircularDoublyLinkedList;
+import util.LinkedList;
 import validator.ValidatorData;
 
 
@@ -330,11 +333,30 @@ public class GaleryPage {
 
                 noPhotos.getChildren().addAll(noPhotoImageview,noPhotosLb);
 
-
                 photoBox.getChildren().addAll(prevPhotoImageview,noPhotos,nextPhotoImageview);
             }else{
+
+                for (int i = 0; i < photos.size(); i++) {
+                    Photo pic = photos.get(i);
+                    File photoImage = new File(pic.getRoute());
+
+                    try {
+                        ImageView photoImageview = new ImageView(new Image(new FileInputStream(photoImage.getAbsolutePath())));
+                        photoImageview.setFitHeight(500);
+                        photoImageview.setFitWidth(500);
+                        photo.getChildren().add(photoImageview);
+
+                    } catch (FileNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                }
                 photoBox.getChildren().addAll(prevPhotoImageview,photo,nextPhotoImageview);
             }
+            addPhoto.setOnMouseClicked(e -> {
+                VBox PhotoInfo = addPhotoInfo();
+                root.setRight(PhotoInfo);
+            });
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -447,7 +469,92 @@ public class GaleryPage {
         return features;
     }
 
+    public VBox addPhotoInfo() {
+        GridPane addPhoto = new GridPane();
+        addPhoto.setVgap(10);
+        addPhoto.setHgap(10);
+        addPhoto.setPadding(new Insets(10));
 
+        Label addDescriptionPhoto = new Label("Photo description:");
+        addDescriptionPhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+
+        Label addPlacePhoto = new Label("Photo's Place:");
+        addPlacePhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+
+        Label addDatePhoto = new Label("Date:");
+        addDatePhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+
+        Label addPersonsOnAlbum = new Label("Person on photos:");
+        addPersonsOnAlbum.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+
+        Label addAlbumRelated =  new Label("Related Album:");
+        addAlbumRelated.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+
+        TextField addDescriptionText = new TextField();
+        addDescriptionText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+
+        TextField addPlacePhotoText = new TextField();
+        addPlacePhotoText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+
+        TextField addDatePhotoText = new TextField();
+        addDatePhotoText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+
+        TextField addPersonsOnAlbumText = new TextField();
+        addPersonsOnAlbumText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+
+        TextField addAlbumRelatedText = new TextField();
+        addAlbumRelatedText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+
+        Button addPhotoButton = new Button("Add Photo");
+        addPhotoButton.setStyle("-fx-text-fill: #FFFFFF;" +
+                "-fx-background-color: #C24242;" +
+                "-fx-text-alignment: center;" +
+                "-fx-font-family: Galdeano;" +
+                "-fx-font-size: 30px;");
+
+
+        addPhotoButton.setOnMouseClicked(e -> {
+            if (!addDescriptionText.getText().equals("") && !addAlbumRelatedText.getText().equals("")) {
+
+                ArrayList<Person> persons = new ArrayList<>();
+                Album<Photo> albumRelated = new Album<>(addAlbumRelatedText.getText(),"");
+
+                String[] namesList = addPersonsOnAlbumText.getText().split(",");
+
+                for (String name: namesList
+                     ) {
+                    persons.addLast(new Person(name));
+                }
+
+                Photo newPhoto = new Photo(addDescriptionText.getText(),addPlacePhotoText.getText(),addDatePhotoText.getText(),persons,albumRelated,"" );
+                CircularDoublyLinkedList<Photo> photos = new CircularDoublyLinkedList<>();
+                photos.addLast(newPhoto);
+
+                ValidatorData.addPhotoToAlbum(newPhoto, session.getUser(), albumRelated);
+                createPhoto();
+                root.setRight(null);
+            }
+        });
+
+
+        addPhoto.add(addDescriptionPhoto, 0, 0);
+        addPhoto.add(addDescriptionText, 1, 0);
+        addPhoto.add(addPlacePhoto, 0, 1);
+        addPhoto.add(addPlacePhotoText, 1, 1);
+        addPhoto.add(addDatePhoto, 0, 2);
+        addPhoto.add(addDatePhotoText, 1, 2);
+        addPhoto.add(addPersonsOnAlbum, 0, 3);
+        addPhoto.add(addPersonsOnAlbumText, 1, 3);
+        addPhoto.add(addAlbumRelated, 0, 4);
+        addPhoto.add(addAlbumRelatedText, 1, 4);
+        addPhoto.add(addPhotoButton,0,5);
+
+        root.setRight(addPhoto);
+
+        return new VBox(addPhoto);
+    }
+
+    public void createPhoto() {}
 
 
     public BorderPane getRoot() {
