@@ -277,43 +277,73 @@ public class GaleryPage {
     }
 
     public void visualizePic(Album<Photo> album) {
-        FlowPane pics = new FlowPane();
-        pics.setVgap(10);
-        pics.setHgap(10);
-        pics.setPadding(new Insets(10));
+        VBox pics = new VBox();
+
+        HBox photoFeatures = new HBox();
+        HBox photoBox = new HBox();
+
         VBox addPhoto = new VBox();
-        addPhoto.setSpacing(10);
-        addPhoto.setPadding(new Insets(10, 10, 10, 10));
-        addPhoto.setStyle("-fx-border-color: #006F84;" + "-fx-border-width: 2px;");
+        VBox photo = new VBox();
+        VBox noPhotos = new VBox();
+
         File addPhotoImage = new File("src/Assets/photo.png");
+        File prevPhotoImage = new File("src/Assets/left-arrow.png");
+        File nextPhotoImage = new File("src/Assets/right-arrow.png");
+        File noPhotoImage = new File("src/Assets/muerto.png");
+
         try {
             ImageView AddPhotoImageview = new ImageView(new Image(new FileInputStream(addPhotoImage.getAbsolutePath())));
-            AddPhotoImageview.setFitHeight(125);
-            AddPhotoImageview.setFitWidth(125);
+            AddPhotoImageview.setFitHeight(50);
+            AddPhotoImageview.setFitWidth(50);
             Label addPhotoLabel = new Label("Add Photo");
             addPhotoLabel.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
             addPhoto.getChildren().addAll(AddPhotoImageview, addPhotoLabel);
-            addPhoto.setPrefSize(200, 200);
+            addPhoto.setPrefSize(500, 500);
             addPhoto.setAlignment(Pos.CENTER);
-            pics.getChildren().add(addPhoto);
+            photoFeatures.getChildren().addAll(addPhoto);
+            photoFeatures.setAlignment(Pos.BASELINE_RIGHT);
+
+
+            ImageView prevPhotoImageview = new ImageView(new Image(new FileInputStream(prevPhotoImage.getAbsolutePath())));
+            ImageView nextPhotoImageview = new ImageView(new Image(new FileInputStream(nextPhotoImage.getAbsolutePath())));
+            prevPhotoImageview.setFitHeight(50);
+            prevPhotoImageview.setFitWidth(50);
+            nextPhotoImageview.setFitHeight(50);
+            nextPhotoImageview.setFitWidth(50);
+
+            photo.setMaxWidth(100);
+            photo.setMaxHeight(100);
+            photoBox.setStyle("-fx-alignment: center;");
+
+            CircularDoublyLinkedList<Photo> photos = album.getPhotosOnAlbum();
+
+            if(photos.isEmpty()){
+                ImageView noPhotoImageview = new ImageView(new Image(new FileInputStream(noPhotoImage.getAbsolutePath())));
+                noPhotoImageview.setFitHeight(500);
+                noPhotoImageview.setFitWidth(500);
+
+                Label noPhotosLb = new Label("No Photos!");
+                noPhotosLb.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 100px;" + "-fx-text-fill: #006F84;");
+
+                noPhotos.setStyle("-fx-alignment: center;");
+                noPhotos.setPadding(new Insets(20, 20, 20, 20));
+
+                noPhotos.getChildren().addAll(noPhotoImageview,noPhotosLb);
+
+
+                photoBox.getChildren().addAll(prevPhotoImageview,noPhotos,nextPhotoImageview);
+            }else{
+                photoBox.getChildren().addAll(prevPhotoImageview,photo,nextPhotoImageview);
+            }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        CircularDoublyLinkedList<Photo> photos = album.getPhotosOnAlbum();
-        for (int i = 0; i < photos.size(); i++) {
-            Photo pic = photos.get(i);
-            File photoImage = new File(pic.getRoute());
-            try {
-                ImageView photoImageview = new ImageView(new Image(new FileInputStream(photoImage.getAbsolutePath())));
-                photoImageview.setFitHeight(150);
-                photoImageview.setFitWidth(150);
-                pics.getChildren().addAll(photoImageview);
-                pics.setPrefSize(200, 200);
-                pics.setAlignment(Pos.CENTER);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
+
+
+
+        pics.getChildren().addAll(photoFeatures,photoBox);
+
         root.setCenter(pics);
     }
 
