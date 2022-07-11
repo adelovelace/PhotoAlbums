@@ -14,7 +14,7 @@ public class Galery implements Serializable {
 
 
     public Galery() {
-        this.albums = new LinkedList<Album<>>();
+        this.albums = new LinkedList<Album>();
     }
 
 

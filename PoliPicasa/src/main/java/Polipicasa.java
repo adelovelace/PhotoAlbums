@@ -28,6 +28,8 @@ public class Polipicasa extends Application {
         primaryStage.setTitle("Polipicasa");
         MainPage mp = new MainPage();
         Scene scene = new Scene(mp.getPane());
+        scene.getStylesheets().add("https://fonts.googleapis.com/css2?family=Hurricane");
+        scene.getStylesheets().add("https://fonts.googleapis.com/css2?family=Galdeano");
 
 
         try{
