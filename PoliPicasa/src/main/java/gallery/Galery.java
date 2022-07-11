@@ -14,7 +14,7 @@ public class Galery implements Serializable {
 
 
     public Galery() {
-        this.albums = new LinkedList<Album>();
+        this.albums = new LinkedList<Album<>>();
     }
 
 
@@ -31,6 +31,14 @@ public class Galery implements Serializable {
     public boolean addAlbum(Album<Photo> album){
         if (album != null) {
             this.albums.addLast(album);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteAlbum(Album<Photo> album){
+        if (album != null) {
+            this.albums.remove(albums.indexOf(album));
             return true;
         }
         return false;

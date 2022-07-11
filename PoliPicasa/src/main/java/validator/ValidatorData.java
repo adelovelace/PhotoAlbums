@@ -131,6 +131,31 @@ public class ValidatorData {
         writeUsers(users);
         return true;
     }
+    public static void deleteAlbumInFile(Album<Photo> album, User user) {
+        LinkedList<User> users = readUsers();
+        for (User user2 : users) {
+            if (user2.getEmail().equals(user.getEmail())) {
+                user2.getGalery().deleteAlbum(album);
+                user.getGalery().deleteAlbum(album);
+            }
+        }
+        writeUsers(users);
+    }
+    public static void deletePhotoInFile(Photo photo, User user, Album<Photo> album) {
+        LinkedList<User> users = readUsers();
+        for (User user2 : users) {
+            if (user2.getEmail().equals(user.getEmail())) {
+                LinkedList<Album> galery = user.getGalery().getAlbums();
+                for (Album album2 : galery) {
+                    if (album2.getID().equals(album.getID())) {
+                        album2.deletePhoto(album2.getPhotosOnAlbum(),photo);
+                        album.deletePhoto(album.getPhotosOnAlbum(),photo);
+                    }
+                }
+            }
+        }
+        writeUsers(users);
+    }
 
     public static void addPhotoToAlbum(Photo photo, User user, Album<Photo> album) {
         LinkedList<User> users = readUsers();
