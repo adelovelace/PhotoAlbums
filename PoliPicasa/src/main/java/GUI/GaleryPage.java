@@ -15,6 +15,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import user.Person;
@@ -26,9 +28,7 @@ import util.LinkedList;
 import validator.ValidatorData;
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 
 
 public class GaleryPage {
@@ -365,7 +365,7 @@ public class GaleryPage {
                 photoBox.getChildren().addAll(prevPhotoImageview,photo,nextPhotoImageview);
             }
             addPhoto.setOnMouseClicked(e -> {
-                VBox PhotoInfo = addPhotoInfo();
+                VBox PhotoInfo = addPhotoInfo(album);
                 root.setRight(PhotoInfo);
             });
 
@@ -481,7 +481,7 @@ public class GaleryPage {
         return features;
     }
 
-    public VBox addPhotoInfo() {
+    public VBox addPhotoInfo(Album<Photo> album) {
         GridPane addPhoto = new GridPane();
         addPhoto.setVgap(10);
         addPhoto.setHgap(10);
@@ -498,9 +498,14 @@ public class GaleryPage {
 
         Label addPersonsOnAlbum = new Label("Person on photos:");
         addPersonsOnAlbum.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+        Label addPathPhoto = new Label("Path:");
+        addPathPhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+        TextField addPathPhotoText = new TextField();
+        addPathPhotoText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        Button searchPath = new Button("Search");
 
-        Label addAlbumRelated =  new Label("Related Album:");
-        addAlbumRelated.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+        //Label addAlbumRelated =  new Label("Related Album:");
+        //addAlbumRelated.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
 
         TextField addDescriptionText = new TextField();
         addDescriptionText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
@@ -514,22 +519,46 @@ public class GaleryPage {
         TextField addPersonsOnAlbumText = new TextField();
         addPersonsOnAlbumText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
 
-        TextField addAlbumRelatedText = new TextField();
-        addAlbumRelatedText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+
 
         Button addPhotoButton = new Button("Add Photo");
+        addPhotoButton.setDisable(true);
         addPhotoButton.setStyle("-fx-text-fill: #FFFFFF;" +
                 "-fx-background-color: #C24242;" +
                 "-fx-text-alignment: center;" +
                 "-fx-font-family: Galdeano;" +
                 "-fx-font-size: 30px;");
 
+        searchPath.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open Resource File");
+            File file = fileChooser.showOpenDialog(null);
+            if (file != null) {
+                try {
+
+                    FileInputStream fis = new FileInputStream(file);
+                    FileOutputStream fos = new FileOutputStream("src/images/" + file.getName());
+                    byte[] buffer = new byte[1024];
+                    int length;
+                    while ((length = fis.read(buffer)) > 0) {
+                        fos.write(buffer, 0, length);
+                    }
+                    addPathPhotoText.setText("src/images/" + file.getName());
+                    addPhotoButton.setDisable(false);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
 
         addPhotoButton.setOnMouseClicked(e -> {
-            if (!addDescriptionText.getText().equals("") && !addAlbumRelatedText.getText().equals("")) {
+            if (!addDescriptionText.getText().equals("")&& !addPathPhotoText.getText().equals((""))) {
 
                 ArrayList<Person> persons = new ArrayList<>();
-                Album<Photo> albumRelated = new Album<>(addAlbumRelatedText.getText(),"");
+                Album<Photo> albumRelated = album;
 
                 String[] namesList = addPersonsOnAlbumText.getText().split(",");
 
@@ -537,13 +566,13 @@ public class GaleryPage {
                      ) {
                     persons.addLast(new Person(name));
                 }
+                String route   = addPathPhotoText.getText();
 
-                Photo newPhoto = new Photo(addDescriptionText.getText(),addPlacePhotoText.getText(),addDatePhotoText.getText(),persons,albumRelated,"" );
+                Photo newPhoto = new Photo(addDescriptionText.getText(),addPlacePhotoText.getText(),addDatePhotoText.getText(),persons,albumRelated, route);
                 CircularDoublyLinkedList<Photo> photos = new CircularDoublyLinkedList<>();
                 photos.addLast(newPhoto);
-
                 ValidatorData.addPhotoToAlbum(newPhoto, session.getUser(), albumRelated);
-                createPhoto();
+                visualizePic(album);
                 root.setRight(null);
             }
         });
@@ -557,8 +586,11 @@ public class GaleryPage {
         addPhoto.add(addDatePhotoText, 1, 2);
         addPhoto.add(addPersonsOnAlbum, 0, 3);
         addPhoto.add(addPersonsOnAlbumText, 1, 3);
-        addPhoto.add(addAlbumRelated, 0, 4);
-        addPhoto.add(addAlbumRelatedText, 1, 4);
+        //addPhoto.add(addAlbumRelated, 0, 4);
+        //addPhoto.add(addAlbumRelatedText, 1, 4);
+        addPhoto.add(addPathPhoto,0,4);
+        addPhoto.add(addPathPhotoText,1,4);
+        addPhoto.add(searchPath,2,4);
         addPhoto.add(addPhotoButton,0,5);
 
         root.setRight(addPhoto);
