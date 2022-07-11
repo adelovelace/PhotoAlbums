@@ -28,6 +28,7 @@ public class ValidatorData {
             users = (LinkedList<User>) ois.readObject();
             return users;
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Error reading file");
             return users;
         }
@@ -83,6 +84,7 @@ public class ValidatorData {
         Session session = null;
         LinkedList<User> users = readUsers();
         for (User user : users) {
+            System.out.println(user.getEmail());
             if (user.getEmail().equals(email) && user.comparePassword(password)) {
                 session = new Session(user);
             }
@@ -119,7 +121,7 @@ public class ValidatorData {
         LinkedList<User> users = readUsers();
         for (User user2 : users) {
             if (user2.getEmail().equals(user.getEmail())) {
-                LinkedList<Album> galery = user2.getGalery().getAlbums();
+                LinkedList<Album<Photo>> galery = user2.getGalery().getAlbums();
                 for (Album album2 : galery) {
                     if (album2.getID().equals(album.getID())) {
                         album2.setAlbumName(name);
@@ -145,7 +147,7 @@ public class ValidatorData {
         LinkedList<User> users = readUsers();
         for (User user2 : users) {
             if (user2.getEmail().equals(user.getEmail())) {
-                LinkedList<Album> galery = user.getGalery().getAlbums();
+                LinkedList<Album<Photo>> galery = user.getGalery().getAlbums();
                 for (Album album2 : galery) {
                     if (album2.getID().equals(album.getID())) {
                         album2.deletePhoto(album2.getPhotosOnAlbum(),photo);
@@ -161,8 +163,8 @@ public class ValidatorData {
         LinkedList<User> users = readUsers();
         for (User user1 : users) {
             if (user1.getEmail().equals(user.getEmail())) {
-                LinkedList<Album> galery = user.getGalery().getAlbums();
-                for (Album album2 : galery) {
+                LinkedList<Album<Photo>> galery = user.getGalery().getAlbums();
+                for (Album<Photo> album2 : galery) {
                     if (album2.getID().equals(album.getID())) {
                         album2.addPhoto(photo);
                         album.addPhoto(photo);
@@ -191,8 +193,8 @@ public class ValidatorData {
         LinkedList<User> users = readUsers();
         for (User user1 : users) {
             if (user1.getEmail().equals(user.getEmail())) {
-                LinkedList<Album> galery = user.getGalery().getAlbums();
-                for (Album album2 : galery) {
+                LinkedList<Album<Photo>> galery = user.getGalery().getAlbums();
+                for (Album<Photo> album2 : galery) {
                     if (album2.getID().equals(album.getID())) {
                         CircularDoublyLinkedList<Photo> photos = album2.getPhotosOnAlbum();
                         for(int i = 0; i < photos.size(); i++) {

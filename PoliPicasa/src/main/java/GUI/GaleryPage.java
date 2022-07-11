@@ -233,12 +233,23 @@ public class GaleryPage {
         editAlbum.setOnMouseClicked(e -> {
             editAlbumBox(album);
         });
+        Button eraseAlbum = new Button("Erase Album");
+        eraseAlbum.setStyle("-fx-text-fill: #FFFFFF;" +
+                "-fx-background-color: #C24242;" +
+                "-fx-text-alignment: center;" +
+                "-fx-font-family: Galdeano;" +
+                "-fx-font-size: 30px;");
+        eraseAlbum.setOnMouseClicked(e -> {
+            ValidatorData.deleteAlbumInFile(album, session.getUser());
+            createAlbums();
+            root.setRight(null);
+        });
         showPhotos.setStyle("-fx-text-fill: #FFFFFF;" +
                 "-fx-background-color: #C24242;" +
                 "-fx-text-alignment: center;" +
                 "-fx-font-family: Galdeano;" +
                 "-fx-font-size: 30px;");
-        albumInfo.getChildren().addAll(titleAlbum, lbAlbumName, TitleAlbumDescription, lbAlbumDescription, buttons);
+        albumInfo.getChildren().addAll(titleAlbum, lbAlbumName, TitleAlbumDescription, lbAlbumDescription, buttons, eraseAlbum);
         return albumInfo;
 
     }
@@ -260,6 +271,7 @@ public class GaleryPage {
         TextField lbAlbumDescriptionText = new TextField(album.getAlbumDescription());
         lbAlbumDescriptionText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
         Button editAlbum = new Button("Edit Album");
+
         editAlbum.setStyle("-fx-text-fill: #FFFFFF;" +
                 "-fx-background-color: #C24242;" +
                 "-fx-text-alignment: center;" +

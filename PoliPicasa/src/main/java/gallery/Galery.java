@@ -9,20 +9,20 @@ import util.LinkedList;
 import java.io.Serializable;
 
 public class Galery implements Serializable {
-    private LinkedList<Album> albums;
+    private LinkedList<Album<Photo>> albums;
 
 
 
     public Galery() {
-        this.albums = new LinkedList<Album>();
+        this.albums = new LinkedList<Album<Photo>>();
     }
 
 
-    public LinkedList<Album> getAlbums() {
+    public LinkedList<Album<Photo>> getAlbums() {
         return albums;
     }
 
-    public void setAlbums(LinkedList<Album> albums) {
+    public void setAlbums(LinkedList<Album<Photo>> albums) {
         this.albums = albums;
     }
 
