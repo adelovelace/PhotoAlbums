@@ -161,10 +161,10 @@ public class ValidatorData {
 
     public static void addPhotoToAlbum(Photo photo, User user, Album<Photo> album) {
         LinkedList<User> users = readUsers();
-        for (User user1 : users) {
-            if (user1.getEmail().equals(user.getEmail())) {
-                LinkedList<Album<Photo>> galery = user.getGalery().getAlbums();
-                for (Album<Photo> album2 : galery) {
+        for (User userOnline : users) {
+            if (userOnline.getEmail().equals(user.getEmail())) {
+                LinkedList<Album<Photo>> galeryOnline = userOnline.getGalery().getAlbums();
+                for (Album<Photo> album2 : galeryOnline) {
                     if (album2.getID().equals(album.getID())) {
                         album2.addPhoto(photo);
                         album.addPhoto(photo);
