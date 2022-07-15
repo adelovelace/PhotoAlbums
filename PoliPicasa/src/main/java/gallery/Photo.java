@@ -29,6 +29,9 @@ public class Photo implements Serializable {
         this.personsOnAlbum=personsOnAlbum;
         this.albumRelated=albumRelated;
         this.setRoute(route);
+        Camera = "No Camera Info";
+        tag = new LinkedList<>();
+        tag.addFirst("#NoTag");
     }
 
 
@@ -153,7 +156,7 @@ public class Photo implements Serializable {
     public String getTags(){
         String hashtag = "";
         for (String tag : tag) {
-            hashtag += tag + " ";
+            hashtag +="#" +tag + " ";
         }
         return hashtag;
     }
