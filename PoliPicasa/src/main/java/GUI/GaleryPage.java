@@ -489,6 +489,22 @@ public class GaleryPage {
             layout.setSpacing(5);
             layout.setStyle("-fx-alignment: center");
 
+            searchBtn.setOnMouseClicked(e ->{
+
+                if(selectedItem == "person"){
+                    System.out.println("here1");
+                }
+
+                if(selectedItem == "place"){
+                    System.out.println("here2");
+                }
+
+                if(selectedItem == "person & place"){
+                    System.out.println("here3");
+                }
+
+            });
+
             layout.getChildren().addAll(selectionLbl, textField, searchBtn);
 
             popupwindow.setScene(scene1);
