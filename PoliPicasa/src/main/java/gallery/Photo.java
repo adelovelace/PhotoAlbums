@@ -147,8 +147,10 @@ public class Photo implements Serializable {
 
     public String getPersons(){
         String persons = "";
+        if (personsOnAlbum.isEmpty()){
+            persons = "No Person in this photo";}
         for(Person people: personsOnAlbum){
-            persons += people.getPersonName() + " ";
+            persons += people.getPersonName() + ", ";
         }
         return persons;
     }
