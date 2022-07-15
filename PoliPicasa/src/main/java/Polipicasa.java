@@ -44,7 +44,7 @@ public class Polipicasa extends Application {
 
 
     public static void main(String[] args) {
-        //ValidatorData.createUserFile();
+        ValidatorData.createUserFile();
         launch();
     }
 }

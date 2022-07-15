@@ -26,25 +26,6 @@ public class MainPage {
     private StackPane pane;
     private BorderPane root;
     Image background;
-    Insets basicInsets = new Insets(10);
-    String labelTitle = "-fx-text-fill: #006F84;" +
-            "-fx-text-alignment: center;" +
-            "-fx-font-family: Galdeano;" +
-            "-fx-font-size: 70px;";
-    String labelSubTitle = "-fx-text-fill: #006F84;" +
-            "-fx-text-alignment: center;" +
-            "-fx-font-family: Galdeano;" +
-            "-fx-font-size: 35px;";
-    String labelSquare = "-fx-text-fill: #006F84;" +
-            "-fx-text-alignment: center;" +
-            "-fx-font-family: Galdeano;" +
-            "-fx-font-size: 35px;";
-    String buttonStyle = "-fx-text-fill: #FFFFFF;" +
-            "-fx-background-color: #C24242;" +
-            "-fx-text-alignment: center;" +
-            "-fx-font-family: Galdeano;" +
-            "-fx-font-size: 35px;";
-
     public MainPage() {
 
         File fileBackground = new File("src/Assets/background.jpg");
@@ -69,18 +50,13 @@ public class MainPage {
     public HBox createHeader() {
         File fileLogo = new File("src/Assets/polito_logo.png");
         HBox header = new HBox();
-        header.setAlignment(Pos.CENTER);
-        header.setPadding(new Insets(10, 10, 10, 10));
-        header.setSpacing(10);
+        Styles.setHBoxStyle(header);
         try {
             Image logo = new Image(new FileInputStream(fileLogo.getAbsolutePath()));
             ImageView logoView = new ImageView(logo);
             logoView.setStyle("-fx-preserveRatio: true; -fx-fit-height: 100px;");
             Label title = new Label("Welcome to PoliPicasa!");
-            title.setStyle("-fx-text-fill: white;" +
-                    "-fx-alignment: center;" +
-                    "-fx-font-family: Galdeano;" +
-                    "-fx-font-size: 70px;");
+            Styles.setTitleStyle(title);
             header.getChildren().addAll(logoView, title);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -89,27 +65,16 @@ public class MainPage {
     }
 
     private void createMenu() {
-        String styleButton = "-fx-text-fill: #006F84;" +
-                "-fx-text-alignment: center;" +
-                "-fx-border-radius: 10px;" +
-                "-fx-font-weight: bold;" +
-                "-fx-border-color: #006F84;" +
-                "-fx-border-width: 5px;" +
-                "-fx-background-color: #FFFFFF;" +
-                "-fx-font-family: Galdeano;" +
-                "-fx-font-size: 35px;";
+
         VBox menu = new VBox();
-        menu.setPadding(basicInsets);
-        menu.setSpacing(10);
-        menu.setAlignment(Pos.CENTER);
+        Styles.setVBoxStyle(menu);
         Button loginButton = new Button("Login");
         loginButton.setOnAction(e -> {
             sessionLogin();
         });
-
-        loginButton.setStyle(styleButton);
         Button signinButton = new Button("Sign In");
-        signinButton.setStyle(styleButton);
+        Styles.setStyleButtonMain(loginButton);
+        Styles.setStyleButtonMain(signinButton);
         signinButton.setOnAction(e -> {
             accountSignIn();
         });
@@ -118,38 +83,23 @@ public class MainPage {
     }
 
     private void sessionLogin() {
-        VBox login = new VBox();
-        login.setPadding(basicInsets);
-        login.setSpacing(10);
-        login.setAlignment(Pos.CENTER);
-        HBox usernameBox = new HBox();
-        HBox passwordBox = new HBox();
-        HBox buttonBox = new HBox();
-        usernameBox.setPadding(basicInsets);
-        passwordBox.setPadding(basicInsets);
-        usernameBox.setSpacing(10);
-        passwordBox.setSpacing(10);
-        usernameBox.setAlignment(Pos.CENTER);
-        passwordBox.setAlignment(Pos.CENTER);
+        GridPane login = new GridPane();
+        Styles.setGridPaneStyle(login);
         Label loginLabel = new Label("Login");
-        loginLabel.setStyle(labelTitle);
-        Label usernameLabel = new Label("Email:      ");
-        usernameLabel.setStyle(labelSubTitle);
+        Styles.setTitleStyle(loginLabel);
+        Label usernameLabel = new Label("Email:");
+        Styles.setSubTitleStyle(usernameLabel);
         Label passwordLabel = new Label("Password:");
-        passwordLabel.setStyle(labelSubTitle);
+        Styles.setSubTitleStyle(passwordLabel);
         TextField username = new TextField();
         Label error = new Label();
-        username.setStyle(labelSquare);
+        Styles.setSquareStyle(username);
         PasswordField password = new PasswordField();
-        password.setStyle(labelSquare);
+        Styles.setSquareStyle(password);
         Button loginButton = new Button("Login");
         Button backButton = new Button("Back");
-        buttonBox.setPadding(basicInsets);
-        buttonBox.setSpacing(10);
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.getChildren().addAll(loginButton, backButton);
-        backButton.setStyle(buttonStyle);
-        loginButton.setStyle(buttonStyle);
+        Styles.setButtonRedStyle(loginButton);
+        Styles.setButtonRedStyle(backButton);
         backButton.setOnAction(e -> {
             createMenu();
         });
@@ -170,9 +120,14 @@ public class MainPage {
                 error.setText("Invalid username or password");
             }
         });
-        usernameBox.getChildren().addAll(usernameLabel, username);
-        passwordBox.getChildren().addAll(passwordLabel, password);
-        login.getChildren().addAll(loginLabel, usernameBox, passwordBox, error, buttonBox);
+        login.add(loginLabel, 0, 0);
+        login.add(usernameLabel, 0, 1);
+        login.add(username, 1, 1);
+        login.add(passwordLabel, 0, 2);
+        login.add(password, 1, 2);
+        login.add(loginButton, 1, 3);
+        login.add(backButton, 0, 3);
+        login.add(error, 1, 4);
         root.setCenter(login);
 
     }
@@ -181,31 +136,31 @@ public class MainPage {
         AtomicReference<String> codeEmail = new AtomicReference<>();
         VBox signin = new VBox();
         GridPane grid = new GridPane();
-        signin.setPadding(basicInsets);
-        signin.setSpacing(10);
-        signin.setAlignment(Pos.CENTER);
+        Styles.setVBoxStyle(signin);
         Label signinLabel = new Label("Sign In");
-        signinLabel.setStyle(labelTitle);
-        Label nameLabel = new Label("Name:   ");
-        nameLabel.setStyle(labelSubTitle);
+        Styles.setTitleStyle(signinLabel);
+        Label nameLabel = new Label("Name:");
+        Styles.setSubTitleStyle(nameLabel);
         TextField name = new TextField();
-        name.setStyle(labelSquare);
-        Label emailLabel = new Label("Email:   ");
-        emailLabel.setStyle(labelSubTitle);
+        Styles.setSquareStyle(name);
+        Label emailLabel = new Label("Email:");
+        Styles.setSubTitleStyle(emailLabel);
         TextField email = new TextField();
-        email.setStyle(labelSquare);
+        Styles.setSquareStyle(email);
         Button emailButton = new Button("Check");
+        Styles.setStyleButtonMain(emailButton);
         Label errorEmail = new Label();
-        Label codeLabel = new Label("Code:  ");
-        codeLabel.setStyle(labelSubTitle);
+        Label codeLabel = new Label("Code:");
+        Styles.setSubTitleStyle(codeLabel);
         TextField code = new TextField();
-        code.setStyle(labelSquare);
+        Styles.setSquareStyle(code);
         Button confirmButton = new Button("Confirm");
         confirmButton.setDisable(true);
+        Styles.setStyleButtonMain(confirmButton);
         Label passwordLabel = new Label("Password:");
-        passwordLabel.setStyle(labelSubTitle);
+        Styles.setSubTitleStyle(passwordLabel);
         PasswordField password = new PasswordField();
-        password.setStyle(labelSquare);
+        Styles.setSquareStyle(password);
         emailButton.setOnAction(e -> {
             if (email.getText() != null) {
                 if (ValidatorData.existEmail(email.getText())) {
@@ -223,16 +178,13 @@ public class MainPage {
         });
         HBox buttonBox = new HBox();
         Label error = new Label();
-        password.setStyle(labelSquare);
-        email.setStyle(labelSquare);
+        Styles.setHBoxStyle(buttonBox);
         Button signinButton = new Button("Sign In");
         signinButton.setDisable(true);
         Button backButton = new Button("Back");
-        buttonBox.setPadding(basicInsets);
-        buttonBox.setSpacing(10);
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.getChildren().addAll(signinButton, backButton);
-        backButton.setStyle(buttonStyle);
+        buttonBox.getChildren().addAll(backButton, signinButton);
+        Styles.setButtonRedStyle(signinButton);
+        Styles.setButtonRedStyle(backButton);
         backButton.setOnAction(e -> {
             createMenu();
         });
@@ -255,8 +207,6 @@ public class MainPage {
                 error.setText("Invalid username or password");
             }
         });
-
-        signinButton.setStyle(buttonStyle);
         grid.add(nameLabel, 0, 0);
         grid.add(name, 1, 0);
         grid.add(emailLabel, 0, 1);

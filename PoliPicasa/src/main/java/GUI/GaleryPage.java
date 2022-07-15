@@ -15,20 +15,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import user.Person;
 import user.Session;
-import user.User;
 import util.ArrayList;
 import util.CircularDoublyLinkedList;
-import util.LinkedList;
 import validator.ValidatorData;
 
 
 import java.io.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class GaleryPage {
@@ -40,28 +38,18 @@ public class GaleryPage {
         this.session = session;
         root = new BorderPane();
         File decoImage = new File("src/Assets/playa.png");
-
         try {
-
             Label lbPolipicasa = new Label("Polipicasa");
-            lbPolipicasa.setStyle("-fx-font-family: Hurricane;" + "-fx-font-size: 50px;" + "-fx-background-color: rgba(217, 217, 217, 0.5);" + "-fx-alignment: center;");
-            lbPolipicasa.setAlignment(Pos.TOP_LEFT);
-            lbPolipicasa.setPrefWidth(250);
-
+            Styles.setPolipicasaLabelStyle(lbPolipicasa);
             Image decoIcon = new Image(new FileInputStream(decoImage.getAbsolutePath()));
             ImageView decoIconView = new ImageView(decoIcon);
             decoIconView.setFitHeight(250);
             decoIconView.setFitWidth(250);
-
             HBox topElements = new HBox();
-
             HBox titleApp = new HBox();
             HBox decoration = new HBox();
             HBox albumsFeatures = albumsFeatures();
-
             VBox menu = createMenu();
-
-
             menu.setPrefWidth(250);
 
             titleApp.setStyle("-fx-background-color: rgba(217, 217, 217, 0.5);");
@@ -145,10 +133,10 @@ public class GaleryPage {
         FlowPane albums = new FlowPane();
         albums.setVgap(10);
         albums.setHgap(10);
-        albums.setPadding(new Insets(10, 10, 10, 10));
+        albums.setPadding(new Insets(10));
         VBox addAlbum = new VBox();
         addAlbum.setSpacing(10);
-        addAlbum.setPadding(new Insets(10, 10, 10, 10));
+        addAlbum.setPadding(new Insets(10));
         addAlbum.setStyle("-fx-border-color: #006F84;" + "-fx-border-width: 2px;");
         File addAlbumImage = new File("src/Assets/add-album.png");
 
@@ -161,7 +149,7 @@ public class GaleryPage {
             AddAlbumImageview.setFitHeight(125);
             AddAlbumImageview.setFitWidth(125);
             Label addAlbumLabel = new Label("Add Album");
-            addAlbumLabel.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+            Styles.setSubTitle1Style(addAlbumLabel);
             addAlbum.getChildren().addAll(AddAlbumImageview, addAlbumLabel);
             addAlbum.setPrefSize(200, 200);
             addAlbum.setAlignment(Pos.CENTER);
@@ -182,7 +170,7 @@ public class GaleryPage {
                 albumIconView.setFitHeight(125);
                 albumIconView.setFitWidth(125);
                 Label albumName = new Label(albums1.getAlbumName());
-                albumName.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+                Styles.setSubTitle1Style(albumName);
                 album.setAlignment(Pos.CENTER);
                 album.getChildren().addAll(albumIconView, albumName);
                 albums.getChildren().add(album);
@@ -201,21 +189,22 @@ public class GaleryPage {
     public VBox chargeAlbumInfo(Album<Photo> album) {
         VBox albumInfo = new VBox();
         albumInfo.setSpacing(10);
-        albumInfo.setPadding(new Insets(10, 10, 10, 10));
+        albumInfo.setPadding(new Insets(10));
         albumInfo.setStyle("-fx-background-color: rgba(217, 217, 217, 0.5);" + "-fx-border-color: #006F84;" + "-fx-border-width: 2px;");
-        albumInfo.setPadding(new Insets(10, 10, 10, 10));
+        albumInfo.setPadding(new Insets(10));
         albumInfo.setAlignment(Pos.CENTER);
         String albumName = album.getAlbumName();
         Label titleAlbum = new Label("Album's Name:");
-        titleAlbum.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;" + "-fx-font-weight: bold;");
+        Styles.setSubTitle1Style(titleAlbum);
         Label TitleAlbumDescription = new Label("Description:");
-        TitleAlbumDescription.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;" + "-fx-font-weight: bold;");
+        Styles.setSubTitle1Style(TitleAlbumDescription);
         Label lbAlbumName = new Label(albumName);
-        lbAlbumName.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+        Styles.setSubTitle2Style(lbAlbumName);
         Label lbAlbumDescription = new Label(album.getAlbumDescription());
-        lbAlbumDescription.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+        Styles.setSubTitle2Style(lbAlbumDescription);
         Button showPhotos = new Button("Show Photos");
         Button editAlbum = new Button("Edit Album");
+        Styles.setButtonRedStyle(editAlbum);
         showPhotos.setOnAction(
                 e -> {
                     visualizePic(album);
@@ -225,30 +214,18 @@ public class GaleryPage {
         buttons.setSpacing(10);
         buttons.setAlignment(Pos.CENTER);
         buttons.getChildren().addAll(showPhotos, editAlbum);
-        editAlbum.setStyle("-fx-text-fill: #FFFFFF;" +
-                "-fx-background-color: #C24242;" +
-                "-fx-text-alignment: center;" +
-                "-fx-font-family: Galdeano;" +
-                "-fx-font-size: 30px;");
+        Styles.setButtonRedStyle(showPhotos);
         editAlbum.setOnMouseClicked(e -> {
             editAlbumBox(album);
         });
         Button eraseAlbum = new Button("Erase Album");
-        eraseAlbum.setStyle("-fx-text-fill: #FFFFFF;" +
-                "-fx-background-color: #C24242;" +
-                "-fx-text-alignment: center;" +
-                "-fx-font-family: Galdeano;" +
-                "-fx-font-size: 30px;");
+        Styles.setButtonRedStyle(eraseAlbum);
         eraseAlbum.setOnMouseClicked(e -> {
             ValidatorData.deleteAlbumInFile(album, session.getUser());
             createAlbums();
             root.setRight(null);
         });
-        showPhotos.setStyle("-fx-text-fill: #FFFFFF;" +
-                "-fx-background-color: #C24242;" +
-                "-fx-text-alignment: center;" +
-                "-fx-font-family: Galdeano;" +
-                "-fx-font-size: 30px;");
+        Styles.setButtonRedStyle(eraseAlbum);
         albumInfo.getChildren().addAll(titleAlbum, lbAlbumName, TitleAlbumDescription, lbAlbumDescription, buttons, eraseAlbum);
         return albumInfo;
 
@@ -256,27 +233,19 @@ public class GaleryPage {
 
     public void editAlbumBox(Album<Photo> album) {
         VBox albumInfo = new VBox();
-        albumInfo.setSpacing(10);
-        albumInfo.setPadding(new Insets(10, 10, 10, 10));
+        Styles.setVBoxStyle(albumInfo);
         albumInfo.setStyle("-fx-background-color: rgba(217, 217, 217, 0.5);" + "-fx-border-color: #006F84;" + "-fx-border-width: 2px;");
-        albumInfo.setPadding(new Insets(10, 10, 10, 10));
-        albumInfo.setAlignment(Pos.CENTER);
         String albumName = album.getAlbumName();
         Label titleAlbum = new Label("Album's Name:");
-        titleAlbum.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;" + "-fx-font-weight: bold;");
+        Styles.setSubTitle1Style(titleAlbum);
         Label TitleAlbumDescription = new Label("Description:");
-        TitleAlbumDescription.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;" + "-fx-font-weight: bold;");
+        Styles.setSubTitle1Style(TitleAlbumDescription);
         TextField lbAlbumNameText = new TextField(albumName);
-        lbAlbumNameText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        Styles.setSubTextStyle(lbAlbumNameText);
         TextField lbAlbumDescriptionText = new TextField(album.getAlbumDescription());
-        lbAlbumDescriptionText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        Styles.setSubTextStyle(lbAlbumDescriptionText);
         Button editAlbum = new Button("Edit Album");
-
-        editAlbum.setStyle("-fx-text-fill: #FFFFFF;" +
-                "-fx-background-color: #C24242;" +
-                "-fx-text-alignment: center;" +
-                "-fx-font-family: Galdeano;" +
-                "-fx-font-size: 30px;");
+        Styles.setButtonRedStyle(editAlbum);
         editAlbum.setOnMouseClicked(e -> {
 
             if (!lbAlbumNameText.getText().equals("") && !lbAlbumDescriptionText.getText().equals("")) {
@@ -292,93 +261,131 @@ public class GaleryPage {
     }
 
     public void visualizePic(Album<Photo> album) {
-        VBox pics = new VBox();
-
-        HBox photoFeatures = new HBox();
-        HBox photoBox = new HBox();
-
+        FlowPane Gallery = new FlowPane();
+        Gallery.setPadding(new Insets(10));
+        Gallery.setHgap(10);
+        Gallery.setVgap(10);
         VBox addPhoto = new VBox();
-        VBox photo = new VBox();
-        VBox noPhotos = new VBox();
-
-        File addPhotoImage = new File("src/Assets/photo.png");
-        File prevPhotoImage = new File("src/Assets/left-arrow.png");
-        File nextPhotoImage = new File("src/Assets/right-arrow.png");
-        File noPhotoImage = new File("src/Assets/muerto.png");
-
+        addPhoto.setSpacing(10);
+        Label addPhotoLabel = new Label("Add Photo");
+        Styles.setSubTitle1Style(addPhotoLabel);
+        addPhoto.setStyle("-fx-border-color: #006F84;" + "-fx-border-width: 2px;");
+        addPhoto.setPadding(new Insets(10));
+        addPhoto.setPrefSize(200, 200);
+        addPhoto.setAlignment(Pos.CENTER);
         try {
-            ImageView AddPhotoImageview = new ImageView(new Image(new FileInputStream(addPhotoImage.getAbsolutePath())));
-            AddPhotoImageview.setFitHeight(50);
-            AddPhotoImageview.setFitWidth(50);
-            Label addPhotoLabel = new Label("Add Photo");
-            addPhotoLabel.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
-            addPhoto.getChildren().addAll(AddPhotoImageview, addPhotoLabel);
-            addPhoto.setPrefSize(500, 500);
-            addPhoto.setAlignment(Pos.CENTER);
-            photoFeatures.getChildren().addAll(addPhoto);
-            photoFeatures.setAlignment(Pos.BASELINE_RIGHT);
-
-
-            ImageView prevPhotoImageview = new ImageView(new Image(new FileInputStream(prevPhotoImage.getAbsolutePath())));
-            ImageView nextPhotoImageview = new ImageView(new Image(new FileInputStream(nextPhotoImage.getAbsolutePath())));
-            prevPhotoImageview.setFitHeight(50);
-            prevPhotoImageview.setFitWidth(50);
-            nextPhotoImageview.setFitHeight(50);
-            nextPhotoImageview.setFitWidth(50);
-
-            photo.setMaxWidth(100);
-            photo.setMaxHeight(100);
-            photoBox.setStyle("-fx-alignment: center;");
-
-            CircularDoublyLinkedList<Photo> photos = album.getPhotosOnAlbum();
-
-            if(photos.isEmpty()){
-                ImageView noPhotoImageview = new ImageView(new Image(new FileInputStream(noPhotoImage.getAbsolutePath())));
-                noPhotoImageview.setFitHeight(500);
-                noPhotoImageview.setFitWidth(500);
-
-                Label noPhotosLb = new Label("No Photos!");
-                noPhotosLb.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 100px;" + "-fx-text-fill: #006F84;");
-
-                noPhotos.setStyle("-fx-alignment: center;");
-                noPhotos.setPadding(new Insets(20, 20, 20, 20));
-
-                noPhotos.getChildren().addAll(noPhotoImageview,noPhotosLb);
-
-                photoBox.getChildren().addAll(prevPhotoImageview,noPhotos,nextPhotoImageview);
-            }else{
-
-                for (int i = 0; i < photos.size(); i++) {
-                    Photo pic = photos.get(i);
-                    File photoImage = new File(pic.getRoute());
-
-                    try {
-                        ImageView photoImageview = new ImageView(new Image(new FileInputStream(photoImage.getAbsolutePath())));
-                        photoImageview.setFitHeight(500);
-                        photoImageview.setFitWidth(500);
-                        photo.getChildren().add(photoImageview);
-
-                    } catch (FileNotFoundException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-                photoBox.getChildren().addAll(prevPhotoImageview,photo,nextPhotoImageview);
-            }
+            File photoFile = new File("src/Assets/photo.png");
+            ImageView photoIconView = new ImageView(new Image(new FileInputStream(photoFile.getAbsolutePath())));
+            photoIconView.setFitHeight(125);
+            photoIconView.setFitWidth(125);
+            addPhoto.getChildren().addAll(photoIconView, addPhotoLabel);
             addPhoto.setOnMouseClicked(e -> {
-                VBox PhotoInfo = addPhotoInfo(album);
-                root.setRight(PhotoInfo);
+                addPhotoInfo(album);
             });
-
-
+            Gallery.getChildren().add(addPhoto);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        CircularDoublyLinkedList<Photo> photos = album.getPhotosOnAlbum();
+        for (int i = 0; i < photos.size(); i++) {
+            Photo photo = photos.get(i);
+            VBox photoShow = new VBox();
+            try {
+                File photoFile = new File(photo.getRoute());
+                ImageView photoIconView = new ImageView(new Image(new FileInputStream(photoFile.getAbsolutePath())));
+                Label photoName = new Label(photo.getName());
+                Styles.setSubTitle1Style(photoName);
+                photoIconView.setFitHeight(125);
+                photoIconView.setFitWidth(125);
+                photoShow.getChildren().addAll(photoIconView,photoName);
+                photoShow.setOnMouseClicked(e -> {
+                    showInfoPhoto(photo,album);
+                });
+                Gallery.getChildren().add(photoShow);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        root.setCenter(Gallery);
+    }
 
+    public void showInfoPhoto(Photo photo, Album<Photo> album) {
+        VBox photoInfo = new VBox();
+        Label titlePhoto = new Label("Photo Info");
+        titlePhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 30px;" + "-fx-text-fill: #C24242;" + "-fx-font-weight: bold;");
+        Label TitlePhotoDescription = new Label("Description:");
+        Label lbPhotoDescriptionText = new Label(photo.getDescriptionPhoto());
+        TitlePhotoDescription.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #C24242;" + "-fx-font-weight: bold;");
+        lbPhotoDescriptionText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        Label TitlePhotoDate = new Label("Date:");
+        TitlePhotoDate.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #C24242;" + "-fx-font-weight: bold;");
+        Label lbPhotoDateText = new Label(photo.getDatePhoto());
+        lbPhotoDateText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        Label TitlePhotoLocation = new Label("Location:");
+        Label lbPhotoLocationText = new Label(photo.getPlacePhoto());
+        lbPhotoLocationText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        TitlePhotoLocation.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #C24242;" + "-fx-font-weight: bold;");
+        Label TitlePhotoTags = new Label("Tags:");
+        TitlePhotoTags.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #C24242;" + "-fx-font-weight: bold;");
+        Label lbPhotoTagsText = new Label(photo.getTags());
+        lbPhotoTagsText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        Button btnDeletePhoto = new Button("Delete Photo");
+        btnDeletePhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #C24242;");
+        Button btnEditPhoto = new Button("Edit Photo");
+        btnEditPhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #C24242;");
+        photoInfo.getChildren().addAll(titlePhoto, TitlePhotoDescription, lbPhotoDescriptionText, TitlePhotoDate, lbPhotoDateText, TitlePhotoLocation, lbPhotoLocationText, TitlePhotoTags, lbPhotoTagsText, btnDeletePhoto, btnEditPhoto);
+        photoInfo.setAlignment(Pos.CENTER);
+        photoInfo.setPadding(new Insets(20, 20, 20, 20));
+        root.setRight(photoInfo);
+        btnEditPhoto.setOnMouseClicked(e -> {
+            editPhotoInfo(photo, album);
 
+        });
 
-        pics.getChildren().addAll(photoFeatures,photoBox);
+    }
 
-        root.setCenter(pics);
+    public void editPhotoInfo(Photo photo, Album<Photo> album) {
+        GridPane editPhoto = new GridPane();
+        editPhoto.setAlignment(Pos.CENTER);
+        editPhoto.setPadding(new Insets(20, 20, 20, 20));
+        editPhoto.setHgap(10);
+        editPhoto.setVgap(10);
+        Label titlePhoto = new Label("Edit Photo");
+        titlePhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 30px;" + "-fx-text-fill: #C24242;" + "-fx-font-weight: bold;");
+        Label TitlePhotoDescription = new Label("Description:");
+        TextField txtPhotoDescription = new TextField(photo.getDescriptionPhoto());
+        TitlePhotoDescription.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #C24242;" + "-fx-font-weight: bold;");
+        txtPhotoDescription.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        Label TitlePhotoDate = new Label("Date:");
+        TextField txtPhotoDate = new TextField(photo.getDatePhoto());
+        TitlePhotoDate.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #C24242;" + "-fx-font-weight: bold;");
+        txtPhotoDate.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        Label TitlePhotoLocation = new Label("Location:");
+        TextField txtPhotoLocation = new TextField(photo.getPlacePhoto());
+        TitlePhotoLocation.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #C24242;" + "-fx-font-weight: bold;");
+        txtPhotoLocation.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        Label TittlePhotoPerson = new Label("Person:");
+        TextField txtPhotoPerson = new TextField(photo.getPersons());
+        TittlePhotoPerson.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #C24242;" + "-fx-font-weight: bold;");
+        txtPhotoPerson.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        Label TitlePhotoTags = new Label("Tags:");
+        TextField txtPhotoTags = new TextField(photo.getTags());
+        TitlePhotoTags.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #C24242;" + "-fx-font-weight: bold;");
+        txtPhotoTags.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        Label TiylePhotoCamera = new Label("Camera:");
+        TextField txtPhotoCamera = new TextField(photo.getCamera());
+        TiylePhotoCamera.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #C24242;" + "-fx-font-weight: bold;");
+        txtPhotoCamera.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+        Button btnSavePhoto = new Button("Save");
+        btnSavePhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #C24242;");
+        btnSavePhoto.setOnMouseClicked(e -> {
+            ValidatorData.editPhotoInFile(photo, session.getUser(), album, txtPhotoDescription.getText(), txtPhotoLocation.getText(), txtPhotoDate.getText(), txtPhotoPerson.getText(), txtPhotoTags.getText(), txtPhotoCamera.getText());
+            root.setRight(new VBox());
+        });
+
+        editPhoto.addColumn(0, titlePhoto, TitlePhotoDescription, TitlePhotoDate, TitlePhotoLocation, TittlePhotoPerson, TitlePhotoTags, TiylePhotoCamera, btnSavePhoto);
+        editPhoto.addColumn(1, new Label(), txtPhotoDescription, txtPhotoDate, txtPhotoLocation, txtPhotoPerson, txtPhotoTags, txtPhotoCamera);
+        root.setRight(editPhoto);
     }
 
     public void addAlbumToGalery() {
@@ -475,13 +482,13 @@ public class GaleryPage {
         features.setSpacing(40);
         features.setStyle("-fx-alignment: center");
 
-        features.getChildren().addAll(searchLbl,cbxSearchOpt);
+        features.getChildren().addAll(searchLbl, cbxSearchOpt);
 
 
         return features;
     }
 
-    public VBox addPhotoInfo(Album<Photo> album) {
+    public void addPhotoInfo(Album<Photo> album) {
         GridPane addPhoto = new GridPane();
         addPhoto.setVgap(10);
         addPhoto.setHgap(10);
@@ -520,17 +527,13 @@ public class GaleryPage {
         addPersonsOnAlbumText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
 
 
-
         Button addPhotoButton = new Button("Add Photo");
         addPhotoButton.setDisable(true);
-        addPhotoButton.setStyle("-fx-text-fill: #FFFFFF;" +
-                "-fx-background-color: #C24242;" +
-                "-fx-text-alignment: center;" +
-                "-fx-font-family: Galdeano;" +
-                "-fx-font-size: 30px;");
-
+        Styles.setButtonRedStyle(addPhotoButton);
+        AtomicReference<String> title = new AtomicReference<>("Picture");
         searchPath.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
             fileChooser.setTitle("Open Resource File");
             File file = fileChooser.showOpenDialog(null);
             if (file != null) {
@@ -544,6 +547,7 @@ public class GaleryPage {
                         fos.write(buffer, 0, length);
                     }
                     addPathPhotoText.setText("src/images/" + file.getName());
+                    title.set(file.getName());
                     addPhotoButton.setDisable(false);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -555,25 +559,24 @@ public class GaleryPage {
         });
 
         addPhotoButton.setOnMouseClicked(e -> {
-            if (!addDescriptionText.getText().equals("")&& !addPathPhotoText.getText().equals((""))) {
+            if (!addDescriptionText.getText().equals("") && !addPathPhotoText.getText().equals((""))) {
 
                 ArrayList<Person> persons = new ArrayList<>();
                 Album<Photo> albumRelated = album;
 
                 String[] namesList = addPersonsOnAlbumText.getText().split(",");
 
-                for (String name: namesList
-                     ) {
+                for (String name : namesList
+                ) {
                     persons.addLast(new Person(name));
                 }
-                String route   = addPathPhotoText.getText();
+                String route = addPathPhotoText.getText();
 
-                Photo newPhoto = new Photo(addDescriptionText.getText(),addPlacePhotoText.getText(),addDatePhotoText.getText(),persons,albumRelated, route);
-                CircularDoublyLinkedList<Photo> photos = new CircularDoublyLinkedList<>();
-                photos.addLast(newPhoto);
+                Photo newPhoto = new Photo(title.toString(), addDescriptionPhoto.getText(), addPlacePhotoText.getText(), addDatePhotoText.getText(), persons, albumRelated, route);
                 ValidatorData.addPhotoToAlbum(newPhoto, session.getUser(), albumRelated);
+                root.setCenter(new FlowPane());
                 visualizePic(album);
-                root.setRight(null);
+                root.setRight(new VBox());
             }
         });
 
@@ -588,17 +591,17 @@ public class GaleryPage {
         addPhoto.add(addPersonsOnAlbumText, 1, 3);
         //addPhoto.add(addAlbumRelated, 0, 4);
         //addPhoto.add(addAlbumRelatedText, 1, 4);
-        addPhoto.add(addPathPhoto,0,4);
-        addPhoto.add(addPathPhotoText,1,4);
-        addPhoto.add(searchPath,2,4);
-        addPhoto.add(addPhotoButton,0,5);
+        addPhoto.add(addPathPhoto, 0, 4);
+        addPhoto.add(addPathPhotoText, 1, 4);
+        addPhoto.add(searchPath, 2, 4);
+        addPhoto.add(addPhotoButton, 0, 5);
 
         root.setRight(addPhoto);
 
-        return new VBox(addPhoto);
     }
 
-    public void createPhoto() {}
+    public void createPhoto() {
+    }
 
 
     public BorderPane getRoot() {

@@ -10,6 +10,7 @@ import java.util.Date;
 
 public class Photo implements Serializable {
 
+    private String name;
     private String descriptionPhoto;
     private String placePhoto;
     private String datePhoto;
@@ -20,7 +21,8 @@ public class Photo implements Serializable {
     private LinkedList<String> tag = new LinkedList<>();
 
 
-    public Photo(String descriptionPhoto, String placePhoto, String datePhoto, ArrayList<Person> personsOnAlbum, Album albumRelated, String route){
+    public Photo(String title, String descriptionPhoto, String placePhoto, String datePhoto, ArrayList<Person> personsOnAlbum, Album albumRelated, String route){
+        this.name = title;
         this.descriptionPhoto =descriptionPhoto;
         this.placePhoto= placePhoto;
         this.datePhoto=datePhoto;
@@ -31,6 +33,9 @@ public class Photo implements Serializable {
 
 
 
+    public String getName() {
+        return name;
+    }
     public boolean addPerson(ArrayList<Person> helloPersons) {
         if(helloPersons.isEmpty()){return false;}
         for(Person people: helloPersons){
@@ -135,5 +140,21 @@ public class Photo implements Serializable {
 
     public void setTag(LinkedList<String> tag) {
         this.tag = tag;
+    }
+
+    public String getPersons(){
+        String persons = "";
+        for(Person people: personsOnAlbum){
+            persons += people.getPersonName() + " ";
+        }
+        return persons;
+    }
+
+    public String getTags(){
+        String hashtag = "";
+        for (String tag : tag) {
+            hashtag += tag + " ";
+        }
+        return hashtag;
     }
 }
