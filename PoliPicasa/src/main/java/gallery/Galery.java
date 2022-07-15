@@ -67,8 +67,7 @@ public class Galery implements Serializable {
     public Album<Photo> findAlbumByPersons(ArrayList<Person> persons) {
         Album<Photo> album = new Album<>("Album from " + persons.toString(),"Album from " + persons.toString());
         for (Album<Photo> albums1 : albums) {
-            CircularDoublyLinkedList<Photo> photosOnAlbum = albums1.getPhotosOnAlbum();
-            CircularDoublyLinkedList<Photo> photoByPerson = albums1.searchByPersons(photosOnAlbum, persons);
+            CircularDoublyLinkedList<Photo> photoByPerson = albums1.searchByPersons(persons);
             for (int i = 0; i < photoByPerson.size(); i++) {
                 album.addPhoto(photoByPerson.get(i));
             }

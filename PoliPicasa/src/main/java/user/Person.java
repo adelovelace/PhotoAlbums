@@ -19,11 +19,10 @@ public class Person implements Serializable {
     }
 
 
+
     public boolean equals(Person person2) {
-        if (this.getPersonName().equals(person2.getPersonName())) {
-            return true;
-        } else {
-            return false;
-        }
+
+        System.out.println("Person.equals"+person2.getPersonName());
+        return this.getPersonName().equals(person2.getPersonName());
     }
 }

@@ -292,7 +292,7 @@ public class CircularDoublyLinkedList<E> implements List<E>, Serializable {
 
         do{
 
-            if(actualNode.data == e){
+            if(actualNode.data.equals(e)){
                 return true;
             }
 

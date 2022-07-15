@@ -115,13 +115,13 @@ public class Album<T> implements Serializable {
     public CircularDoublyLinkedList<Photo> searchByPlace(CircularDoublyLinkedList<Photo> photosOnAlbum, String placePhoto) {
 
         this.photosOnAlbum = photosOnAlbum;
-        CircularDoublyLinkedList<Photo> photosByPlace = null;
+        CircularDoublyLinkedList<Photo> photosByPlace = new CircularDoublyLinkedList<>();
 
         for (int i = 0; i < this.photosOnAlbum.size(); i++) {
             Photo photo = this.photosOnAlbum.get(i);
             String placeOnPhoto = photo.getPlacePhoto();
 
-            if (placeOnPhoto == placePhoto) {
+            if (placeOnPhoto.equals(placePhoto)) {
                 photosByPlace.addLast(photo);
             }
         }
@@ -129,17 +129,17 @@ public class Album<T> implements Serializable {
         return photosByPlace;
     }
 
-    public CircularDoublyLinkedList<Photo> searchByPersons(CircularDoublyLinkedList<Photo> photosOnAlbum, ArrayList<Person> personsOnAlbum) {
-
-        this.photosOnAlbum = photosOnAlbum;
-        CircularDoublyLinkedList<Photo> photosByPersons = null;
-
+    public CircularDoublyLinkedList<Photo> searchByPersons( ArrayList<Person> personsOnAlbum) {
+         CircularDoublyLinkedList<Photo> photosByPersons = new CircularDoublyLinkedList<>();
         if (personsOnAlbum != null) {
             for (int i = 0; i < this.photosOnAlbum.size(); i++) {
                 Photo photo = this.photosOnAlbum.get(i);
                 for (Person person : photo.getPersonsOnAlbum()) {
-                    if (personsOnAlbum.contains(person)) {
-                        photosByPersons.addLast(photo);
+                    System.out.println(personsOnAlbum.contains(person));
+                    for (Person personOnAlbum : personsOnAlbum) {
+                        if (person.getPersonName().equals( personOnAlbum.getPersonName()) ){
+                            photosByPersons.addLast(photo);
+                        }
                     }
                 }
 
@@ -152,18 +152,21 @@ public class Album<T> implements Serializable {
     public CircularDoublyLinkedList<Photo> searchByPlaceAndByPersons(CircularDoublyLinkedList<Photo> photosOnAlbum, String placePhoto, ArrayList<Person> personsOnAlbum) {
 
         this.photosOnAlbum = photosOnAlbum;
-        CircularDoublyLinkedList<Photo> photosByPlaceAndByPersons = null;
+        CircularDoublyLinkedList<Photo> photosByPlaceAndByPersons = new CircularDoublyLinkedList<>();
 
         for (int i = 0; i < this.photosOnAlbum.size(); i++) {
             Photo photo = this.photosOnAlbum.get(i);
             String placeOnPhoto = photo.getPlacePhoto();
-
-            for (Person person : personsOnAlbum
-            ) {
-                if (photo.getPersonsOnAlbum().contains(person) && (placeOnPhoto == placePhoto)) {
-                    photosByPlaceAndByPersons.addLast(photo);
+            for (Person person : photo.getPersonsOnAlbum()) {
+                System.out.println(personsOnAlbum.contains(person));
+                for (Person personOnAlbum : personsOnAlbum) {
+                    if (person.getPersonName().equals( personOnAlbum.getPersonName()) ){
+                        photosByPlaceAndByPersons.addLast(photo);
+                    }
                 }
             }
+
+
         }
 
         return photosByPlaceAndByPersons;

@@ -476,10 +476,11 @@ public class GaleryPage {
             HBox option = new HBox();
 
             Label selectionLbl = new Label(selectedItem.toString().substring(0, 1).toUpperCase() + selectedItem.toString().substring(1));
-            TextField textField = new TextField();
-            textField.setMaxWidth(100);
+            TextField textFieldPerson = new TextField();
+            TextField textFieldPlace = new TextField();
+            textFieldPerson.setMaxWidth(100);
+            textFieldPlace.setMaxWidth(100);
 
-            option.getChildren().addAll(selectionLbl, textField);
             option.setSpacing(5);
             option.setStyle("-fx-alignment: center");
 
@@ -488,9 +489,57 @@ public class GaleryPage {
 
             layout.setSpacing(5);
             layout.setStyle("-fx-alignment: center");
+            if(selectedItem.equals("person")){
+                System.out.println("Search by " + selectedItem);
+                option.getChildren().addAll(selectionLbl, textFieldPerson);
+                layout.getChildren().addAll(selectionLbl, option, searchBtn);
+                searchBtn.setOnAction(e -> {
+                    String [] persons = textFieldPerson.getText().split(",");
+                    ArrayList<Person> arrayPerson = new ArrayList<>();
+                    for (String person : persons) {
+                        arrayPerson.addLast(new Person(person));
+                    }
+                    Album<Photo> album = session.getUser().getGalery().findAlbumByPersons(arrayPerson);
+                    if (album != null) {
+                        visualizePic(album);
+                    }
+                    popupwindow.close();
 
-            layout.getChildren().addAll(selectionLbl, textField, searchBtn);
+                });}
+            else if(selectedItem.toString().equals("place")){
+                option.getChildren().addAll(selectionLbl, textFieldPlace);
+                layout.getChildren().addAll(selectionLbl, option, searchBtn);
+                searchBtn.setOnAction(e -> {
+                    Album<Photo> album = session.getUser().getGalery().findAlbumByPlace(textFieldPlace.getText());
+                    if (album != null) {
+                        visualizePic(album);
+                    }
+                popupwindow.close();
+                });}
+            else if(selectedItem.toString().equals("person & place")){
+                GridPane grid = new GridPane();
+                Label personLbl = new Label("Person:");
+                Label placeLbl = new Label("Place:");
+                grid.add(personLbl, 0, 0);
+                grid.add(textFieldPerson, 1, 0);
+                grid.add(placeLbl, 0, 1);
+                grid.add(textFieldPlace, 1, 1);
+                option.getChildren().addAll(selectionLbl, grid);}
+            layout.getChildren().addAll(selectionLbl, option, searchBtn);
+                    searchBtn.setOnAction(e -> {
+                        String [] persons = textFieldPerson.getText().split(",");
+                        ArrayList<Person> arrayPerson = new ArrayList<>();
+                        String place = textFieldPlace.getText();
+                        for (String person : persons) {
+                            arrayPerson.addLast(new Person(person));
+                        }
+                        Album<Photo> album = session.getUser().getGalery().findAlbumByPlaceAndPersons(place, arrayPerson);
+                        if (album != null) {
+                            visualizePic(album);
+                        }
+                        popupwindow.close();
 
+                    });
             popupwindow.setScene(scene1);
             popupwindow.showAndWait();
 
