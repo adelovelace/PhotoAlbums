@@ -267,20 +267,15 @@ public class CircularDoublyLinkedList<E> implements List<E>, Serializable {
             throw new IndexOutOfBoundsException("Indice no está dentro del rango");
         }
 
+        Node <E> actualNode = this.head;
+
         for (int i = 0; i < this.listSize; i++){
 
-            if(index ==0){
-                return getFirst();
-            }
-
-            if(index == this.listSize-1){
-                return getLast();
-            }
-
             if(index == i){
-                Node <E> actualNode = new Node<>(get(index));
                 return actualNode.data;
             }
+
+            actualNode = actualNode.next;
         }
 
         return null;
