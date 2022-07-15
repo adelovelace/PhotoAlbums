@@ -1,9 +1,10 @@
 package util;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-public class ArrayList<E> implements List<E>, Iterable<E> {
+public class ArrayList<E> implements List<E>, Iterable<E> , Serializable {
 
     private E[] array;
     private int capacity;
