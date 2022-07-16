@@ -162,4 +162,14 @@ public class Photo implements Serializable {
         }
         return hashtag;
     }
+
+
+
+    @Override
+    public boolean equals(Object obj) {
+        Photo p= (Photo) obj;
+        return p.getRoute().equals(this.getRoute());
+    }
 }
+
+

@@ -98,6 +98,8 @@ public class Album<T> implements Serializable {
             return false;
         }
 
+        System.out.println("Indice de la foto seleccionada "+ this.photosOnAlbum.indexOf(selectedPhoto));
+
         int indexSelectedPhoto = this.photosOnAlbum.indexOf(selectedPhoto);
 
         System.out.println("Index of the photo: " + indexSelectedPhoto);
