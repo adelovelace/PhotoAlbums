@@ -126,11 +126,14 @@ public class CircularDoublyLinkedList<E> implements List<E>, Serializable {
             return index;
         }
 
+        System.out.println("aqui el pre indice");
         for(int i = 0; i < this.listSize; i++){
-            if(this.head.data == e){
+            if(this.head.data.equals(e)){
                 index = i;
             }
         }
+
+        System.out.println("aqui el indice: "+ index);
 
         return index;
     }

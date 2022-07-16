@@ -576,6 +576,7 @@ public class GaleryPage {
                     persons.addLast(new Person(name));
                 }
                 String route = addPathPhotoText.getText();
+                System.out.println("Ruta" + route);
 
                 Photo newPhoto = new Photo(title.toString(), addDescriptionPhoto.getText(), addPlacePhotoText.getText(), addDatePhotoText.getText(), persons, albumRelated, route);
                 ValidatorData.addPhotoToAlbum(newPhoto, session.getUser(), albumRelated);
