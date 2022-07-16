@@ -491,6 +491,7 @@ public class GaleryPage {
             layout.setSpacing(5);
             layout.setStyle("-fx-alignment: center");
 
+
             if(selectedItem.equals("person")){
                 System.out.println("Search by " + selectedItem);
                 option.getChildren().addAll(selectionLbl, textFieldPerson);
@@ -542,7 +543,6 @@ public class GaleryPage {
                         popupwindow.close();
 
                     });
-
 
 
             popupwindow.setScene(scene1);
