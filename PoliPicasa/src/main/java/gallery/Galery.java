@@ -53,11 +53,11 @@ public class Galery implements Serializable {
     }
 
 
-    public Album<Photo> findAlbumByPlace(String place) {
-        Album<Photo> album = new Album<>("Album from " + place,"Album from " + place);
+    public Album<Photo> findAlbumByPlace(String placeToFind){
+        Album<Photo> album = new Album<>("Album from " + placeToFind,"Album from " + placeToFind);
         for (Album<Photo> albums1 : albums) {
-            CircularDoublyLinkedList<Photo> photosOnAlbum = albums1.getPhotosOnAlbum();
-            CircularDoublyLinkedList<Photo> photoByPlace = albums1.searchByPlace(photosOnAlbum, place);
+            System.out.println(albums1.getAlbumName()+"galery.class");
+            CircularDoublyLinkedList<Photo> photoByPlace = albums1.searchByPlace(placeToFind);
             for (int i = 0; i < photoByPlace.size(); i++) {
                 album.addPhoto(photoByPlace.get(i));
             }
