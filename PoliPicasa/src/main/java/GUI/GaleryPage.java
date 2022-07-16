@@ -26,6 +26,7 @@ import validator.ValidatorData;
 
 
 import java.io.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -671,99 +672,148 @@ public class GaleryPage {
     }
     public VBox showPhotoBigger(CircularDoublyLinkedList<Photo> photosOnAlbum, int index ) {
 
-            VBox displayPhoto = new VBox();
+        AtomicInteger photo_index = new AtomicInteger(index);
+        VBox displayPhoto = new VBox();
+        VBox previewBox = new VBox();
+        VBox nextBox = new VBox();
 
-            HBox photo = new HBox();
-            HBox detailsOnPhoto = new HBox();
+        root.setRight(new VBox());
 
-            File noPhotoImage = new File("src/Assets/muerto.png");
+        File prevPhotoImage = new File("src/Assets/left-arrow.png");
+        File nextPhotoImage = new File("src/Assets/right-arrow.png");
 
+        try {
 
-            try {
+            ImageView prevPhotoImageview = new ImageView(new Image(new FileInputStream(prevPhotoImage.getAbsolutePath())));
+            ImageView nextPhotoImageview = new ImageView(new Image(new FileInputStream(nextPhotoImage.getAbsolutePath())));
+            prevPhotoImageview.setFitHeight(50);
+            prevPhotoImageview.setFitWidth(50);
+            nextPhotoImageview.setFitHeight(50);
+            nextPhotoImageview.setFitWidth(50);
 
-                if(photosOnAlbum.isEmpty()){
+            previewBox.setAlignment(Pos.BASELINE_CENTER);
+            nextBox.setAlignment(Pos.BASELINE_CENTER);
 
-                    ImageView noPhotoImageview = new ImageView(new Image(new FileInputStream(noPhotoImage.getAbsolutePath())));
-                    noPhotoImageview.setFitHeight(500);
-                    noPhotoImageview.setFitWidth(500);
-
-                    Label noPhotosLb = new Label("No Photos!");
-                    noPhotosLb.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 100px;" + "-fx-text-fill: #006F84;");
-
-                    photo.setStyle("-fx-alignment: center;");
-                    photo.setPadding(new Insets(20, 20, 20, 20));
-
-                    photo.getChildren().addAll(noPhotoImageview,noPhotosLb);
-                    displayPhoto.getChildren().add(photo);
-
-                }else{
-                    GridPane infoPhoto = new GridPane();
-                    infoPhoto.setVgap(10);
-                    infoPhoto.setHgap(10);
-                    infoPhoto.setPadding(new Insets(10));
-
-                    Photo pic = photosOnAlbum.get(index);
-                    File photoImage = new File(pic.getRoute());
+            previewBox.getChildren().add(prevPhotoImageview);
+            nextBox.getChildren().add(nextPhotoImageview);
 
 
-                    ImageView photoImageview = new ImageView(new Image(new FileInputStream(photoImage.getAbsolutePath())));
-                    photoImageview.setFitHeight(500);
-                    photoImageview.setFitWidth(500);
-                    photo.getChildren().add(photoImageview);
-
-                    Label descriptionPhoto = new Label("Photo description: ");
-                    descriptionPhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
-
-                    Label textDescriptionPhoto = new Label(pic.getDescriptionPhoto());
-                    textDescriptionPhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #000000;");
-
-                    Label placePhoto = new Label("Photo's Place: ");
-                    placePhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
-
-                    Label textPlacePhoto = new Label(pic.getPlacePhoto());
-                    textPlacePhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #000000;");
-
-                    Label datePhoto = new Label("Date: ");
-                    datePhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
-
-                    Label textDatePhoto = new Label(pic.getDatePhoto());
-                    textDatePhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #000000;");
-
-                    Label personsOnAlbum = new Label("Person on photos: ");
-                    personsOnAlbum.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
-
-                    Label textPersonsOnAlbum = new Label(pic.getPersonsOnAlbum().toString());
-                    textPersonsOnAlbum.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #000000;");
-
-
-                    infoPhoto.add(descriptionPhoto, 0, 0);
-                    infoPhoto.add(textDescriptionPhoto, 0, 1);
-                    infoPhoto.add(placePhoto, 0, 1);
-                    infoPhoto.add(textPlacePhoto, 1, 1);
-                    infoPhoto.add(datePhoto, 0, 2);
-                    infoPhoto.add(textDatePhoto, 1, 2);
-                    infoPhoto.add(personsOnAlbum, 0, 3);
-                    infoPhoto.add(textPersonsOnAlbum, 1, 3);
-
-                    detailsOnPhoto.getChildren().add(infoPhoto);
-                    displayPhoto.getChildren().addAll(photo, detailsOnPhoto);
-
-
+            prevPhotoImageview.setOnMouseClicked(e ->{
+                if ((photo_index.get() -1)<0){
+                    photo_index.set(photosOnAlbum.size() - 1);
                 }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+                displayPhoto.getChildren().setAll(previewBox,loadPhoto(photosOnAlbum, photo_index.get()),nextBox);
+                photo_index.getAndDecrement();
+            });
+
+            nextPhotoImageview.setOnMouseClicked(e ->{
+
+                if (photo_index.get() > photosOnAlbum.size()-1){
+                    photo_index.set(0);
+                }
+                displayPhoto.getChildren().setAll(previewBox,loadPhoto(photosOnAlbum, photo_index.get()),nextBox);
+                photo_index.getAndIncrement();
+            });
 
 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-
-
+            displayPhoto.setAlignment(Pos.BASELINE_CENTER);
+            displayPhoto.getChildren().addAll(previewBox,loadPhoto( photosOnAlbum, index),nextBox);
 
             return displayPhoto;
         }
 
 
-    public void createPhoto() {
+    public VBox loadPhoto(CircularDoublyLinkedList<Photo> photosOnAlbum, int index) {
+
+        VBox displayPhoto = new VBox();
+
+        HBox photo = new HBox();
+        HBox detailsOnPhoto = new HBox();
+
+        File noPhotoImage = new File("src/Assets/muerto.png");
+
+        try {
+
+            if(photosOnAlbum.isEmpty()){
+
+                ImageView noPhotoImageview = new ImageView(new Image(new FileInputStream(noPhotoImage.getAbsolutePath())));
+                noPhotoImageview.setFitHeight(500);
+                noPhotoImageview.setFitWidth(500);
+
+                Label noPhotosLb = new Label("No Photos!");
+                noPhotosLb.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 100px;" + "-fx-text-fill: #006F84;");
+
+                photo.setStyle("-fx-alignment: center;");
+                photo.setPadding(new Insets(20, 20, 20, 20));
+
+                photo.getChildren().addAll(noPhotoImageview,noPhotosLb);
+                displayPhoto.getChildren().add(photo);
+
+            }else{
+                GridPane infoPhoto = new GridPane();
+                infoPhoto.setVgap(10);
+                infoPhoto.setHgap(10);
+                infoPhoto.setPadding(new Insets(10));
+
+                Photo pic = photosOnAlbum.get(index);
+                File photoImage = new File(pic.getRoute());
+
+
+                ImageView photoImageview = new ImageView(new Image(new FileInputStream(photoImage.getAbsolutePath())));
+                photoImageview.setFitHeight(500);
+                photoImageview.setFitWidth(500);
+                photo.getChildren().add(photoImageview);
+
+                Label descriptionPhoto = new Label("Photo description: ");
+                descriptionPhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+
+                Label textDescriptionPhoto = new Label(pic.getDescriptionPhoto());
+                textDescriptionPhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #000000;");
+
+                Label placePhoto = new Label("Photo's Place: ");
+                placePhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+
+                Label textPlacePhoto = new Label(pic.getPlacePhoto());
+                textPlacePhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #000000;");
+
+                Label datePhoto = new Label("Date: ");
+                datePhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+
+                Label textDatePhoto = new Label(pic.getDatePhoto());
+                textDatePhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #000000;");
+
+                Label personsOnAlbum = new Label("Person on photos: ");
+                personsOnAlbum.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+
+                Label textPersonsOnAlbum = new Label(pic.getPersonsOnAlbum().toString());
+                textPersonsOnAlbum.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #000000;");
+
+
+                infoPhoto.add(descriptionPhoto, 0, 0);
+                infoPhoto.add(textDescriptionPhoto, 0, 1);
+                infoPhoto.add(placePhoto, 0, 1);
+                infoPhoto.add(textPlacePhoto, 1, 1);
+                infoPhoto.add(datePhoto, 0, 2);
+                infoPhoto.add(textDatePhoto, 1, 2);
+                infoPhoto.add(personsOnAlbum, 0, 3);
+                infoPhoto.add(textPersonsOnAlbum, 1, 3);
+
+                detailsOnPhoto.getChildren().add(infoPhoto);
+                displayPhoto.getChildren().addAll(photo, detailsOnPhoto);
+
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        displayPhoto.setAlignment(Pos.BASELINE_CENTER);
+
+        return displayPhoto;
     }
 
 
