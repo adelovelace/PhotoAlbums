@@ -112,15 +112,15 @@ public class Album<T> implements Serializable {
         return true;
     }
 
-    public CircularDoublyLinkedList<Photo> searchByPlace(CircularDoublyLinkedList<Photo> photosOnAlbum, String placePhoto) {
-
-        this.photosOnAlbum = photosOnAlbum;
+    public CircularDoublyLinkedList<Photo> searchByPlace(String placePhoto) {
         CircularDoublyLinkedList<Photo> photosByPlace = new CircularDoublyLinkedList<>();
-
+        System.out.println("Searching by place: " + placePhoto);
         for (int i = 0; i < this.photosOnAlbum.size(); i++) {
+            System.out.println("Photo Info on " + this.albumName + " Album");
             Photo photo = this.photosOnAlbum.get(i);
             String placeOnPhoto = photo.getPlacePhoto();
-
+            System.out.println("Place Photo:" + placeOnPhoto);
+            System.out.println("Place Searched"+placePhoto);
             if (placeOnPhoto.equals(placePhoto)) {
                 photosByPlace.addLast(photo);
             }
@@ -135,7 +135,7 @@ public class Album<T> implements Serializable {
             for (int i = 0; i < this.photosOnAlbum.size(); i++) {
                 Photo photo = this.photosOnAlbum.get(i);
                 for (Person person : photo.getPersonsOnAlbum()) {
-                    System.out.println(personsOnAlbum.contains(person));
+                    //System.out.println(personsOnAlbum.contains(person));
                     for (Person personOnAlbum : personsOnAlbum) {
                         if (person.getPersonName().equals( personOnAlbum.getPersonName()) ){
                             photosByPersons.addLast(photo);
@@ -158,7 +158,7 @@ public class Album<T> implements Serializable {
             Photo photo = this.photosOnAlbum.get(i);
             String placeOnPhoto = photo.getPlacePhoto();
             for (Person person : photo.getPersonsOnAlbum()) {
-                System.out.println(personsOnAlbum.contains(person));
+                //System.out.println(personsOnAlbum.contains(person));
                 for (Person personOnAlbum : personsOnAlbum) {
                     if (person.getPersonName().equals( personOnAlbum.getPersonName()) ){
                         photosByPlaceAndByPersons.addLast(photo);

@@ -3,28 +3,20 @@ package GUI;
 import gallery.Album;
 import gallery.Galery;
 import gallery.Photo;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import user.Person;
 import user.Session;
 import util.ArrayList;
 import util.CircularDoublyLinkedList;
 import validator.ValidatorData;
-
-import java.util.concurrent.atomic.AtomicInteger;
 import java.io.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -48,7 +40,7 @@ public class GaleryPage {
             HBox topElements = new HBox();
             HBox titleApp = new HBox();
             HBox decoration = new HBox();
-            HBox albumsFeatures = albumsFeatures();
+            HBox albumsFeatures = searchBox();
             VBox menu = createMenu();
             menu.setPrefWidth(250);
 
@@ -455,116 +447,49 @@ public class GaleryPage {
         root.setRight(addAlbum);
     }
 
-    public HBox albumsFeatures() {
-
-
-        HBox features = new HBox();
-
-        Label searchLbl = new Label("Search:");
-        searchLbl.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
-
-
-        ObservableList<String> items = FXCollections.observableArrayList();
-        items.addAll("person", "place", "person & place");
-
-        ComboBox<String> cbxSearchOpt = new ComboBox<>(items);
-
-
-        cbxSearchOpt.setOnAction((event -> {
-
-            Stage popupwindow = new Stage();
-
-            popupwindow.initModality(Modality.APPLICATION_MODAL);
-
-
-            Object selectedItem = cbxSearchOpt.getSelectionModel().getSelectedItem();
-            popupwindow.setTitle("Search by " + selectedItem);
-
-            System.out.println(selectedItem);
-
-            VBox layout = new VBox(10);
-            Scene scene1 = new Scene(layout, 400, 250);
-
-            HBox option = new HBox();
-
-            Label selectionLbl = new Label(selectedItem.toString().substring(0, 1).toUpperCase() + selectedItem.toString().substring(1));
-            TextField textFieldPerson = new TextField();
-            TextField textFieldPlace = new TextField();
-            textFieldPerson.setMaxWidth(100);
-            textFieldPlace.setMaxWidth(100);
-
-            option.setSpacing(5);
-            option.setStyle("-fx-alignment: center");
-
-            Button searchBtn = new Button("Search");
-            searchBtn.setAlignment(Pos.CENTER);
-
-            layout.setSpacing(5);
-            layout.setStyle("-fx-alignment: center");
-            if(selectedItem.equals("person")){
-                System.out.println("Search by " + selectedItem);
-                option.getChildren().addAll(selectionLbl, textFieldPerson);
-
-                searchBtn.setOnAction(e -> {
-                    String [] persons = textFieldPerson.getText().split(",");
-                    ArrayList<Person> arrayPerson = new ArrayList<>();
-                    for (String person : persons) {
-                        arrayPerson.addLast(new Person(person));
+    public HBox searchBox() {
+            HBox searchBox = new HBox();
+            Styles.setHBoxStyle(searchBox);
+            Label placeholder = new Label("Search");
+            Styles.setSubTitle1Style(placeholder);
+            Label lblSearchPlace = new Label("Place: ");
+            Styles.setSubTitle2Style(lblSearchPlace);
+            Label lblSearchPerson = new Label("Person: ");
+            Styles.setSubTitle2Style(lblSearchPerson);
+            TextField txtSearchPlace = new TextField();
+            TextField txtSearchPerson = new TextField();
+            Button btnSearch = new Button("Search");
+            searchBox.getChildren().addAll(placeholder, lblSearchPlace, txtSearchPlace, lblSearchPerson, txtSearchPerson, btnSearch);
+            Styles.setButtonRedStyle(btnSearch);
+            btnSearch.setOnAction(e -> {
+                Album<Photo> albumSearched = null ;
+                Galery gal =session.getUser().getGalery();
+                ArrayList<Person> arrayPersons = new ArrayList<>();
+                if(!txtSearchPerson.getText().equals("")){
+                    String [] persons = txtSearchPerson.getText().split(",");
+                    for(String stringPerson : persons){
+                        arrayPersons.addLast(new Person(stringPerson));
                     }
-                    Album<Photo> album = session.getUser().getGalery().findAlbumByPersons(arrayPerson);
-                    if (album != null) {
-                        visualizePic(album);
-                    }
-                    popupwindow.close();
+                }
 
-                });}
-            else if(selectedItem.toString().equals("place")){
-                option.getChildren().addAll(selectionLbl, textFieldPlace);
+                if (!txtSearchPlace.getText().equals("") && !txtSearchPerson.getText().equals("")) {
+                    System.out.println("Place and Person");
+                    albumSearched = gal.findAlbumByPlaceAndPersons(txtSearchPlace.getText(), arrayPersons);
+                } else if (!txtSearchPlace.getText().equals("") && txtSearchPerson.getText().equals("")) {
+                    System.out.println("place");
+                    albumSearched = gal.findAlbumByPlace(txtSearchPlace.getText());
+                } else if (txtSearchPlace.getText().equals("") && !txtSearchPerson.getText().equals("")) {
+                    System.out.println("person");
+                    albumSearched = gal.findAlbumByPersons(arrayPersons);
+                } else {
+                    System.out.println("nothing");
 
-                searchBtn.setOnAction(e -> {
-                    Album<Photo> album = session.getUser().getGalery().findAlbumByPlace(textFieldPlace.getText());
-                    if (album != null) {
-                        visualizePic(album);
-                    }
-                popupwindow.close();
-                });}
-            else if(selectedItem.toString().equals("person & place")){
-                GridPane grid = new GridPane();
-                Label personLbl = new Label("Person:");
-                Label placeLbl = new Label("Place:");
-                grid.add(personLbl, 0, 0);
-                grid.add(textFieldPerson, 1, 0);
-                grid.add(placeLbl, 0, 1);
-                grid.add(textFieldPlace, 1, 1);
-                option.getChildren().addAll(selectionLbl, grid);}
-
-                    searchBtn.setOnAction(e -> {
-                        String [] persons = textFieldPerson.getText().split(",");
-                        ArrayList<Person> arrayPerson = new ArrayList<>();
-                        String place = textFieldPlace.getText();
-                        for (String person : persons) {
-                            arrayPerson.addLast(new Person(person));
-                        }
-                        Album<Photo> album = session.getUser().getGalery().findAlbumByPlaceAndPersons(place, arrayPerson);
-                        if (album != null) {
-                            visualizePic(album);
-                        }
-                        popupwindow.close();
-
-                    });
-            layout.getChildren().addAll(selectionLbl, option, searchBtn);
-            popupwindow.setScene(scene1);
-            popupwindow.showAndWait();
-
-        }));
-
-        features.setSpacing(40);
-        features.setStyle("-fx-alignment: center");
-
-        features.getChildren().addAll(searchLbl, cbxSearchOpt);
-
-
-        return features;
+                }
+                if(albumSearched != null){
+                    visualizePic(albumSearched);}
+            });
+            return searchBox;
+            
     }
 
     public void addPhotoInfo(Album<Photo> album) {
