@@ -3,6 +3,7 @@ package gallery;
 import user.Person;
 import util.ArrayList;
 import util.LinkedList;
+import validator.EmailValidator;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
 public class Photo implements Serializable {
 
     private String name;
+    private String ID;
     private String descriptionPhoto;
     private String placePhoto;
     private String datePhoto;
@@ -23,6 +25,7 @@ public class Photo implements Serializable {
 
     public Photo(String title, String descriptionPhoto, String placePhoto, String datePhoto, ArrayList<Person> personsOnAlbum, Album albumRelated, String route){
         this.name = title;
+        this.ID = EmailValidator.generateCode();
         this.descriptionPhoto =descriptionPhoto;
         this.placePhoto= placePhoto;
         this.datePhoto=datePhoto;
@@ -118,7 +121,8 @@ public class Photo implements Serializable {
 
     @Override
     public String toString() {
-        return "Descripcion de la imagen=" + descriptionPhoto +
+        return "ID Photo: "+ID +
+                "Descripcion de la imagen=" + descriptionPhoto +
                 "\nLugar de la imagen=" + placePhoto +
                 "\nfecha de la foto=" + datePhoto +
                 "\npersonas en el album=" + personsOnAlbum +
@@ -162,13 +166,18 @@ public class Photo implements Serializable {
         }
         return hashtag;
     }
+    public String getID() {
+        return ID;
+    }
 
 
 
     @Override
     public boolean equals(Object obj) {
         Photo p= (Photo) obj;
-        return p.getRoute().equals(this.getRoute());
+        System.out.println("Photo.equals"+p.getID());
+        System.out.println("localPhoto.equals"+ID);
+        return p.getID().equals(ID);
     }
 }
 

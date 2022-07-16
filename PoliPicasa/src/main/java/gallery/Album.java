@@ -91,21 +91,20 @@ public class Album<T> implements Serializable {
 
     public boolean deletePhoto(CircularDoublyLinkedList<Photo> photosOnAlbum, Photo selectedPhoto) {
 
-        this.photosOnAlbum = photosOnAlbum;
 
         if (selectedPhoto == null) {
             System.out.println("Problem deleting the selected Photo!");
             return false;
         }
 
-        System.out.println("Indice de la foto seleccionada "+ this.photosOnAlbum.indexOf(selectedPhoto));
+        System.out.println("Indice de la foto seleccionada: "+ this.photosOnAlbum.indexOf(selectedPhoto));
 
         int indexSelectedPhoto = this.photosOnAlbum.indexOf(selectedPhoto);
 
         System.out.println("Index of the photo: " + indexSelectedPhoto);
 
         System.out.println("Info of the selected Photo, for being deleted!");
-        System.out.println("Description: " + this.photosOnAlbum.get(indexSelectedPhoto).getDatePhoto());
+        System.out.println("Description: " + this.photosOnAlbum.get(indexSelectedPhoto).getDescriptionPhoto());
 
         this.photosOnAlbum.remove(indexSelectedPhoto);
 
@@ -153,16 +152,14 @@ public class Album<T> implements Serializable {
 
     public CircularDoublyLinkedList<Photo> searchByPlaceAndByPersons(CircularDoublyLinkedList<Photo> photosOnAlbum, String placePhoto, ArrayList<Person> personsOnAlbum) {
 
-        this.photosOnAlbum = photosOnAlbum;
         CircularDoublyLinkedList<Photo> photosByPlaceAndByPersons = new CircularDoublyLinkedList<>();
-
         for (int i = 0; i < this.photosOnAlbum.size(); i++) {
             Photo photo = this.photosOnAlbum.get(i);
             String placeOnPhoto = photo.getPlacePhoto();
             for (Person person : photo.getPersonsOnAlbum()) {
                 //System.out.println(personsOnAlbum.contains(person));
                 for (Person personOnAlbum : personsOnAlbum) {
-                    if (person.getPersonName().equals( personOnAlbum.getPersonName()) ){
+                    if (person.getPersonName().equals( personOnAlbum.getPersonName()) && placeOnPhoto.equals(placePhoto)){
                         photosByPlaceAndByPersons.addLast(photo);
                     }
                 }

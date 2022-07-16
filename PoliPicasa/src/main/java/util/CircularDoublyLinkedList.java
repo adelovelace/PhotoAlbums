@@ -1,339 +1,364 @@
 package util;
 
 import java.io.Serializable;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 public class CircularDoublyLinkedList<E> implements List<E>, Serializable {
 
+    private Node<E> last;
+    private int current;
 
-    private static class Node<E> implements Serializable {
-
+    private class Node<E> implements Serializable
+    {
         private E data;
         private Node<E> next;
-        private Node<E> prev;
+        private Node<E> previous;
 
-        public Node(E data){
+        public Node(E data)
+        {
             this.data = data;
+            this.next = null;
+            this.previous = null;
         }
+
+    }
+
+    public CircularDoublyLinkedList() {
+        last = null;
+        current =0;
     }
 
 
-    private Node <E> head;
-    private Node <E> tail;
 
-    private int listSize = 0;
 
-    public CircularDoublyLinkedList() {
-        this.head = null;
-        this.tail = null;
+
+    public Iterator<E> iterator() {
+        Iterator<E> it = new Iterator<E>(){
+            Node<E> p = last.next;
+            @Override
+            public boolean hasNext() {
+                return p!=null;
+            }
+
+            @Override
+            public E next() {
+                E temp = p.data;
+                p = p.next;
+                return temp;
+            }
+
+        };
+        return it;
+    }
+
+    public ListIterator<E> listIterator(){
+        return listIterator(0);
+    }
+
+    public ListIterator<E> listIterator(int index)
+    {
+        if(index<0 || index>=current) throw new IndexOutOfBoundsException("Index Out of Bounds");
+
+        ListIterator<E> lit = new ListIterator<E>(){
+            private int i = index;
+            private Node<E> p = getNode(i);
+
+
+
+            @Override
+            public boolean hasNext() {
+                return p!=null;
+            }
+
+            @Override
+            public E next() {
+                E tmp = p.data;
+                p = p.next;
+                if(i==current -1) i=0;
+                else i++;
+                return tmp;
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return p!=null;
+            }
+
+            @Override
+            public E previous() {
+                E tmp = p.data;
+                p = p.previous;
+                if(i==0) i=current -1;
+                else i--;
+                return tmp;
+            }
+
+            @Override
+            public int nextIndex() {
+                if(!isEmpty()){
+                    if(i==current -1) return i=0;
+                    else return i+1;
+                }
+                return -1;
+            }
+
+            @Override
+            public int previousIndex() {
+                if(hasPrevious()) {
+                    if(i==0) return i=current -1;
+                    else return i-1;
+                }
+                return -1;
+            }
+
+            @Override
+            public void remove() {
+                if(i==0)  removeFirst();
+                else if(i == current-1)  removeLast();
+                else{
+                    Node<E> p = getNode(i-1);
+                    Node<E> nRemover = p.next;
+                    Node<E> siguiente = nRemover.next;
+                    nRemover.data = null;
+                    nRemover.next = nRemover.previous = null;
+                    p.next = siguiente;
+                    siguiente.previous = p;
+                    current --;
+                }
+            }
+
+            @Override
+            public void set(E arg0) {
+                if(arg0==null) throw new NullPointerException();
+                else{
+                    Node<E> p = getNode(i);
+                    p.data=arg0;
+                }
+            }
+
+            @Override
+            public void add(E arg0) {
+                insert(i,arg0);
+            }
+
+        };
+        return lit;
     }
 
     @Override
     public boolean addFirst(E e) {
-
-        Node <E> newNode = new Node<E>(e);
-
-        if(e == null){
-            return false;
+        if(e==null) return false;
+        Node<E> p = new Node(e);
+        if(isEmpty()) {
+            last = p;
+            last.next=p;
         }
-
-        if(this.listSize == 0){
-            this.head = newNode;
-            this.tail = newNode;
-            this.listSize ++;
-            return true;
+        else{
+            Node<E> second = last.next;
+            last.next = p;
+            p.next = second;
+            second.previous=p;
+            p.previous= last;
         }
-
-        if(this.head == null){
-            this.head = newNode;
-            this.tail = newNode;
-            this.listSize ++;
-            return true;
-        }
-
-        newNode.next = this.head;
-        newNode.prev = this.tail;
-        this.head.prev = newNode;
-        this.tail.next = newNode;
-        this.tail= newNode;
-
-        this.listSize++;
-
+        current ++;
         return true;
     }
 
     @Override
     public boolean addLast(E e) {
-
-        Node <E> newNode = new Node<E>(e);
-
-        if(e ==null){
-            return false;
+        if(e==null) return false;
+        Node<E> p = new Node(e);
+        if(isEmpty()){ addFirst(e);
+        return true;}
+        else{
+            p.previous = last;
+            Node<E> first = last.next;
+            p.next=first;
+            first.previous = p;
+            last.next = p;
+            last = p;
         }
-
-        if(head==null){
-            head= newNode;
-            tail=newNode;
-            this.listSize = 1;
-            return true;
-        }
-
-        newNode.prev = tail;
-        newNode.next = head;
-        tail.next = newNode;
-        head.prev = newNode;
-        tail = newNode;
-        this.listSize ++;
-
+        current++;
         return true;
-
     }
 
     @Override
     public E getFirst() {
-
-
-        if(this.listSize == 0){
-            return null;
-        }
-
-        if(this.head == null){
-            return null;
-        }
-
-        return this.head.data;
+        if(isEmpty()) throw new IllegalStateException("Empty list");
+        return last.next.data;
     }
 
     @Override
     public E getLast() {
-
-        if(this.listSize == 0){
-            return null;
-        }
-
-        if(this.tail == null){
-            return null;
-        }
-
-        return this.tail.data;
+        if(isEmpty()) throw new IllegalStateException("Empty list");
+        return last.data;
     }
 
     @Override
     public int indexOf(E e) {
-
-        int index = 0;
-
-        if(e == null){
-            return index;
-        }
-
-        System.out.println("aqui el pre indice");
-        for(int i = 0; i < this.listSize; i++){
-            if(this.head.data.equals(e)){
-                index = i;
+        if(e==null) return -1;
+        if(isEmpty()) return -1;
+        Node<E> q = last.next;
+        for(int i = 0;i<current;i++){
+            if(q.data.equals(e)){
+                return i;
             }
+            q=q.next;
         }
-
-        System.out.println("aqui el indice: "+ index);
-
-        return index;
+        return -1;
     }
 
     @Override
     public int size() {
-
-        return this.listSize;
+        return current;
     }
 
     @Override
     public boolean removeLast() {
-
-
-
-        if(this.listSize == 0){
-            return false;
+        if(isEmpty()) return false;
+        last.data = null;
+        if(current ==1) last = null;
+        else{
+            Node<E> p = last.previous;
+            Node<E> first = last.next;
+            p.next= first;
+            first.previous = p;
+            last.next =last.previous = null;
+            last = p;
         }
-
-        if(this.tail == null){
-            return false;
-        }
-
-        this.head.prev = this.tail.prev;
-        this.tail.prev = this.tail.next;
-        this.tail.prev = this.tail;
-        this.listSize --;
-
+        current--;
         return true;
     }
 
     @Override
-
     public boolean removeFirst() {
+        if(isEmpty()) return false;
 
-        if(this.listSize == 0){
-            return false;
+        if(current ==1){
+            last.data = null;
+            last = last.next = last.previous = null;
         }
+        else{
+            Node<E> elim = last.next;
+            Node<E> newFirst = elim.next;
+            last.next = newFirst;
+            newFirst.previous = last;
+            elim.next =elim.previous = null;
+            elim.data = null;
 
-        if(this.head == null){
-            return false;
         }
-
-        this.tail.next = this.head.next;
-        this.head.next = this.head.prev;
-        this.head.next = this.head;
-        this.listSize --;
-
+        current --;
         return true;
 
+    }
+    public Node<E> getNode(int index){
+        if(index== 0) return last.next;
+        if(index==current-1) return last;
+        Node<E> p;
+        if(index<current/2){
+            p=last.next;
+            for(int i =0;i<index;i++){
+                p=p.next;
+            }
+        }else{
+            p=last;
+            for(int i = current-1;i> index; i--){
+                p = p.previous;
+            }
+        }
+        return p;
     }
 
     @Override
     public boolean insert(int index, E e) {
+        if(index>current-1 || index<0) throw new IndexOutOfBoundsException("Index out of bounds");
+        if(e==null||isEmpty()) return false;
+        if(index==0) return addFirst(e);
+        Node<E> n = new Node<>(e);
+        Node<E> q = getNode(index);
+        Node<E> prev = q.previous;
+        prev.next = q.previous = n;
+        n.previous = prev;
+        n.next = q;
+        current++;
+        return true;
 
-        Node <E> newNode = new Node<>(e);
-
-        if(e == null){
-            return false;
-        }
-
-        if(index < 0 || index >= this.listSize){
-            throw new IndexOutOfBoundsException("Indice no está dentro del rango");
-        }
-
-        for (int i = 0; i < this.listSize; i++){
-
-            if(index ==0){
-                return addFirst(newNode.data);
-            }
-
-            if(index == this.listSize-1){
-                return addLast(newNode.data);
-            }
-
-            if(index == i){
-                Node <E> actualNode = new Node<>(get(i));
-                newNode.prev = actualNode.prev;
-                actualNode.prev = newNode;
-                newNode.next = actualNode;
-                this.listSize++;
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Override
     public boolean set(int index, E e) {
-
-        if(e == null){
-            return false;
+        if(index>current-1 || index<0) throw new IndexOutOfBoundsException("Index out of bounds");
+        if(e==null) return false;
+        if(index==0) last.next.data= e;
+        if(index==current-1) last.data = e;
+        else{
+            Node<E> p = getNode(index);
+            p.data = e;
         }
-
-        if(index < 0 || index >= this.listSize){
-            throw new IndexOutOfBoundsException("Indice no está dentro del rango");
-        }
-
-        for (int i = 0; i < this.listSize; i++){
-
-            if(index ==0){
-                return addFirst(e);
-            }
-
-            if(index == this.listSize-1){
-                return addLast(e);
-            }
-
-            if(index == i){
-                Node <E> actualNode = new Node<>(get(index));
-                actualNode.data = e;
-                return true;
-            }
-        }
-
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEmpty() {
-
-        if(this.listSize == 0){
-            return true;
-        }
-
-        return false;
+        return current==0;
     }
 
     @Override
     public E get(int index) {
+        if(isEmpty()) throw new IllegalStateException("Empty list");
+        if(index>current-1 || index<0) throw new IndexOutOfBoundsException("Index out of bounds");
+        if(index==0) return last.next.data;
+        if(index==current-1) return last.data;
+        Node<E> n = getNode(index);
+        return n.data;
 
-        if(index < 0 || index >= this.listSize){
-            throw new IndexOutOfBoundsException("Indice no está dentro del rango");
-        }
-
-        Node <E> actualNode = this.head;
-
-        for (int i = 0; i < this.listSize; i++){
-
-            if(index == i){
-                return actualNode.data;
-            }
-
-            actualNode = actualNode.next;
-        }
-
-        return null;
     }
 
     @Override
     public boolean contains(E e) {
-
-        Node actualNode = this.head;
-
-        if(e == null){
-            return false;
-        }
-
+        Node q = last.next;
         do{
-
-            if(actualNode.data.equals(e)){
-                return true;
-            }
-
-            actualNode = actualNode.next;
-
-        }while(actualNode != this.head);
+            if(q.data.equals(e)) return true;
+            q = q.next;
+        }while(q!=last);
 
         return false;
     }
 
     @Override
     public boolean remove(int index) {
+        if(index>=current) throw new IndexOutOfBoundsException("Index out of bounds");
+        if(index==0) return removeFirst();
+        if(index == current-1) return removeLast();
+        Node<E> p = getNode(index-1);
+        Node<E> nRemover = p.next;
+        Node<E> siguiente = nRemover.next;
+        nRemover.data = null; //Help GC
+        nRemover.next = nRemover.previous = null; //Help GC
+        p.next = siguiente;
+        siguiente.previous = p;
+        current--;
+        return true;
+    }
 
-        if(index < 0 || index >= this.listSize){
-            throw new IndexOutOfBoundsException("Indice no está dentro del rango");
+    @Override
+    public String toString()
+    {
+        if(isEmpty()) return "[]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Node<E> p = last.next;
+        for(int i =0; i<current-1; i++)
+        {
+            sb.append(p.data);
+            sb.append(",");
+            p=p.next;
+
         }
-
-        for (int i = 0; i < this.listSize; i++){
-
-            if(index ==0){
-                return removeFirst();
-            }
-
-            if(index == this.listSize-1){
-                return removeLast();
-            }
-
-            if(index == i){
-                Node <E> actualNode = new Node<>(get(index));
-                Node <E> temNode = actualNode.next;
-                actualNode.prev = actualNode.next;
-                actualNode.next = temNode.prev;
-                this.listSize--;
-                return true;
-            }
-        }
-
-        return false;
+        sb.append(last.data);
+        sb.append("]");
+        return sb.toString();
     }
 }
 

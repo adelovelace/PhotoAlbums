@@ -201,6 +201,7 @@ public class GaleryPage {
         showPhotos.setOnAction(
                 e -> {
                     visualizePic(album);
+                    root.setRight(new VBox());
                 }
         );
         HBox buttons = new HBox();
@@ -216,7 +217,7 @@ public class GaleryPage {
         eraseAlbum.setOnMouseClicked(e -> {
             ValidatorData.deleteAlbumInFile(album, session.getUser());
             createAlbums();
-            root.setRight(null);
+            root.setRight(new VBox());
         });
         Styles.setButtonRedStyle(eraseAlbum);
         albumInfo.getChildren().addAll(titleAlbum, lbAlbumName, TitleAlbumDescription, lbAlbumDescription, buttons, eraseAlbum);
@@ -281,6 +282,9 @@ public class GaleryPage {
         }
         CircularDoublyLinkedList<Photo> photos = album.getPhotosOnAlbum();
         for (int i = 0; i < photos.size(); i++) {
+            System.out.println("indice = " + i);
+            System.out.println(photos.get(i).toString());
+
             Photo photo = photos.get(i);
             VBox photoShow = new VBox();
             photoShow.setMinSize(200, 200);
@@ -348,7 +352,7 @@ public class GaleryPage {
         photoInfo.setSpacing(10);
         photoInfo.getChildren().addAll(titlePhoto, TitlePhotoDescription, lbPhotoDescriptionText, TitlePhotoDate, lbPhotoDateText, TitlePhotoLocation, lbPhotoLocationText,camera,lbCameraText, TitlePhotoTags, lbPhotoTagsText, persons,lbPersonsText, btnDeletePhoto, btnEditPhoto, showPic);
         photoInfo.setAlignment(Pos.CENTER);
-        photoInfo.setPadding(new Insets(20, 20, 20, 20));
+        photoInfo.setPadding(new Insets(10));
         root.setRight(photoInfo);
         btnEditPhoto.setOnMouseClicked(e -> {
             editPhotoInfo(photo, album);
@@ -553,6 +557,7 @@ public class GaleryPage {
                     }
                     addPathPhotoText.setText("src/images/" + file.getName());
                     title.set(file.getName());
+                    System.out.println("title: " + title);
                     addPhotoButton.setDisable(false);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -567,7 +572,6 @@ public class GaleryPage {
             if (!addDescriptionText.getText().equals("") && !addPathPhotoText.getText().equals((""))) {
 
                 ArrayList<Person> persons = new ArrayList<>();
-                Album<Photo> albumRelated = album;
 
                 String[] namesList = addPersonsOnAlbumText.getText().split(",");
 
@@ -578,11 +582,16 @@ public class GaleryPage {
                 String route = addPathPhotoText.getText();
                 System.out.println("Ruta" + route);
 
-                Photo newPhoto = new Photo(title.toString(), addDescriptionPhoto.getText(), addPlacePhotoText.getText(), addDatePhotoText.getText(), persons, albumRelated, route);
-                ValidatorData.addPhotoToAlbum(newPhoto, session.getUser(), albumRelated);
+                Photo newPhotoToAlbum = new Photo(title.get(), addDescriptionText.getText(), addPlacePhotoText.getText(), addDatePhotoText.getText(), persons, album, route);
+                ValidatorData.addPhotoToAlbum(newPhotoToAlbum, session.getUser(), album);
                 root.setCenter(new FlowPane());
                 visualizePic(album);
                 root.setRight(new VBox());
+                addDatePhotoText.setText("");
+                addDescriptionText.setText("");
+                addPlacePhotoText.setText("");
+                addPersonsOnAlbumText.setText("");
+                addPathPhotoText.setText("");
             }
         });
 

@@ -143,15 +143,15 @@ public class ValidatorData {
         }
         writeUsers(users);
     }
-    public static void deletePhotoInFile(Photo photo, User user, Album<Photo> album) {
+    public static void deletePhotoInFile(Photo photoDelete, User user, Album<Photo> album) {
         LinkedList<User> users = readUsers();
         for (User user2 : users) {
             if (user2.getEmail().equals(user.getEmail())) {
                 LinkedList<Album<Photo>> galery = user2.getGalery().getAlbums();
-                for (Album album2 : galery) {
+                for (Album<Photo> album2 : galery) {
                     if (album2.getID().equals(album.getID())) {
-                        album2.deletePhoto(album2.getPhotosOnAlbum(),photo);
-                        album.deletePhoto(album.getPhotosOnAlbum(),photo);
+                        album2.deletePhoto(album2.getPhotosOnAlbum(),photoDelete);
+                        album.deletePhoto(album.getPhotosOnAlbum(),photoDelete);
                     }
                 }
             }
@@ -159,15 +159,18 @@ public class ValidatorData {
         writeUsers(users);
     }
 
-    public static void addPhotoToAlbum(Photo photo, User user, Album<Photo> album) {
+    public static void addPhotoToAlbum(Photo photoCharged, User user, Album<Photo> album) {
         LinkedList<User> users = readUsers();
         for (User userOnline : users) {
             if (userOnline.getEmail().equals(user.getEmail())) {
                 LinkedList<Album<Photo>> galeryOnline = userOnline.getGalery().getAlbums();
+                System.out.println("ID ALBUM: " + album.getID());
                 for (Album<Photo> album2 : galeryOnline) {
+                    System.out.println("ID Album Online"+album2.getID());
                     if (album2.getID().equals(album.getID())) {
-                        album2.addPhoto(photo);
-                        album.addPhoto(photo);
+                        System.out.println("Foto a ser cargada: " + photoCharged.toString());
+                        album2.addPhoto(photoCharged);
+                        album.addPhoto(photoCharged);
                     }
                 }
             }
@@ -193,7 +196,7 @@ public class ValidatorData {
         LinkedList<User> users = readUsers();
         for (User user1 : users) {
             if (user1.getEmail().equals(user.getEmail())) {
-                LinkedList<Album<Photo>> galery = user.getGalery().getAlbums();
+                LinkedList<Album<Photo>> galery = user1.getGalery().getAlbums();
                 for (Album<Photo> album2 : galery) {
                     if (album2.getID().equals(album.getID())) {
                         CircularDoublyLinkedList<Photo> photos = album2.getPhotosOnAlbum();
