@@ -147,7 +147,7 @@ public class ValidatorData {
         LinkedList<User> users = readUsers();
         for (User user2 : users) {
             if (user2.getEmail().equals(user.getEmail())) {
-                LinkedList<Album<Photo>> galery = user.getGalery().getAlbums();
+                LinkedList<Album<Photo>> galery = user2.getGalery().getAlbums();
                 for (Album album2 : galery) {
                     if (album2.getID().equals(album.getID())) {
                         album2.deletePhoto(album2.getPhotosOnAlbum(),photo);

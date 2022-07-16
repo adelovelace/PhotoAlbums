@@ -24,7 +24,7 @@ import util.ArrayList;
 import util.CircularDoublyLinkedList;
 import validator.ValidatorData;
 
-
+import java.util.concurrent.atomic.AtomicInteger;
 import java.io.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -290,11 +290,19 @@ public class GaleryPage {
         for (int i = 0; i < photos.size(); i++) {
             Photo photo = photos.get(i);
             VBox photoShow = new VBox();
+            photoShow.setMinSize(200, 200);
+            photoShow.setMaxSize(200, 200);
+            photoShow.setSpacing(10);
+            photoShow.setStyle("-fx-border-color: #006F84;" + "-fx-border-width: 2px;");
+            photoShow.setPadding(new Insets(10));
+            photoShow.setAlignment(Pos.CENTER);
             try {
                 File photoFile = new File(photo.getRoute());
                 ImageView photoIconView = new ImageView(new Image(new FileInputStream(photoFile.getAbsolutePath())));
                 Label photoName = new Label(photo.getName());
+                photoName.setMaxWidth(150);
                 Styles.setSubTitle1Style(photoName);
+                photoName.setAlignment(Pos.CENTER);
                 photoIconView.setFitHeight(125);
                 photoIconView.setFitWidth(125);
                 photoShow.getChildren().addAll(photoIconView,photoName);
@@ -357,6 +365,10 @@ public class GaleryPage {
         showPic.setOnMouseClicked(e -> {
             VBox pic =showPhotoBigger( album.getPhotosOnAlbum(), album.getPhotosOnAlbum().indexOf(photo) );
             root.setCenter(pic);
+        });
+        btnDeletePhoto.setOnMouseClicked(e -> {
+            ValidatorData.deletePhotoInFile(photo,session.getUser(),album);
+            visualizePic(album);
         });
 
     }
@@ -492,7 +504,7 @@ public class GaleryPage {
             if(selectedItem.equals("person")){
                 System.out.println("Search by " + selectedItem);
                 option.getChildren().addAll(selectionLbl, textFieldPerson);
-                layout.getChildren().addAll(selectionLbl, option, searchBtn);
+
                 searchBtn.setOnAction(e -> {
                     String [] persons = textFieldPerson.getText().split(",");
                     ArrayList<Person> arrayPerson = new ArrayList<>();
@@ -508,7 +520,7 @@ public class GaleryPage {
                 });}
             else if(selectedItem.toString().equals("place")){
                 option.getChildren().addAll(selectionLbl, textFieldPlace);
-                layout.getChildren().addAll(selectionLbl, option, searchBtn);
+
                 searchBtn.setOnAction(e -> {
                     Album<Photo> album = session.getUser().getGalery().findAlbumByPlace(textFieldPlace.getText());
                     if (album != null) {
@@ -525,7 +537,7 @@ public class GaleryPage {
                 grid.add(placeLbl, 0, 1);
                 grid.add(textFieldPlace, 1, 1);
                 option.getChildren().addAll(selectionLbl, grid);}
-            layout.getChildren().addAll(selectionLbl, option, searchBtn);
+
                     searchBtn.setOnAction(e -> {
                         String [] persons = textFieldPerson.getText().split(",");
                         ArrayList<Person> arrayPerson = new ArrayList<>();
@@ -540,6 +552,7 @@ public class GaleryPage {
                         popupwindow.close();
 
                     });
+            layout.getChildren().addAll(selectionLbl, option, searchBtn);
             popupwindow.setScene(scene1);
             popupwindow.showAndWait();
 
