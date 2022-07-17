@@ -18,6 +18,7 @@ import util.ArrayList;
 import util.CircularDoublyLinkedList;
 import validator.ValidatorData;
 import java.io.*;
+import java.util.ListIterator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -619,6 +620,7 @@ public class GaleryPage {
     public VBox showPhotoBigger(CircularDoublyLinkedList<Photo> photosOnAlbum, int index ) {
 
         AtomicInteger photo_index = new AtomicInteger(index);
+
         VBox displayPhoto = new VBox();
         VBox previewBox = new VBox();
         VBox nextBox = new VBox();
@@ -644,12 +646,18 @@ public class GaleryPage {
             nextBox.getChildren().add(nextPhotoImageview);
 
 
+
+
             prevPhotoImageview.setOnMouseClicked(e ->{
-                if ((photo_index.get() -1)<0){
-                    photo_index.set(photosOnAlbum.size() - 1);
+
+                photo_index.getAndDecrement();
+
+                if (photo_index.get() < 0) {
+                    photo_index.set((photosOnAlbum.size() - 1));
                 }
                 displayPhoto.getChildren().setAll(previewBox,loadPhoto(photosOnAlbum, photo_index.get()),nextBox);
-                photo_index.getAndDecrement();
+
+
             });
 
             nextPhotoImageview.setOnMouseClicked(e ->{
@@ -659,6 +667,7 @@ public class GaleryPage {
                 }
                 displayPhoto.getChildren().setAll(previewBox,loadPhoto(photosOnAlbum, photo_index.get()),nextBox);
                 photo_index.getAndIncrement();
+
             });
 
 
