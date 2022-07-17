@@ -366,6 +366,7 @@ public class GaleryPage {
         btnDeletePhoto.setOnMouseClicked(e -> {
             ValidatorData.deletePhotoInFile(photo,session.getUser(),album);
             visualizePic(album);
+            root.setRight(new VBox());
         });
 
     }
@@ -469,6 +470,7 @@ public class GaleryPage {
             btnSearch.setOnAction(e -> {
                 Album<Photo> albumSearched = null ;
                 Galery gal =session.getUser().getGalery();
+                root.setRight(new VBox());
                 ArrayList<Person> arrayPersons = new ArrayList<>();
                 if(!txtSearchPerson.getText().equals("")){
                     String [] persons = txtSearchPerson.getText().split(",");
