@@ -293,7 +293,7 @@ public class GaleryPage {
             photoShow.setSpacing(10);
             photoShow.setStyle("-fx-border-color: #006F84;" + "-fx-border-width: 2px;");
             photoShow.setPadding(new Insets(10));
-            photoShow.setAlignment(Pos.CENTER);
+            photoShow.setAlignment(Pos.BASELINE_CENTER);
             try {
                 File photoFile = new File(photo.getRoute());
                 ImageView photoIconView = new ImageView(new Image(new FileInputStream(photoFile.getAbsolutePath())));
@@ -312,6 +312,7 @@ public class GaleryPage {
                 e.printStackTrace();
             }
         }
+
         root.setCenter(Gallery);
     }
 
@@ -362,6 +363,10 @@ public class GaleryPage {
 
         showPic.setOnMouseClicked(e -> {
             VBox pic =showPhotoBigger( album.getPhotosOnAlbum(), album.getPhotosOnAlbum().indexOf(photo) );
+            pic.setAlignment(Pos.BASELINE_CENTER);
+            pic.setMaxWidth(700);
+            pic.setMaxHeight(700);
+            pic.setSpacing(10);
             root.setCenter(pic);
         });
         btnDeletePhoto.setOnMouseClicked(e -> {
@@ -517,10 +522,13 @@ public class GaleryPage {
 
         Label addPersonsOnAlbum = new Label("Person on photos:");
         addPersonsOnAlbum.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+
         Label addPathPhoto = new Label("Path:");
         addPathPhoto.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 25px;" + "-fx-text-fill: #006F84;");
+
         TextField addPathPhotoText = new TextField();
         addPathPhotoText.setStyle("-fx-font-family: Galdeano;" + "-fx-font-size: 15px;" + "-fx-text-fill: #006F84;");
+
         Button searchPath = new Button("Search");
 
         //Label addAlbumRelated =  new Label("Related Album:");
@@ -607,8 +615,6 @@ public class GaleryPage {
         addPhoto.add(addDatePhotoText, 1, 2);
         addPhoto.add(addPersonsOnAlbum, 0, 3);
         addPhoto.add(addPersonsOnAlbumText, 1, 3);
-        //addPhoto.add(addAlbumRelated, 0, 4);
-        //addPhoto.add(addAlbumRelatedText, 1, 4);
         addPhoto.add(addPathPhoto, 0, 4);
         addPhoto.add(addPathPhotoText, 1, 4);
         addPhoto.add(searchPath, 2, 4);
@@ -624,7 +630,10 @@ public class GaleryPage {
         VBox displayPhoto = new VBox();
         VBox previewBox = new VBox();
         VBox nextBox = new VBox();
+        HBox controlBox = new HBox();
 
+        previewBox.setPadding(new Insets(0,400,0,0));
+        controlBox.setAlignment(Pos.CENTER_LEFT);
         root.setRight(new VBox());
 
         File prevPhotoImage = new File("src/Assets/left-arrow.png");
@@ -645,8 +654,7 @@ public class GaleryPage {
             previewBox.getChildren().add(prevPhotoImageview);
             nextBox.getChildren().add(nextPhotoImageview);
 
-
-
+            controlBox.getChildren().addAll(previewBox,nextBox);
 
             prevPhotoImageview.setOnMouseClicked(e ->{
 
@@ -655,7 +663,8 @@ public class GaleryPage {
                 if (photo_index.get() < 0) {
                     photo_index.set((photosOnAlbum.size() - 1));
                 }
-                displayPhoto.getChildren().setAll(previewBox,loadPhoto(photosOnAlbum, photo_index.get()),nextBox);
+
+                displayPhoto.getChildren().setAll(loadPhoto(photosOnAlbum, photo_index.get()),controlBox);
 
 
             });
@@ -665,7 +674,7 @@ public class GaleryPage {
                 if (photo_index.get() > photosOnAlbum.size()-1){
                     photo_index.set(0);
                 }
-                displayPhoto.getChildren().setAll(previewBox,loadPhoto(photosOnAlbum, photo_index.get()),nextBox);
+                displayPhoto.getChildren().setAll(loadPhoto(photosOnAlbum, photo_index.get()),controlBox);
                 photo_index.getAndIncrement();
 
             });
@@ -676,7 +685,7 @@ public class GaleryPage {
         }
 
             displayPhoto.setAlignment(Pos.BASELINE_CENTER);
-            displayPhoto.getChildren().addAll(previewBox,loadPhoto( photosOnAlbum, index),nextBox);
+            displayPhoto.getChildren().addAll(loadPhoto( photosOnAlbum, index),controlBox);
 
             return displayPhoto;
         }
@@ -749,7 +758,7 @@ public class GaleryPage {
 
 
                 infoPhoto.add(descriptionPhoto, 0, 0);
-                infoPhoto.add(textDescriptionPhoto, 0, 1);
+                infoPhoto.add(textDescriptionPhoto, 1, 0);
                 infoPhoto.add(placePhoto, 0, 1);
                 infoPhoto.add(textPlacePhoto, 1, 1);
                 infoPhoto.add(datePhoto, 0, 2);
